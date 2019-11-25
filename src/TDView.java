@@ -30,7 +30,7 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO
+		// TODO 
 	}
 	
 	/**
