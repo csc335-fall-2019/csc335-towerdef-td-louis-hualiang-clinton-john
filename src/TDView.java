@@ -43,4 +43,11 @@ public class TDView extends Application implements Observer {
 	public void update(Observable model, Object target) {
 		// TODO
 	}
+	
+	
+	/************************** Private Fields Block ***************************/
+	
+	
+	/************************ Getters and Setters Block ************************/
+	
 }
