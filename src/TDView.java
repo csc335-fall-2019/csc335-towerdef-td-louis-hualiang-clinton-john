@@ -1,19 +1,20 @@
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -136,6 +137,12 @@ public class TDView extends Application implements Observer {
 			for (int colIndex = 0; colIndex < COLMAX; colIndex++) {
 				// New circle representing a token slot
 				Rectangle slot = new Rectangle();
+				slot.setOnMouseEntered(new EventHandler<MouseEvent>(){
+		            @Override
+		            public void handle(MouseEvent Event) {
+		                slot.setFill(Color.PURPLE);
+		            }
+				});
 				Image image;
 				if(alternate == 0) {
 					image = new Image("grass.jpg");
@@ -144,6 +151,13 @@ public class TDView extends Application implements Observer {
 					image = new Image("light grass.jpg");
 					alternate = 0;
 				}
+				
+				slot.setOnMouseExited(new EventHandler<MouseEvent>(){
+		            @Override
+		            public void handle(MouseEvent Event) {
+		                slot.setFill(new ImagePattern(image));
+		            }
+				});
 				
 				slot.setFill(new ImagePattern(image));
 				slot.setStroke(Color.BLACK);
@@ -157,7 +171,7 @@ public class TDView extends Application implements Observer {
 		}
 		
 		// Disable the grid for initial launches
-		mainGrid.setDisable(true);
+		mainGrid.setDisable(false);
 	}
 	
 	
@@ -181,7 +195,12 @@ public class TDView extends Application implements Observer {
 			for (int colIndex = 0; colIndex < 2; colIndex++) {
 				// New circle representing a token slot
 				Rectangle slot = new Rectangle();
-				
+				slot.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			            @Override
+			            public void handle(MouseEvent Event) {
+			                slot.setFill(Color.PURPLE);
+			            }
+			    });
 				slot.setFill(Color.GREENYELLOW);
 				slot.setStroke(Color.BLACK);
 				slot.setHeight(80);
@@ -194,7 +213,7 @@ public class TDView extends Application implements Observer {
 		}
 		
 		// Disable the grid for initial launches
-		menu.setDisable(true);
+		menu.setDisable(false);
 		
 		
 	}
