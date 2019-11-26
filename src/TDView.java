@@ -126,6 +126,7 @@ public class TDView extends Application implements Observer {
 		int alternate = 0;
 		mainGrid = new GridPane();
 		this.gridBoard = new ArrayList<List<Rectangle>>();
+		int occupied = 0;
 		
 		// Set the properties of the grid
 		mainGrid.setHgap(0);
@@ -168,7 +169,7 @@ public class TDView extends Application implements Observer {
 //		            	shadow.setRadius(5.0);
 //		            	Glow adjust = new Glow();
 //		                adjust.setLevel(0.8);
-		                slot.setStroke(Color.RED);
+		               
 		                //slot.setEffect(shadow);
 		                
 		            }
