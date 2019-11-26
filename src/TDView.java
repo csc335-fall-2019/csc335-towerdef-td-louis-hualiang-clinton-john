@@ -136,17 +136,9 @@ public class TDView extends Application implements Observer {
 			
 			for (int colIndex = 0; colIndex < COLMAX; colIndex++) {
 				// New circle representing a token slot
-				ArrayList<Rectangle> pair = new ArrayList<Rectangle>();
+			
 				Rectangle slot = new Rectangle();
 				
-				int col = colIndex;
-				int row = rowIndex;
-				Rectangle slot1 = new Rectangle();
-				slot1.setStroke(Color.BLACK);
-				slot1.setHeight(80);
-				slot1.setWidth(80);
-				pair.add(slot1);
-				pair.add(slot);
 				
 				slot.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
