@@ -17,6 +17,7 @@ import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -29,6 +30,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -144,18 +146,28 @@ public class TDView extends Application implements Observer {
 				// New circle representing a token slot
 			
 				Rectangle slot = new Rectangle();
+				StackPane stack = new StackPane();
+				
+				Rectangle slot1 = new Rectangle();
+				slot1.setFill(Color.BLUE);
+				slot1.setOpacity(0.0);
+				slot1.setHeight(80);
+				slot1.setWidth(80);
 				
 				
-				slot.setOnMouseEntered(new EventHandler<MouseEvent>(){
+				
+				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
 		            	
-		                slot.setOpacity(0.7);
+		                //slot.setOpacity(0.7);
 		                
 		                if(occupied == 0) {
-		                	slot.setStroke(Color.YELLOW);
+		                	slot1.setOpacity(0.5);
+		                	slot1.setFill(Color.STEELBLUE);
 		                }else {
-		                	slot.setStroke(Color.RED);
+		                	slot1.setFill(Color.RED);
+		                	slot1.setOpacity(0.5);
 		                }
 //		                ColorAdjust adjust = new ColorAdjust();
 //		                adjust.setBrightness(0.5);
@@ -183,24 +195,28 @@ public class TDView extends Application implements Observer {
 					alternate = 0;
 				}
 				
-				slot.setOnMouseExited(new EventHandler<MouseEvent>(){
+				stack.setOnMouseExited(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-		            	slot.setOpacity(1.0);
-		            	slot.setStroke(Color.BLACK);
-		            	slot.setEffect(null);
+		            	slot1.setOpacity(0);
+		            	//slot.setStroke(Color.BLACK);
+		            	//slot.setEffect(null);
 		            	
 		            	
 		            }
 				});
 				
 				slot.setFill(new ImagePattern(image));
-				slot.setStroke(Color.BLACK);
+				//slot.setStroke(Color.BLACK);
 				slot.setHeight(80);
 				slot.setWidth(80);
 				
+				
 				// Add the slot to the grid and to the gridBoard
-				mainGrid.add(slot, colIndex, rowIndex);
+				
+				
+			    stack.getChildren().addAll(slot, slot1);
+				mainGrid.add(stack, colIndex, rowIndex);
 				gridBoard.get(rowIndex).add(slot);
 			}
 		}
