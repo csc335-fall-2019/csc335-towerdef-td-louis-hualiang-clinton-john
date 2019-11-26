@@ -12,6 +12,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -57,6 +61,7 @@ public class TDView extends Application implements Observer {
 	private GridPane mainGrid;
 	private List<List<Rectangle>> gridBoard; // Index is row column style
 	private GridPane menu;
+	private int occupied = 0;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
 	/**
@@ -146,14 +151,34 @@ public class TDView extends Application implements Observer {
 		            	
 		                slot.setOpacity(0.7);
 		                
+		                if(occupied == 0) {
+		                	slot.setStroke(Color.YELLOW);
+		                }else {
+		                	slot.setStroke(Color.RED);
+		                }
+//		                ColorAdjust adjust = new ColorAdjust();
+//		                adjust.setBrightness(0.5);
+//		                adjust.setHue(0.9);
+//		                adjust.setSaturation(0);
+		            	
+//		            	DropShadow shadow = new DropShadow();
+//		            	shadow.setColor(Color.RED);
+//		            	shadow.setOffsetX(0);
+//		            	shadow.setOffsetY(0);
+//		            	shadow.setRadius(5.0);
+//		            	Glow adjust = new Glow();
+//		                adjust.setLevel(0.8);
+		                slot.setStroke(Color.RED);
+		                //slot.setEffect(shadow);
+		                
 		            }
 				});
 				Image image;
 				if(alternate == 0) {
-					image = new Image("grass.jpg");
+					image = new Image("Dark grass.png");
 					alternate = 1;
 				}else {
-					image = new Image("light grass.jpg");
+					image = new Image("light grass.png");
 					alternate = 0;
 				}
 				
@@ -161,6 +186,9 @@ public class TDView extends Application implements Observer {
 		            @Override
 		            public void handle(MouseEvent Event) {
 		            	slot.setOpacity(1.0);
+		            	slot.setStroke(Color.BLACK);
+		            	slot.setEffect(null);
+		            	
 		            	
 		            }
 				});
