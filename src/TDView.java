@@ -128,7 +128,7 @@ public class TDView extends Application implements Observer {
 		int alternate = 0;
 		mainGrid = new GridPane();
 		this.gridBoard = new ArrayList<List<Rectangle>>();
-		int occupied = 0;
+		int occupied = 1;
 		
 		// Set the properties of the grid
 		mainGrid.setHgap(0);
@@ -154,35 +154,37 @@ public class TDView extends Application implements Observer {
 				slot1.setHeight(80);
 				slot1.setWidth(80);
 				
+				Rectangle slot2 = new Rectangle();
+				slot2.setFill(new ImagePattern(new Image("zambie.png")));
+				slot2.setOpacity(0);
+				slot2.setHeight(30);
+				slot2.setWidth(30);
+				
 				
 				
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
 		            	
-		                //slot.setOpacity(0.7);
+		                //slot2.setOpacity(1);
 		                
 		                if(occupied == 0) {
-		                	slot1.setOpacity(0.5);
+		                	slot1.setOpacity(0.3);
 		                	slot1.setFill(Color.STEELBLUE);
 		                }else {
 		                	slot1.setFill(Color.RED);
-		                	slot1.setOpacity(0.5);
+		                	slot1.setOpacity(0.3);
 		                }
-//		                ColorAdjust adjust = new ColorAdjust();
-//		                adjust.setBrightness(0.5);
-//		                adjust.setHue(0.9);
-//		                adjust.setSaturation(0);
+		                
+		            }
+				});
+				
+				
+				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		            @Override
+		            public void handle(MouseEvent Event) {
 		            	
-//		            	DropShadow shadow = new DropShadow();
-//		            	shadow.setColor(Color.RED);
-//		            	shadow.setOffsetX(0);
-//		            	shadow.setOffsetY(0);
-//		            	shadow.setRadius(5.0);
-//		            	Glow adjust = new Glow();
-//		                adjust.setLevel(0.8);
-		               
-		                //slot.setEffect(shadow);
+		                slot2.setOpacity(1);
 		                
 		            }
 				});
@@ -201,6 +203,7 @@ public class TDView extends Application implements Observer {
 		            	slot1.setOpacity(0);
 		            	//slot.setStroke(Color.BLACK);
 		            	//slot.setEffect(null);
+		            	//slot2.setOpacity(0);
 		            	
 		            	
 		            }
@@ -215,7 +218,7 @@ public class TDView extends Application implements Observer {
 				// Add the slot to the grid and to the gridBoard
 				
 				
-			    stack.getChildren().addAll(slot, slot1);
+			    stack.getChildren().addAll(slot, slot1, slot2);
 				mainGrid.add(stack, colIndex, rowIndex);
 				gridBoard.get(rowIndex).add(slot);
 			}
@@ -268,6 +271,8 @@ public class TDView extends Application implements Observer {
 		
 		
 	}
+	
+	
 	
 	/************************** Private Fields Block ***************************/
 	
