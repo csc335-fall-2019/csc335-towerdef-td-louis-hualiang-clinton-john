@@ -13,7 +13,7 @@ import javafx.util.Duration;
 
 public class SandboxFX extends Application {
 
-    private static final Image IMAGE = new Image("zombie_walk.jpg");
+    private static final Image IMAGE = new Image("images/zombie_walk.jpg");
     
     private static final int COLUMNS  =   4;
     private static final int COUNT    =  16;

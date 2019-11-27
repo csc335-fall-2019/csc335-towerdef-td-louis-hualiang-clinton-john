@@ -1,3 +1,5 @@
+import java.util.Observable;
+
 /**
  * Purpose: Model for tower defense TD.
  * 
@@ -14,7 +16,7 @@
  * @author Clinton Kral
  * @author John Stockey
  */
-public class TDModel {
+public class TDModel extends Observable {
 	private int test;
 	
 	/**
