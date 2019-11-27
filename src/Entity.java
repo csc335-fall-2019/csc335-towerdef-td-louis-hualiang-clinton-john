@@ -45,23 +45,52 @@ public class Entity {
 	 */
 	private boolean buildEntity() {
 		/****************** Tower Creation ******************/
-		if (this.type.equals("tower1")) {
-			// Basic starting tower
-			this.base = "tower";
-			this.image = new Image("tower1.jpg");
-		}
-		else if (this.type.equals("tower2")) {
-			this.base = "tower";
-			this.image = new Image("tower2.jpg");
+		if (this.type.contains("tower")) {
+			if (this.type.equals("tower0")) {
+				// Basic starting tower
+				this.base = "tower";
+				this.image = new Image("images/tower0.png");
+			}
+			else if (this.type.equals("tower1")) {
+				this.base = "tower";
+				this.image = new Image("images/tower1.png");
+			}
+			else if (this.type.equals("tower2")) {
+				this.base = "tower";
+				this.image = new Image("images/tower2.png");
+			}
+			else if (this.type.equals("tower3")) {
+				this.base = "tower";
+				this.image = new Image("images/tower3.png");
+			}
+			else if (this.type.equals("tower4")) {
+				this.base = "tower";
+				this.image = new Image("images/tower4.png");
+			}
+			else if (this.type.equals("tower5")) {
+				this.base = "tower";
+				this.image = new Image("images/tower5.png");
+			}
 		}
 		
 		/****************** Enemy Creation ******************/
-		else if (this.type.equals("enemy1")) {
-			this.base = "enemy";
-			this.image = new Image("enemy1.jpg0");
+		if (this.type.contains("enemy")) {
+			if (this.type.equals("enemy0")) {
+				this.base = "enemy";
+				this.image = new Image("images/enemy0.png");
+			}
+		}
+		
+		/****************** Object Creation ******************/
+		if (this.type.contains("object")) {
+			if (this.type.equals("object0")) {
+				this.base = "enemy";
+				this.image = new Image("images/object0.png");
+			}
 		}
 		
 		
+		/****************** Out of Creation ******************/
 		// Check if a type was created and return results
 		if (this.base != null) {
 			// Successful creation
@@ -77,7 +106,7 @@ public class Entity {
 	/**
 	 * Getter for type.
 	 * 
-	 * @return type
+	 * @return String referencing the entity type
 	 */
 	public String getType() {
 		return this.type;
@@ -86,7 +115,7 @@ public class Entity {
 	/**
 	 * Getter for base.
 	 * 
-	 * @return base
+	 * @return String referencing the entities' grouping.
 	 */
 	public String getBase() {
 		return this.base;
@@ -95,9 +124,18 @@ public class Entity {
 	/**
 	 * Getter for isValid.
 	 * 
-	 * @return isValid
+	 * @return boolean indicating a valid entity.
 	 */
 	public boolean getIsValid() {
 		return this.isValid;
+	}
+	
+	/**
+	 * Getter for image.
+	 * 
+	 * @return Image an image representation of the entity.
+	 */
+	public Image getImage() {
+		return this.image;
 	}
 }

@@ -21,6 +21,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -78,7 +79,8 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		TDModel model = new TDModel();
+		TDModel model = new TDModel(ROWMAX, COLMAX);
+		model.addObserver(this);
 		this.controller = new TDController(model);
 		
 		MenuBar toolbar = new MenuBar();
@@ -119,12 +121,22 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void update(Observable model, Object target) {
-		// TODO
+		// Take out the information passed through target
+		Entity entity = ((PlacementInfo) target).getEntity();
+		int row = ((PlacementInfo) target).getRow();
+		int col = ((PlacementInfo) target).getCol();
+
+		System.out.println("Making image view for entity");
+		
+		// Create a new Node with the Image and place it into the appropriate grid point
+		ImageView imgView = new ImageView(entity.getImage());
+		gridBoard.get(row).get(col).getChildren().add(imgView);
 	}
 
 	
 	/************************** Private Fields Block ***************************/
 	
+	// TODO
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
@@ -191,7 +203,7 @@ public class TDView extends Application implements Observer {
 		            	// Valid placement check
 		            	if (stack.getChildren().size() < 3) {
 		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
-		            		//controller.placeEntity(towerChoice, rowIndex, colIndex);
+		            		controller.placeEntity(towerChoice, row, col);
 		            	}
 		                //slot2.setOpacity(1);
 		                

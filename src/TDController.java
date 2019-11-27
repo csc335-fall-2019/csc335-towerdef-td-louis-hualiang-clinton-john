@@ -44,7 +44,6 @@ public class TDController {
 	 * 
 	 * @return boolean indicating the success status of creating said entity.
 	 */
-	/*
 	public boolean placeEntity(String name, int row, int col) {
 		// Attempt to create the entity
 		Entity entity = new Entity(name);
@@ -53,14 +52,16 @@ public class TDController {
 		boolean status = entity.getIsValid();
 		
 		// Successful creations are added to the model
+		System.out.println("Checking entity");
 		if (status) {
+			System.out.println("Adding entity");
 			model.addEntity(entity, row, col);
 		}
 		
 		// Return the status
 		return status;
 	}
-	*/
+	
 	
 	
 	/************************** Private Fields Block ***************************/
