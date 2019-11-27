@@ -7,11 +7,13 @@ import java.util.Observer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.DropShadow;
@@ -19,6 +21,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -57,15 +60,15 @@ import javafx.stage.Stage;
  * @author John Stockey
  */
 public class TDView extends Application implements Observer {
-	
-	
 	private  TDController controller;
 	private GridPane mainGrid;
-	private List<List<Rectangle>> gridBoard; // Index is row column style
+	private List<List<StackPane>> gridBoard; // Index is row column style
 	private GridPane menu;
 	private int occupied = 0;
+	private String towerChoice;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
+	
 	/**
 	 * Purpose: Main window view.
 	 * 
@@ -74,10 +77,8 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO
 		TDModel model = new TDModel();
 		this.controller = new TDController(model);
-		
 		
 		MenuBar toolbar = new MenuBar();
 		Menu fileMenu = new Menu("File");
@@ -103,14 +104,10 @@ public class TDView extends Application implements Observer {
 		// Create the scene
 		Scene scene = new Scene(root);
 		
-		
 		// Setup and show the window
 		primaryStage.setTitle("Knights vs Zombies");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		
-		
 	}
 	
 	/**
@@ -123,158 +120,239 @@ public class TDView extends Application implements Observer {
 	public void update(Observable model, Object target) {
 		// TODO
 	}
+
+	
+	/************************** Private Fields Block ***************************/
 	
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
-		this.gridBoard = new ArrayList<List<Rectangle>>();
+		gridBoard = new ArrayList<List<StackPane>>();
 		int occupied = 1;
 		
 		// Set the properties of the grid
 		mainGrid.setHgap(0);
 		mainGrid.setVgap(0);
-		
-		
 		mainGrid.setPadding(new Insets(0));
 		
-		// Fill the grid with Circles
+		// Fill the grid
 		for (int rowIndex = 0; rowIndex < ROWMAX; rowIndex++) {
 			// New gridBoard row
-			gridBoard.add(new ArrayList<Rectangle>());
+			gridBoard.add(new ArrayList<StackPane>());
 			
 			for (int colIndex = 0; colIndex < COLMAX; colIndex++) {
-				// New circle representing a token slot
-			
-				Rectangle slot = new Rectangle();
+				// New Rectangle for the main grid
+				Rectangle ground = new Rectangle();
 				StackPane stack = new StackPane();
 				
-				Rectangle slot1 = new Rectangle();
-				slot1.setFill(Color.BLUE);
-				slot1.setOpacity(0.0);
-				slot1.setHeight(80);
-				slot1.setWidth(80);
+				// New Rectangle for showing placement validity
+				Rectangle highlight = new Rectangle();
+				highlight.setFill(Color.BLUE);
+				highlight.setOpacity(0.0);
+				highlight.setHeight(80);
+				highlight.setWidth(80);
 				
+				/*
 				Rectangle slot2 = new Rectangle();
-				slot2.setFill(new ImagePattern(new Image("zambie.png")));
+				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
 				slot2.setOpacity(0);
 				slot2.setHeight(30);
 				slot2.setWidth(30);
+				*/
 				
-				
-				
+				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-		            	
-		                //slot2.setOpacity(1);
-		                
-		                if(occupied == 0) {
-		                	slot1.setOpacity(0.3);
-		                	slot1.setFill(Color.STEELBLUE);
-		                }else {
-		                	slot1.setFill(Color.RED);
-		                	slot1.setOpacity(0.3);
+		            	// Valid placement check
+		                if(stack.getChildren().size() < 3) {
+		                	// Valid placement
+		                	highlight.setFill(Color.STEELBLUE);
+		                	highlight.setOpacity(0.5);
+		                } else {
+		                	// Invalid placement
+		                	highlight.setFill(Color.RED);
+		                	highlight.setOpacity(0.3);
 		                }
-		                
 		            }
 				});
 				
+				// Capture row and column for use in the lambda
+				int row = rowIndex;
+				int col = colIndex;
 				
+				// Stack event to place a designated tower on valid grids
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-		            	
-		                slot2.setOpacity(1);
+		            	// Valid placement check
+		            	if (stack.getChildren().size() < 3) {
+		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
+		            		//controller.placeEntity(towerChoice, rowIndex, colIndex);
+		            	}
+		                //slot2.setOpacity(1);
 		                
 		            }
 				});
+				
+				// Alternate grid image background
 				Image image;
-				if(alternate == 0) {
-					image = new Image("Dark grass.png");
+				if (alternate == 0) {
+					image = new Image("images/Dark grass.png");
 					alternate = 1;
-				}else {
-					image = new Image("light grass.png");
+				} else {
+					image = new Image("images/light grass.png");
 					alternate = 0;
 				}
 				
+				ground.setFill(new ImagePattern(image));
+				ground.setHeight(80);
+				ground.setWidth(80);
+				
+				// Stack event to remove placement highlighting
 				stack.setOnMouseExited(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-		            	slot1.setOpacity(0);
-		            	//slot.setStroke(Color.BLACK);
-		            	//slot.setEffect(null);
-		            	//slot2.setOpacity(0);
-		            	
-		            	
+		            	highlight.setOpacity(0);
 		            }
 				});
 				
-				slot.setFill(new ImagePattern(image));
-				//slot.setStroke(Color.BLACK);
-				slot.setHeight(80);
-				slot.setWidth(80);
-				
-				
 				// Add the slot to the grid and to the gridBoard
+			    //stack.getChildren().addAll(ground, highlight, slot2);
 				
+				// Add the ground and highlight to the stack
+				stack.getChildren().addAll(ground, highlight);
 				
-			    stack.getChildren().addAll(slot, slot1, slot2);
+				// Add the stack to the mainGrid and the gridBoard
 				mainGrid.add(stack, colIndex, rowIndex);
-				gridBoard.get(rowIndex).add(slot);
+				gridBoard.get(rowIndex).add(stack);
 			}
 		}
 		
 		// Disable the grid for initial launches
-		mainGrid.setDisable(false);
+		mainGrid.setDisable(true);
 	}
 	
-	
+	/**
+	 * Purpose: Builds the left menu to display tower choices and currency info.
+	 */
 	private void buildMenu() {
-		
 		menu = new GridPane();
-		
 		
 		// Set the properties of the grid
 		menu.setHgap(0);
 		menu.setVgap(0);
-		
-		
 		menu.setPadding(new Insets(0));
 		
-		// Fill the grid with Circles
-		for (int rowIndex = 0; rowIndex < 5; rowIndex++) {
-			// New gridBoard row
-			gridBoard.add(new ArrayList<Rectangle>());
-			
-			for (int colIndex = 0; colIndex < 2; colIndex++) {
-				// New circle representing a token slot
-				Rectangle slot = new Rectangle();
-				slot.setOnMouseClicked(new EventHandler<MouseEvent>(){
-			            @Override
-			            public void handle(MouseEvent Event) {
-			                slot.setFill(Color.PURPLE);
-			            }
-			    });
-				slot.setFill(Color.GREENYELLOW);
-				slot.setStroke(Color.BLACK);
-				slot.setHeight(80);
-				slot.setWidth(80);
-				
-				// Add the slot to the grid and to the gridBoard
-				menu.add(slot, colIndex, rowIndex);
-				gridBoard.get(rowIndex).add(slot);
-			}
-		}
+		// Fill the towers and their events
+		addMenuTowers();
 		
-		// Disable the grid for initial launches
+		// Fill the bottom two menu info boxes
+		addMenuInfo();
+		
+		// Enable grid if disabled
 		menu.setDisable(false);
-		
-		
 	}
 	
 	
+	/**
+	 * Purpose: Adds in the Towers to the menu slots.
+	 */
+	private void addMenuTowers() {
+		// Counter for tower creation
+		int tower = 0;
+		
+		// List for tower event management
+		List<Rectangle> coverList = new ArrayList<>();
+		
+		// 3 rows of 2 per row, so 6 towers total
+		for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
+			for (int colIndex = 0; colIndex < 2; colIndex++) {
+				// New Stack to hold the image and a cover to highlight
+				StackPane stack = new StackPane();
+				
+				// New Rectangle representing a tower choice
+				Rectangle choice = new Rectangle();
+				
+				// Customize the choice
+				String towerName = "tower"+tower;
+				choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
+				choice.setStroke(Color.BLACK);
+				choice.setHeight(80);
+				choice.setWidth(80);
+				
+				// New Rectangle representing the cover
+				Rectangle cover = new Rectangle();
+				cover.setFill(Color.DIMGREY);
+				cover.setOpacity(0);
+				cover.setHeight(80);
+				cover.setWidth(80);
+				coverList.add(cover);
+				
+				// Menu Choice Event
+				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		            @Override
+		            public void handle(MouseEvent Event) {
+		            	if (mainGrid.isDisabled() && Event.getButton() == MouseButton.PRIMARY) {
+		            		// Select a new tower
+		            		towerChoice = towerName;
+		            		
+		            		// Show which is selected and allow for placement checks
+		            		cover.setOpacity(0.5);
+		            		mainGrid.setDisable(false);
+		            	} else if (!mainGrid.isDisabled() && Event.getButton() == MouseButton.SECONDARY) {
+		            		// Prevent more than one visible cover
+		            		for (Rectangle storedCover : coverList) {
+		            			storedCover.setOpacity(0);
+		            		}
+		            		
+		            		// Disable placement
+		            		mainGrid.setDisable(true);
+		            	}
+		            }
+				});
+				
+				// Add the rectangles to the stack
+				stack.getChildren().addAll(choice, cover);
+				
+				// Add the slot to the menu
+				menu.add(stack, colIndex, rowIndex);
+				
+				// Increment the tower tracker
+				tower++;
+			}
+		}
+	}
 	
-	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Adds in the info boxes to the menu slots
+	 */
+	private void addMenuInfo() {
+		// Shared background
+		Rectangle infoBackground = new Rectangle();
+		infoBackground.setFill(Color.LIGHTBLUE);
+		infoBackground.setStroke(Color.BLACK);
+		infoBackground.setHeight(155);
+		infoBackground.setWidth(160);
+		
+		// Box for currency info
+		StackPane currencyBox = new StackPane();
+		VBox currencyInfo = new VBox(2);
+		Label currency = new Label("Money");
+		Label amount = new Label("0");
+		currencyInfo.setAlignment(Pos.TOP_CENTER);
+		
+		// Add the currency info together
+		currencyInfo.getChildren().addAll(currency, amount);
+		
+		// Add the Stacks to have backgrounds and then auxiliary information
+		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
+		
+		// Add the box to the menu
+		menu.add(currencyBox, 0, 3, 2, 1);
+	}
+	
+	
 	
 	
 	/************************ Getters and Setters Block ************************/
