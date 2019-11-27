@@ -37,6 +37,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import sandboxfx.SandboxFX;
 
 /**
  * Purpose: GUI window visual for tower defense.
@@ -159,6 +160,8 @@ public class TDView extends Application implements Observer {
 				slot2.setOpacity(0);
 				slot2.setHeight(30);
 				slot2.setWidth(30);
+				
+				SandboxFX slot3 = new SandboxFX();
 				
 				
 				
