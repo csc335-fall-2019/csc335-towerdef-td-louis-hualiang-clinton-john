@@ -44,6 +44,7 @@ public class TDController {
 	 * 
 	 * @return boolean indicating the success status of creating said entity.
 	 */
+	/*
 	public boolean placeEntity(String name, int row, int col) {
 		// Attempt to create the entity
 		Entity entity = new Entity(name);
@@ -59,6 +60,7 @@ public class TDController {
 		// Return the status
 		return status;
 	}
+	*/
 	
 	
 	/************************** Private Fields Block ***************************/
