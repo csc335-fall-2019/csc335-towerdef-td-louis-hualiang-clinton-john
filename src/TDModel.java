@@ -28,21 +28,21 @@ public class TDModel {
 	 * Description
 	 * </pre>
 	 */
-	public TDModel() {
-		for (int i=0; i<5; i++) {
-			Row row = new Row();
-			rowArray.add(row);
-		}
-	}
-	
-	public TDModel(int n) {
-		for (int i=0; i<n; i++) {
-			Row row = new Row();
-			rowArray.add(row);
-		}
-	}
-	
-	public Row getRow(int i) {
-		return rowArray.get(i);
-	}
+//	public TDModel() {
+//		for (int i=0; i<5; i++) {
+//			Row row = new Row();
+//			rowArray.add(row);
+//		}
+//	}
+//	
+//	public TDModel(int n) {
+//		for (int i=0; i<n; i++) {
+//			Row row = new Row();
+//			rowArray.add(row);
+//		}
+//	}
+//	
+//	public Row getRow(int i) {
+//		return rowArray.get(i);
+//	}
 }
