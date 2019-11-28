@@ -144,9 +144,9 @@ public class TDView extends Application implements Observer {
 		int occupied = 1;
 		
 		// Set the properties of the grid
-		mainGrid.setHgap(0);
-		mainGrid.setVgap(0);
-		mainGrid.setPadding(new Insets(0));
+		//mainGrid.setHgap(0);
+		//mainGrid.setVgap(0);
+		//mainGrid.setPadding(new Insets(0));
 		
 		// Fill the grid
 		for (int rowIndex = 0; rowIndex < ROWMAX; rowIndex++) {
@@ -286,15 +286,16 @@ public class TDView extends Application implements Observer {
 				// New Stack to hold the image and a cover to highlight
 				StackPane stack = new StackPane();
 				
-				// New Rectangle representing a tower choice
-				Rectangle choice = new Rectangle();
+				// New ImageView representing a tower choice
+				//Rectangle choice = new Rectangle();
 				
 				// Customize the choice
 				String towerName = "tower"+tower;
-				choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
-				choice.setStroke(Color.BLACK);
-				choice.setHeight(80);
-				choice.setWidth(80);
+				ImageView choice = new ImageView(new Image("images/"+towerName+".png"));
+				//choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
+				//choice.setStroke(Color.BLACK);
+				//choice.setHeight(80);
+				//choice.setWidth(80);
 				
 				// New Rectangle representing the cover
 				Rectangle cover = new Rectangle();
