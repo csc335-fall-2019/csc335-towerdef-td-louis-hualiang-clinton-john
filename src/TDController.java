@@ -1,4 +1,7 @@
+import java.util.Observable;
 
+import model.*;
+import model.entity.*;
 /**
  * Purpose: Controller for tower defense TD.
  * 
@@ -15,9 +18,9 @@
  * @author Clinton Kral
  * @author John Stockey
  */
-public class TDController {
-	private TDModel model;
-	
+public class TDController extends Observable{  //extends Observable because those entities are not able
+	private TDModel model;                     //to extends Observable, we need controller to notify the
+	                                           //the death of entity(tower, enemy)
 	/**
 	 * Purpose: New controller for updating a model of TD.
 	 * 
@@ -30,6 +33,39 @@ public class TDController {
 	public TDController(TDModel model) {
 		this.model = model;
 	}
+	
+	/**
+	 * Purpose: Place a new Entity into the model at a given row column.
+	 * 
+	 * <pre>
+	 * Takes in the name of an entity to create and passes successfully 
+	 * built entities to the model.
+	 * </pre>
+	 * 
+	 * @param name A String of the entity to create.
+	 * @param row An int of the row to place it at.
+	 * @param col An int of the column to place it at.
+	 * 
+	 * @return boolean indicating the success status of creating said entity.
+	 */
+	public boolean placeEntity(String name, int row, int col) {
+		// Attempt to create the entity
+		Entity entity = new Entity(name);
+		
+		// Check creation status
+		boolean status = entity.getIsValid();
+		
+		// Successful creations are added to the model
+		System.out.println("Checking entity");
+		if (status) {
+			System.out.println("Adding entity");
+			model.addEntity(entity, row, col);
+		}
+		
+		// Return the status
+		return status;
+	}
+	
 	
 	
 	/************************** Private Fields Block ***************************/
