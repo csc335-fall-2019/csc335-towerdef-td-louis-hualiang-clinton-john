@@ -1,6 +1,7 @@
 package sandboxfx;
 
 import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -31,9 +32,6 @@ public class SandboxFX extends Application {
 
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-        
-//        final ImageView imageView2 = new ImageView(IMAGE);
-//        imageView2.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
         final Animation animation = new SpriteAnimation(
                 imageView,
@@ -43,26 +41,29 @@ public class SandboxFX extends Application {
                 WIDTH, HEIGHT
         );
         
-//        final Animation animation2 = new SpriteAnimation(
-//                imageView2,
-//                Duration.millis(1000),
-//                COUNT, COLUMNS,
-//                OFFSET_X, OFFSET_Y,
-//                WIDTH, HEIGHT
-//        );
+
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
-//        animation2.setCycleCount(Animation.INDEFINITE);
-//        animation2.play();
         
         GridPane pane = new GridPane();
         pane.setVgap(10);
         pane.setHgap(10);
         pane.add(imageView, 0, 0);
-//        pane.add(imageView2, 0, 1);
+        
+        // move the zombie from right to left
+        TranslateTransition translateTransition = new TranslateTransition();
+        translateTransition.setDuration(Duration.millis(2000));
+        translateTransition.setNode(pane);
+        translateTransition.setFromX(540);
+        translateTransition.setToX(0);
+        translateTransition.setDuration(Duration.seconds(25));
+        translateTransition.play();
+        // A Group object has no layout of children easier to use here
+        Group root = new Group(pane);
+        Scene scene = new Scene(root, 600, 70);
 
-        primaryStage.setScene(new Scene(new Group(pane)));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
