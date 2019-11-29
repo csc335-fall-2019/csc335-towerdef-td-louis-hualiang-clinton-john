@@ -16,6 +16,9 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+// I am trying to make the bullet of tower works, but it seems like
+// there are two problems: 1. I used canvas while the TDView don't
+// 2. the animation can go infinitely
 public class BulletAnimation extends Application{
 	private static final int BULLET_SIZE = 5;
 	private static final int MILLISECONDS = 5;
