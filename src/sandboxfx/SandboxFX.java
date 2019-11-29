@@ -59,6 +59,7 @@ public class SandboxFX extends Application {
         translateTransition.setToX(0);
         translateTransition.setDuration(Duration.seconds(25));
         translateTransition.play();
+        
         // A Group object has no layout of children easier to use here
         Group root = new Group(pane);
         Scene scene = new Scene(root, 600, 70);
