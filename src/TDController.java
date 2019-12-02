@@ -16,7 +16,7 @@ import model.entity.*;
  * @author Hualiang Qin
  * @author Louis Galluzzi
  * @author Clinton Kral
- * @author John Stockey
+ * @author John Stockey 
  */
 public class TDController { 
 	private TDModel model;                    
