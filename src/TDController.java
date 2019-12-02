@@ -18,9 +18,9 @@ import model.entity.*;
  * @author Clinton Kral
  * @author John Stockey
  */
-public class TDController extends Observable{  //extends Observable because those entities are not able
-	private TDModel model;                     //to extends Observable, we need controller to notify the
-	                                           //the death of entity(tower, enemy)
+public class TDController { 
+	private TDModel model;                    
+	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
 	 * 
