@@ -1,6 +1,8 @@
+package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import model.entity.*;
 
 /**
  * Purpose: Model for tower defense TD.
@@ -18,6 +20,7 @@ import java.util.Observable;
  * @author Clinton Kral
  * @author John Stockey
  */
+
 public class TDModel extends Observable {
 	private int rows;
 	private int cols;
@@ -34,6 +37,7 @@ public class TDModel extends Observable {
 	 * @param rows An int of the number of rows.
 	 * @param cols An int of the number of columns.
 	 */
+
 	public TDModel(int rows, int cols) {
 		this.rows = rows;
 		this.cols = cols;
@@ -83,4 +87,5 @@ public class TDModel extends Observable {
 		// Return successful placement
 		return true;
 	}
+
 }

@@ -1,3 +1,5 @@
+package model;
+import model.entity.*;
 /**
  * Purpose: Object for holding placement info of a new Entity into TDModel.
  * 

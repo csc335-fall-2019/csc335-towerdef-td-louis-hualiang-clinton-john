@@ -3,12 +3,16 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -41,8 +45,10 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sandboxfx.SandboxFX;
-
+import model.entity.*;
+import model.*;
 /**
  * Purpose: GUI window visual for tower defense.
  * 
@@ -62,11 +68,12 @@ import sandboxfx.SandboxFX;
  * @author John Stockey
  */
 public class TDView extends Application implements Observer {
+	
 	private  TDController controller;
 	private GridPane mainGrid;
 	private List<List<StackPane>> gridBoard; // Index is row column style
 	private GridPane menu;
-	private int occupied = 0;
+	private boolean occupied = false;
 	private String towerChoice;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
@@ -79,6 +86,7 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
 		TDModel model = new TDModel(ROWMAX, COLMAX);
 		model.addObserver(this);
 		this.controller = new TDController(model);
@@ -86,12 +94,13 @@ public class TDView extends Application implements Observer {
 		MenuBar toolbar = new MenuBar();
 		Menu fileMenu = new Menu("File");
 		MenuItem newGame = new MenuItem("New Game");
+		MenuItem supriseMode = new MenuItem("Suprised Mode");
 		
 		buildMainGridPane();
 		buildMenu();
 		
 		// Add items to each other
-		fileMenu.getItems().add(newGame);
+		fileMenu.getItems().addAll(newGame, supriseMode);
 		toolbar.getMenus().add(fileMenu);
 		
 		// Add event to newGame
@@ -108,9 +117,10 @@ public class TDView extends Application implements Observer {
 		Scene scene = new Scene(root);
 		
 		// Setup and show the window
-		primaryStage.setTitle("Knights vs Zombies");
+		primaryStage.setTitle("Zombies Defense");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
 	}
 	
 	/**
@@ -179,6 +189,7 @@ public class TDView extends Application implements Observer {
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
+
 		            	// Valid placement check
 		                if(stack.getChildren().size() < 3) {
 		                	// Valid placement
@@ -188,6 +199,7 @@ public class TDView extends Application implements Observer {
 		                	// Invalid placement
 		                	highlight.setFill(Color.RED);
 		                	highlight.setOpacity(0.3);
+
 		                }
 		            }
 				});
@@ -309,14 +321,15 @@ public class TDView extends Application implements Observer {
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-		            	if (mainGrid.isDisabled() && Event.getButton() == MouseButton.PRIMARY) {
+		            	if (mainGrid.isDisabled()) {
 		            		// Select a new tower
 		            		towerChoice = towerName;
 		            		
 		            		// Show which is selected and allow for placement checks
 		            		cover.setOpacity(0.5);
 		            		mainGrid.setDisable(false);
-		            	} else if (!mainGrid.isDisabled() && Event.getButton() == MouseButton.SECONDARY) {
+		            		
+		            	} else {
 		            		// Prevent more than one visible cover
 		            		for (Rectangle storedCover : coverList) {
 		            			storedCover.setOpacity(0);
@@ -367,10 +380,5 @@ public class TDView extends Application implements Observer {
 		// Add the box to the menu
 		menu.add(currencyBox, 0, 3, 2, 1);
 	}
-	
-	
-	
-	
-	/************************ Getters and Setters Block ************************/
 	
 }

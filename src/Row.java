@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-
+import model.entity.Entity;
 /**
  * Purpose: Rows for a Plants vs Zombies style tower defense.
  * 

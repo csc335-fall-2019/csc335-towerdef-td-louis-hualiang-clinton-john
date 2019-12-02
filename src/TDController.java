@@ -1,3 +1,7 @@
+import java.util.Observable;
+
+import model.*;
+import model.entity.*;
 /**
  * Purpose: Controller for tower defense TD.
  * 
@@ -12,11 +16,11 @@
  * @author Hualiang Qin
  * @author Louis Galluzzi
  * @author Clinton Kral
- * @author John Stockey
+ * @author John Stockey 
  */
-public class TDController {
-	private TDModel model;
-	
+public class TDController { 
+	private TDModel model;                    
+	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
 	 * 
