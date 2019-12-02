@@ -1,4 +1,6 @@
 package model.entity;
+import java.util.Observable;
+
 import javafx.scene.image.Image;
 
 /**
@@ -17,7 +19,7 @@ import javafx.scene.image.Image;
  * @author Clinton Kral
  * @author John Stockey
  */
-public class Entity {
+public class Entity extends Observable{
 	private String type;
 	private String base;
 	private boolean isValid;

@@ -25,7 +25,12 @@ public class Mortal extends Entity {
 	}
 	
 	public boolean isDead() {
-		return health == 0;
+		if (health == 0) {
+			setChanged();
+			notifyObservers();
+			return true;
+		}
+		return false;
 	}
 	
 	public int getHealth() {
