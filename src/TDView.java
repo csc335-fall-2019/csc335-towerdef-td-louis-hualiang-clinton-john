@@ -77,6 +77,7 @@ public class TDView extends Application implements Observer {
 	private String towerChoice;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
+	public static int gridSize = 150;
 	
 	/**
 	 * Purpose: Main window view.
@@ -172,8 +173,8 @@ public class TDView extends Application implements Observer {
 				Rectangle highlight = new Rectangle();
 				highlight.setFill(Color.BLUE);
 				highlight.setOpacity(0.0);
-				highlight.setHeight(80);
-				highlight.setWidth(80);
+				highlight.setHeight(gridSize);
+				highlight.setWidth(gridSize);
 				
 				/*
 				Rectangle slot2 = new Rectangle();
@@ -233,8 +234,8 @@ public class TDView extends Application implements Observer {
 				}
 				
 				ground.setFill(new ImagePattern(image));
-				ground.setHeight(80);
-				ground.setWidth(80);
+				ground.setHeight(gridSize);
+				ground.setWidth(gridSize);
 				
 				// Stack event to remove placement highlighting
 				stack.setOnMouseExited(new EventHandler<MouseEvent>(){
@@ -305,15 +306,15 @@ public class TDView extends Application implements Observer {
 				String towerName = "tower"+tower;
 				choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
 				choice.setStroke(Color.BLACK);
-				choice.setHeight(80);
-				choice.setWidth(80);
+				choice.setHeight(gridSize);
+				choice.setWidth(gridSize);
 				
 				// New Rectangle representing the cover
 				Rectangle cover = new Rectangle();
 				cover.setFill(Color.DIMGREY);
 				cover.setOpacity(0);
-				cover.setHeight(80);
-				cover.setWidth(80);
+				cover.setHeight(gridSize);
+				cover.setWidth(gridSize);
 				coverList.add(cover);
 				
 				// Menu Choice Event
