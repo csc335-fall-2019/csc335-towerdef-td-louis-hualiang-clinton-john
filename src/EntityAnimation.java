@@ -5,15 +5,19 @@ import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class EntityAnimation extends Application {
-	static String action = "assasin";
-    private static final Image IMAGE = new Image("images/" + action + "_attack.png");
+public class EntityAnimation {
+	static String action = "fastzombie";
+    private static final Image IMAGE = new Image("images/" + action + "_walk.png");
+    private StackPane root1;
     
     
     private static final int COLUMNS  =   9;
@@ -23,17 +27,17 @@ public class EntityAnimation extends Application {
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public static void main(String[] args) {
-        launch(args);
+    public EntityAnimation(StackPane stage) {
+    	this.root1 = stage;
     }
 
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("The Horse in Motion");
-
+    public void start() {
+        
+    	
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
-        final Animation animation = new Animation(
+        final Animation animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(1000),
                 COUNT, COLUMNS,
@@ -55,17 +59,14 @@ public class EntityAnimation extends Application {
         TranslateTransition translateTransition = new TranslateTransition();
         translateTransition.setDuration(Duration.millis(2000));
         translateTransition.setNode(pane);
-        translateTransition.setFromX(540);
-        translateTransition.setToX(0);
+        translateTransition.setFromX(1500);
+        translateTransition.setToX(300);
+        translateTransition.setFromY(60);
        
         translateTransition.setDuration(Duration.seconds(25));
         translateTransition.play();
         
         // A Group object has no layout of children easier to use here
-        Group root = new Group(pane);
-        Scene scene = new Scene(root, 600, 600);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        this.root1.getChildren().add(pane);
     }
 }

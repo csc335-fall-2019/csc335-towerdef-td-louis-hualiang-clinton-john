@@ -78,6 +78,10 @@ public class TDView extends Application implements Observer {
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
 	public static int gridSize = 150;
+	public Scene scene;
+	public Stage primaryStage;
+	public BorderPane root;
+	public StackPane root1;
 	
 	/**
 	 * Purpose: Main window view.
@@ -109,18 +113,28 @@ public class TDView extends Application implements Observer {
 		
 		// VBox to hold the toolbar and mainGrid
 		//HBox root = new HBox(3);
-		BorderPane root = new BorderPane();
-		root.setTop(toolbar);
-		root.setCenter(mainGrid);
-		root.setLeft(menu);
+		this.root1 = new StackPane();
+		this.root = new BorderPane();
+		this.root.setTop(toolbar);
+		this.root.setCenter(mainGrid);
+		this.root.setLeft(menu);
+		this.root1.getChildren().add(root);
 		
 		// Create the scene
-		Scene scene = new Scene(root);
+		this.scene = new Scene(root1);
 		
 		// Setup and show the window
-		primaryStage.setTitle("Zombies Defense");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("Zombies Defense");
+		
+		EntityAnimation tower = new EntityAnimation(this.root1);
+		tower.start();
+		
+		this.primaryStage.setScene(this.scene);
+		this.primaryStage.show();
+		
+		//Testing out animation
+		
 
 	}
 	

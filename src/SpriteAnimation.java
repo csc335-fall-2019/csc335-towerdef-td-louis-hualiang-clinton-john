@@ -5,7 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-public class Animation extends Transition {
+public class SpriteAnimation extends Transition {
 
     private final ImageView imageView;
     private final int count;
@@ -17,7 +17,7 @@ public class Animation extends Transition {
 
     private int lastIndex;
 
-    public Animation(
+    public SpriteAnimation(
             ImageView imageView, 
             Duration duration, 
             int count,   int columns,
