@@ -1,7 +1,9 @@
 package model.entity;
 import java.util.Observable;
+import animation.*;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 
 /**
  * Purpose: Entity for shared features between Tower and Enemy classes.
@@ -24,6 +26,8 @@ public class Entity extends Observable{
 	private String base;
 	private boolean isValid;
 	private Image image;
+	private TowerAnimation animation;
+	private int frames;
 	// More variables for entity specific elements
 	
 	/**
@@ -53,26 +57,33 @@ public class Entity extends Observable{
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
+				this.frames = 1;
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
+				this.frames = 5;
+		
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
 				this.image = new Image("images/tower2.png");
+				this.frames = 6;
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
+				this.frames = 9;
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
+				this.frames = 9;
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
+				this.frames = 7;
 			}
 		}
 		
@@ -102,6 +113,15 @@ public class Entity extends Observable{
 			// Unsuccessful creation
 			return false;
 		}
+	}
+	
+	public TowerAnimation buildAnimation(StackPane root, int row) {
+		int y = 60 + (150 * row);
+		int speed = 25;
+		String mode = "_attack";
+		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames);
+		this.animation.start();
+		return this.animation;
 	}
 	
 	/************************ Getters and Setters Block ************************/
@@ -140,5 +160,9 @@ public class Entity extends Observable{
 	 */
 	public Image getImage() {
 		return this.image;
+	}
+	
+	public int getFrames() {
+		return frames;
 	}
 }

@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import animation.EntityAnimation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -49,6 +50,7 @@ import javafx.util.Duration;
 import sandboxfx.SandboxFX;
 import model.entity.*;
 import model.*;
+import animation.*;
 /**
  * Purpose: GUI window visual for tower defense.
  * 
@@ -127,8 +129,13 @@ public class TDView extends Application implements Observer {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Zombies Defense");
 		
+		
+		// This code is very simple setup of testing zombie walk animation
 		int y = 60;
 		int speed = 60;
+		String mode = "_walk";
+		String action = "zombie2";
+		int frames = 6;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
@@ -137,7 +144,7 @@ public class TDView extends Application implements Observer {
 			}else {
 				speed = 5;
 			}
-			EntityAnimation tower = new EntityAnimation(this.root1, y, speed);
+			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames);
 			tower.start();
 			
 			
@@ -166,10 +173,16 @@ public class TDView extends Application implements Observer {
 		int col = ((PlacementInfo) target).getCol();
 
 		System.out.println("Making image view for entity");
+		System.out.println(entity.getType());
+		
+		
+		
+		
 		
 		// Create a new Node with the Image and place it into the appropriate grid point
 		ImageView imgView = new ImageView(entity.getImage());
-		gridBoard.get(row).get(col).getChildren().add(imgView);
+		TowerAnimation animation = entity.buildAnimation(this.root1, row);
+		gridBoard.get(row).get(col).getChildren().add(animation.getPane());
 	}
 
 	
