@@ -16,9 +16,10 @@ import javafx.util.Duration;
 
 public class EntityAnimation {
 	static String action = "zombie1";
-    private static final Image IMAGE = new Image("images/" + action + "_walk.png");
+    private Image IMAGE = new Image("images/" + action + "_walk.png");
     private StackPane root1;
     private int y_cor;
+    
     
     
     private static final int COLUMNS  =   9;
@@ -35,7 +36,7 @@ public class EntityAnimation {
 
     public void start() {
         
-    	Canvas canvas = new Canvas();
+    	
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
@@ -71,5 +72,9 @@ public class EntityAnimation {
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
+    }
+    
+    public void Death() {
+    	this.IMAGE = new Image("images/" + action + "_death.png");	
     }
 }
