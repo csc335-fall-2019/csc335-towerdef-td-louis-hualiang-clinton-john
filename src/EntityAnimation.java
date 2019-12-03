@@ -18,6 +18,7 @@ public class EntityAnimation {
 	static String action = "fastzombie";
     private static final Image IMAGE = new Image("images/" + action + "_walk.png");
     private StackPane root1;
+    private int y_cor;
     
     
     private static final int COLUMNS  =   9;
@@ -27,13 +28,14 @@ public class EntityAnimation {
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage) {
+    public EntityAnimation(StackPane stage, int y) {
     	this.root1 = stage;
+    	this.y_cor = y;
     }
 
     public void start() {
         
-    	
+    	Canvas canvas = new Canvas();
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
@@ -61,12 +63,13 @@ public class EntityAnimation {
         translateTransition.setNode(pane);
         translateTransition.setFromX(1500);
         translateTransition.setToX(300);
-        translateTransition.setFromY(60);
+        translateTransition.setFromY(this.y_cor);
        
         translateTransition.setDuration(Duration.seconds(25));
         translateTransition.play();
         
         // A Group object has no layout of children easier to use here
+        pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
     }
 }

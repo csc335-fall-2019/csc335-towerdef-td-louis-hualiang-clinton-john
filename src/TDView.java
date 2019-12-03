@@ -127,8 +127,13 @@ public class TDView extends Application implements Observer {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Zombies Defense");
 		
-		EntityAnimation tower = new EntityAnimation(this.root1);
-		tower.start();
+		int y = 60;
+		for(int i = 0; i<5; i++) {
+			EntityAnimation tower = new EntityAnimation(this.root1, y);
+			tower.start();
+			y += 150;
+		}
+		
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
