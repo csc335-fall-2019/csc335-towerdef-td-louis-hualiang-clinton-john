@@ -23,6 +23,7 @@ public class EntityAnimation {
     private int y_cor;
     private TranslateTransition walking;
     private GridPane pane;
+    private int speed;
     
     
     private static final int COLUMNS  =   9;
@@ -32,9 +33,10 @@ public class EntityAnimation {
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y) {
+    public EntityAnimation(StackPane stage, int y, int speed) {
     	this.root1 = stage;
     	this.y_cor = y;
+    	this.speed = speed;
     }
 
     public void start() {
@@ -63,13 +65,13 @@ public class EntityAnimation {
         
         // move the zombie from right to left
         this.walking = new TranslateTransition();
-        this.walking.setDuration(Duration.millis(2000));
+        //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
         this.walking.setFromX(1500);
         this.walking.setToX(300);
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(5));
+        this.walking.setDuration(Duration.seconds(this.speed));
         this.walking.play();
         
         // A Group object has no layout of children easier to use here
@@ -113,10 +115,23 @@ public class EntityAnimation {
         animation.play();
         
         this.pane.add(imageView, 0, 0);
+        animation.setOnFinished(new EventHandler<ActionEvent>() {
+        	
+            @Override
+            public void handle(ActionEvent event) {
+            	
+                Delete();
+            }  
+            
+        });
        
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
 
+    }
+        
+    public void Delete() {
+        	this.pane.getChildren().remove(0);
     }
 }
