@@ -69,7 +69,7 @@ public class EntityAnimation {
         this.walking.setToX(300);
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(25));
+        this.walking.setDuration(Duration.seconds(5));
         this.walking.play();
         
         // A Group object has no layout of children easier to use here
@@ -109,7 +109,7 @@ public class EntityAnimation {
         
         
         
-        animation.setCycleCount(animation.INDEFINITE);
+        animation.setCycleCount(1);
         animation.play();
         
         this.pane.add(imageView, 0, 0);
