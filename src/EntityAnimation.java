@@ -2,6 +2,8 @@
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,7 +21,8 @@ public class EntityAnimation {
     private Image IMAGE = new Image("images/" + action + "_walk.png");
     private StackPane root1;
     private int y_cor;
-    
+    private TranslateTransition walking;
+    private GridPane pane;
     
     
     private static final int COLUMNS  =   9;
@@ -53,29 +56,44 @@ public class EntityAnimation {
         animation.play();
         
         
-        GridPane pane = new GridPane();
-        pane.setVgap(10);
-        pane.setHgap(10);
-        pane.add(imageView, 0, 0);
+        this.pane = new GridPane();
+        this.pane.setVgap(10);
+        this.pane.setHgap(10);
+        this.pane.add(imageView, 0, 0);
         
         // move the zombie from right to left
-        TranslateTransition translateTransition = new TranslateTransition();
-        translateTransition.setDuration(Duration.millis(2000));
-        translateTransition.setNode(pane);
-        translateTransition.setFromX(1500);
-        translateTransition.setToX(300);
-        translateTransition.setFromY(this.y_cor);
+        this.walking = new TranslateTransition();
+        this.walking.setDuration(Duration.millis(2000));
+        this.walking.setNode(pane);
+        this.walking.setFromX(1500);
+        this.walking.setToX(300);
+        this.walking.setFromY(this.y_cor);
        
-        translateTransition.setDuration(Duration.seconds(25));
-        translateTransition.play();
+        this.walking.setDuration(Duration.seconds(25));
+        this.walking.play();
         
         // A Group object has no layout of children easier to use here
-        pane.setMouseTransparent(true);
+        this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
+        
+        this.walking.setOnFinished(new EventHandler<ActionEvent>() {
+        	
+            @Override
+            public void handle(ActionEvent event) {
+            	
+                Death();
+                
+            }
+        });
+        
+        
     }
     
     public void Death() {
     	
+    	
+    	this.walking.stop();
+    	this.pane.getChildren().remove(0);
     	this.COUNT = 9;
     	IMAGE = new Image("images/" + action + "_death.png");
     	final ImageView imageView = new ImageView(IMAGE);
@@ -94,25 +112,11 @@ public class EntityAnimation {
         animation.setCycleCount(animation.INDEFINITE);
         animation.play();
         
-        
-        GridPane pane = new GridPane();
-        pane.setVgap(10);
-        pane.setHgap(10);
-        pane.add(imageView, 0, 0);
-        
-        // move the zombie from right to left
-        TranslateTransition translateTransition = new TranslateTransition();
-        translateTransition.setDuration(Duration.millis(2000));
-        translateTransition.setNode(pane);
-        translateTransition.setFromX(300);
-        translateTransition.setToX(300);
-        translateTransition.setFromY(this.y_cor);
+        this.pane.add(imageView, 0, 0);
        
-        translateTransition.setDuration(Duration.seconds(25));
-        translateTransition.play();
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-        this.root1.getChildren().add(pane);
+
     }
 }

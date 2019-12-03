@@ -135,12 +135,6 @@ public class TDView extends Application implements Observer {
 			y += 150;
 			anime.add(tower);
 		}
-		for(int i = 0; i<5;i++) {
-			anime.get(i).Death();
-			
-		}
-		
-		
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
