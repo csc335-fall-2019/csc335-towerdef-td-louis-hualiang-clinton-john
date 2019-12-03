@@ -82,7 +82,7 @@ public class TDView extends Application implements Observer {
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
-	
+	 
 	/**
 	 * Purpose: Main window view.
 	 * 
