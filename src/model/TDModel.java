@@ -2,6 +2,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
+
 import model.entity.*;
 
 /**
@@ -87,5 +89,6 @@ public class TDModel extends Observable {
 		// Return successful placement
 		return true;
 	}
+	
 
 }

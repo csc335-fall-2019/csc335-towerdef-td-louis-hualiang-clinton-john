@@ -26,8 +26,8 @@ public class Mortal extends Entity {
 	
 	public boolean isDead() {
 		if (health == 0) {
-			setChanged();
-			notifyObservers();
+//			setChanged();
+//			notifyObservers();
 			return true;
 		}
 		return false;
