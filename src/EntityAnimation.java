@@ -23,7 +23,7 @@ public class EntityAnimation {
     
     
     private static final int COLUMNS  =   9;
-    private static final int COUNT    =  6;
+    private int COUNT    =  6;
     private static final int OFFSET_X =  0;
     private static final int OFFSET_Y =  0;
     private static final int WIDTH    = 90;
@@ -75,6 +75,44 @@ public class EntityAnimation {
     }
     
     public void Death() {
-    	this.IMAGE = new Image("images/" + action + "_death.png");	
+    	
+    	this.COUNT = 9;
+    	IMAGE = new Image("images/" + action + "_death.png");
+    	final ImageView imageView = new ImageView(IMAGE);
+        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+
+        final Animation animation = new SpriteAnimation(
+                imageView,
+                Duration.millis(1000),
+                this.COUNT, COLUMNS,
+                OFFSET_X, OFFSET_Y,
+                WIDTH, HEIGHT
+        );
+        
+        
+        
+        animation.setCycleCount(animation.INDEFINITE);
+        animation.play();
+        
+        
+        GridPane pane = new GridPane();
+        pane.setVgap(10);
+        pane.setHgap(10);
+        pane.add(imageView, 0, 0);
+        
+        // move the zombie from right to left
+        TranslateTransition translateTransition = new TranslateTransition();
+        translateTransition.setDuration(Duration.millis(2000));
+        translateTransition.setNode(pane);
+        translateTransition.setFromX(300);
+        translateTransition.setToX(300);
+        translateTransition.setFromY(this.y_cor);
+       
+        translateTransition.setDuration(Duration.seconds(25));
+        translateTransition.play();
+        
+        // A Group object has no layout of children easier to use here
+        pane.setMouseTransparent(true);
+        this.root1.getChildren().add(pane);
     }
 }

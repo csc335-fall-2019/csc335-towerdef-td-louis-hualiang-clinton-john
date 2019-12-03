@@ -136,7 +136,7 @@ public class TDView extends Application implements Observer {
 			anime.add(tower);
 		}
 		for(int i = 0; i<5;i++) {
-			
+			anime.get(i).Death();
 			
 		}
 		
