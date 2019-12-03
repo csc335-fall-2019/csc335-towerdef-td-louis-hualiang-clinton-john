@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class EntityAnimation {
-	static String action = "fastzombie";
+	static String action = "zombie1";
     private static final Image IMAGE = new Image("images/" + action + "_walk.png");
     private StackPane root1;
     private int y_cor;
