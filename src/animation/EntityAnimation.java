@@ -115,7 +115,7 @@ public class EntityAnimation extends Node{
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
-        this.mode = "_death";
+        this.mode = "_attack";
         this.walking.setOnFinished(new EventHandler<ActionEvent>() {
         	
             @Override
