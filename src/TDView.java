@@ -134,10 +134,10 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie2";
+		String action = "zombie3";
 		int frames = 6;
 		int death = 5;
-		int walk = 6;
+		int walk = 8;
 		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {

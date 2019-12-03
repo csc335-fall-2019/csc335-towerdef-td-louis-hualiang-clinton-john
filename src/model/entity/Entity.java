@@ -162,9 +162,9 @@ public class Entity {
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
-				this.deathFrames =0;
-				this.walkFrames = 0;
-				this.attackFrames =0;
+				this.deathFrames =5;
+				this.walkFrames = 8;
+				this.attackFrames =7;
 			}
 		}
 		
