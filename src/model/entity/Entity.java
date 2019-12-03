@@ -33,6 +33,9 @@ public class Entity {
 	private int price;
 	private TowerAnimation animation;
 	private int frames;
+	private int deathFrames;
+	private int attackFrames;
+	private int walkFrames;
 	// More variables for entity specific elements
 	
 	/**
@@ -126,31 +129,43 @@ public class Entity {
 		}
 		
 		/****************** Enemy Creation ******************/
-		if (this.type.contains("enemy")) {
-			if (this.type.equals("enemy0")) {
-				this.base = "enemy";
-				this.image = new Image("images/enemy0.png");
+		if (this.type.contains("zombie")) {
+			if (this.type.equals("zombie0")) {
+				this.base = "zombie";
+				this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
 				this.speed = 50;
-			}else if (this.type.equals("enemy1")) {
-				this.base = "enemy";
-				this.image = new Image("images/enemy0.png");
+				this.deathFrames =0;
+				this.walkFrames = 0;
+				this.attackFrames =0;
+			}else if (this.type.equals("zombie1")) {
+				this.base = "zombie";
+				this.image = new Image("images/zombie1.png");
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
+				this.deathFrames =0;
+				this.walkFrames = 0;
+				this.attackFrames =0;
 			}else if (this.type.equals("enemy2")) {
-				this.base = "enemy";
+				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
+				this.deathFrames =0;
+				this.walkFrames = 0;
+				this.attackFrames =0;
 			}else if (this.type.equals("enemy3")) {
-				this.base = "enemy";
+				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
+				this.deathFrames =0;
+				this.walkFrames = 0;
+				this.attackFrames =0;
 			}
 		}
 		
