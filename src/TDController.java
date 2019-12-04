@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -5,6 +6,8 @@ import java.util.Random;
 
 import model.*;
 import model.entity.*;
+=======
+>>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 /**
  * Purpose: Controller for tower defense TD.
  * 
@@ -19,13 +22,19 @@ import model.entity.*;
  * @author Hualiang Qin
  * @author Louis Galluzzi
  * @author Clinton Kral
- * @author John Stockey 
+ * @author John Stockey
  */
+<<<<<<< HEAD
 public class TDController { 
 	private TDModel model;   
 	private int gameSpeed;
 	private int turn;
 	                            
+=======
+public class TDController {
+	private TDModel model;
+	
+>>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 	/**
 	 * Purpose: New controller for updating a model of TD.
 	 * 
@@ -155,6 +164,7 @@ public class TDController {
 	public void setModel(TDModel model) {
 		this.model = model;
 	}
+<<<<<<< HEAD
 	
 	/**
 	 * Setter for game speed.
@@ -173,4 +183,6 @@ public class TDController {
 		return turn;
 	}
 
+=======
+>>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 }

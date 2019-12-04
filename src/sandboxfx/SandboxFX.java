@@ -1,7 +1,6 @@
 package sandboxfx;
 
 import javafx.animation.Animation;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -33,6 +32,9 @@ public class SandboxFX extends Application {
 
         final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+        
+        final ImageView imageView2 = new ImageView(IMAGE);
+        imageView2.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
         final Animation animation = new SpriteAnimation(
                 imageView,
@@ -42,15 +44,28 @@ public class SandboxFX extends Application {
                 WIDTH, HEIGHT
         );
         
+<<<<<<< HEAD
         
+=======
+        final Animation animation2 = new SpriteAnimation(
+                imageView2,
+                Duration.millis(1000),
+                COUNT, COLUMNS,
+                OFFSET_X, OFFSET_Y,
+                WIDTH, HEIGHT
+        );
+>>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
+        animation2.setCycleCount(Animation.INDEFINITE);
+        animation2.play();
         
         GridPane pane = new GridPane();
         pane.setVgap(10);
         pane.setHgap(10);
         pane.add(imageView, 0, 0);
+<<<<<<< HEAD
         
         // move the zombie from right to left
         TranslateTransition translateTransition = new TranslateTransition();
@@ -65,8 +80,11 @@ public class SandboxFX extends Application {
         // A Group object has no layout of children easier to use here
         Group root = new Group(pane);
         Scene scene = new Scene(root, 600, 600);
+=======
+        pane.add(imageView2, 0, 1);
+>>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(new Scene(new Group(pane)));
         primaryStage.show();
     }
 }
