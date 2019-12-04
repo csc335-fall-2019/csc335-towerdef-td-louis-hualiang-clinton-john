@@ -27,6 +27,7 @@ public class TDModel extends Observable {
 	private int rows;
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
+	private int money;
 	
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -44,6 +45,7 @@ public class TDModel extends Observable {
 		this.rows = rows;
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
+		this.money = 500;
 		
 		// Setup the Inner list of lists of entities
 		for (int i = 0; i < rows; i++) {
@@ -83,11 +85,29 @@ public class TDModel extends Observable {
 		// Reached when a valid Entity to store
 		// Place the entity and pass it to view to update
 		grid.get(row).get(col).add(entity);
+		this.money = this.money - entity.getPrice();
 		setChanged();
-		notifyObservers(new PlacementInfo(entity, row, col));
+		notifyObservers(new PlacementInfo(entity, row, col, 0));
 		
 		// Return successful placement
 		return true;
+	}
+	
+	public boolean removeEntity(Entity entity, int row, int col) {
+		if (entity == null || row > rows || col > cols) {
+			return false;
+		}
+		
+		grid.get(row).get(col).remove(entity);
+		this.money += (entity.getPrice() - 75);
+		setChanged();
+		notifyObservers(new PlacementInfo(entity, row, col, 1));
+		
+		return true;
+	}
+	
+	public int getMoney() {
+		return this.money;
 	}
 	
 

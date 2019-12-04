@@ -171,18 +171,26 @@ public class TDView extends Application implements Observer {
 		Entity entity = ((PlacementInfo) target).getEntity();
 		int row = ((PlacementInfo) target).getRow();
 		int col = ((PlacementInfo) target).getCol();
-
-		System.out.println("Making image view for entity");
-		System.out.println(entity.getType());
 		
-		
-		
-		
-		
-		// Create a new Node with the Image and place it into the appropriate grid point
 		ImageView imgView = new ImageView(entity.getImage());
 		TowerAnimation animation = entity.buildAnimation(this.root1, row);
-		gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		
+		//adding a tower
+		if (((PlacementInfo) target).getDel() == 0) {
+			System.out.println("Making image view for entity");
+			System.out.println(entity.getType());
+				
+				// Create a new Node with the Image and place it into the appropriate grid point
+			gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		}
+		
+		//deletion
+		else {
+			gridBoard.get(row).get(col).getChildren().remove(2);
+		}
+		
+		//refresh the menu showing how much money is left
+		addMenuInfo();
 	}
 
 	
@@ -217,6 +225,12 @@ public class TDView extends Application implements Observer {
 				highlight.setHeight(gridSize);
 				highlight.setWidth(gridSize);
 				
+				Rectangle remove = new Rectangle();
+				remove.setFill(Color.YELLOW);
+				remove.setOpacity(0.0);
+				remove.setHeight(gridSize);
+				remove.setWidth(gridSize);
+				
 				/*
 				Rectangle slot2 = new Rectangle();
 				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
@@ -226,12 +240,10 @@ public class TDView extends Application implements Observer {
 				*/
 				
 				SandboxFX slot3 = new SandboxFX();
-				
 				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-
 		            	// Valid placement check
 		                if(stack.getChildren().size() < 3) {
 		                	// Valid placement
@@ -258,6 +270,9 @@ public class TDView extends Application implements Observer {
 		            	if (stack.getChildren().size() < 3) {
 		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
+		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
+		            		System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", towerChoice, row, col);
+		            		controller.removeEntity(towerChoice, row, col);
 		            	}
 		                //slot2.setOpacity(1);
 		                
@@ -409,7 +424,7 @@ public class TDView extends Application implements Observer {
 		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
-		Label amount = new Label("0");
+		Label amount = new Label("" + controller.getMoney());
 		currencyInfo.setAlignment(Pos.TOP_CENTER);
 		
 		// Add the currency info together

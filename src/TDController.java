@@ -58,16 +58,30 @@ public class TDController {
 		
 		// Check creation status
 		boolean status = entity.getIsValid();
+		boolean cost = canAfford(entity);
 		
 		// Successful creations are added to the model
 		System.out.println("Checking entity");
-		if (status) {
+		if (status && cost) {
 			System.out.println("Adding entity");
 			model.addEntity(entity, row, col);
+		} else {
+			System.out.println("Can't afford that!");
 		}
 		
 		// Return the status
 		return status;
+	}
+	
+	public boolean removeEntity(String name, int row, int col) {
+		Entity entity = new Entity(name);
+		model.removeEntity(entity, row, col);
+		
+		return true;
+	}
+	
+	public boolean canAfford(Entity entity) {
+		return ((model.getMoney() - entity.getPrice()) >= 0);
 	}
 	
 	
@@ -142,6 +156,14 @@ public class TDController {
 	 */
 	public int getTurn() {
 		return turn;
+	}
+	
+	/**
+	 * return the amount of money the player currently has
+	 * @return
+	 */
+	public int getMoney() {
+		return model.getMoney();
 	}
 
 }
