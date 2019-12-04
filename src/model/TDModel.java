@@ -90,7 +90,6 @@ public class TDModel extends Observable {
 		return true;
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * Purpose: Checks each Entity for their round actions and notifies observers.
 	 * 
@@ -140,8 +139,4 @@ public class TDModel extends Observable {
 			}
 		}
 	}
-
-=======
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 }

@@ -92,11 +92,7 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-<<<<<<< HEAD
 		// Create a model and add this as an observer
-=======
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 		TDModel model = new TDModel(ROWMAX, COLMAX);
 		model.addObserver(this);
 		this.controller = new TDController(model);
@@ -131,15 +127,13 @@ public class TDView extends Application implements Observer {
 		this.scene = new Scene(root1);
 		
 		// Setup and show the window
-<<<<<<< HEAD
 		primaryStage.setTitle("Zombies Defense");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
 		// Run the game
 		runGame();
-
-=======
+		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Zombies Defense");
 		
@@ -169,9 +163,6 @@ public class TDView extends Application implements Observer {
 		this.primaryStage.show();
 		
 		//Testing out animation
-		
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 	}
 	
 	/**
@@ -234,10 +225,6 @@ public class TDView extends Application implements Observer {
 				Rectangle highlight = new Rectangle();
 				highlight.setFill(Color.BLUE);
 				highlight.setOpacity(0.0);
-<<<<<<< HEAD
-				highlight.setHeight(80);
-				highlight.setWidth(80);
-=======
 				highlight.setHeight(gridSize);
 				highlight.setWidth(gridSize);
 				
@@ -248,7 +235,6 @@ public class TDView extends Application implements Observer {
 				slot2.setHeight(30);
 				slot2.setWidth(30);
 				*/
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 				
 				SandboxFX slot3 = new SandboxFX();
 				
@@ -365,14 +351,11 @@ public class TDView extends Application implements Observer {
 				// New ImageView representing a tower choice
 				// Customize the choice
 				String towerName = "tower"+tower;
-<<<<<<< HEAD
 				ImageView choice = new ImageView(new Image("images/"+towerName+".png"));
-=======
 				choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
 				choice.setStroke(Color.BLACK);
 				choice.setHeight(gridSize);
 				choice.setWidth(gridSize);
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 				
 				// New Rectangle representing the cover
 				Rectangle cover = new Rectangle();

@@ -22,13 +22,9 @@ import model.entity.*;
  * @author John Stockey 
  */
 public class TDController { 
-<<<<<<< HEAD
 	private TDModel model;   
 	private int gameSpeed;
-=======
 	private int turn;
-	private TDModel model;                    
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.

@@ -26,10 +26,7 @@ public class Entity {
 	private String base;
 	private boolean isValid;
 	private Image image;
-<<<<<<< HEAD
 	private int cost;
-=======
-	// More variables for entity specific elementsprivate int health;
 	private int health;
 	private int attack;
 	private int speed;
@@ -39,7 +36,6 @@ public class Entity {
 	private int deathFrames;
 	private int attackFrames;
 	private int walkFrames;
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 	// More variables for entity specific elements
 	
 	/**
@@ -70,90 +66,60 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
 
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
-
 				this.frames = 1;
 
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
 
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
-
 				this.frames = 5;
-		
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
+				
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
 				this.image = new Image("images/tower2.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
 
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
 
 				this.frames = 6;
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
 
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
 
 				this.frames = 9;
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
 
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
 				this.frames = 9;
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
-<<<<<<< HEAD
-				this.cost = 0;
-=======
+				
 				this.health = 352;
 				this.attack = 0;
 				this.price = 90;
-
 				this.frames = 7;
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 			}
 		}
 		
@@ -289,14 +255,6 @@ public class Entity {
 	}
 	
 	/**
-<<<<<<< HEAD
-	 * Getter for cost.
-	 * 
-	 * @return int indicating costs related to an entity.
-	 */
-	public int getCost() {
-		return this.cost;
-=======
 	 * getter of the health
 	 * @return
 	 */
@@ -335,7 +293,5 @@ public class Entity {
 	}
 	public int getFrames() {
 		return frames;
-
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 	}
 }
