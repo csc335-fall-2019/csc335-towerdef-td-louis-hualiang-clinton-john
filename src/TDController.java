@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+import java.util.Random;
 
 import model.*;
 import model.entity.*;
@@ -19,6 +22,7 @@ import model.entity.*;
  * @author John Stockey 
  */
 public class TDController { 
+	private int turn;
 	private TDModel model;                    
 	                            
 	/**
@@ -67,6 +71,47 @@ public class TDController {
 	}
 	
 	
+	/**
+	 * Purpose: add enemies to the five queues and each queue represents one row in
+	 * the map. It take the turn as parameter and each queue generate enemies from 
+	 * 3 to 5 for first turn, 6 to 8 for second turn, 9 to 11 for third turn
+	 * The enemy type is also various from turn to turn. For the first turn, only enemy0
+	 * will show up, for second turn, enemy0 and enemy1 are possible. After third turn, all
+	 * types of enemy are possible to show up
+	 * @param turn indicate the different turn (form 1 to infinite)
+	 * @return
+	 */
+	public List<List<Entity>> queueUpEnemy(int turn){
+		List<List<Entity>> troops = new ArrayList<List<Entity>>();
+		
+		for (int i=0; i<5; i++) {
+			List<Entity> queue = new ArrayList<Entity>();
+			Random rand = new Random();
+			int rand_num = (int)Math.round(rand.nextDouble()*2 + 3*turn); 
+			
+			while(rand_num>0) {
+				int coin_flip = (int)Math.round(rand.nextDouble());
+				if (coin_flip == 1) {
+					int enemy_turn;
+					if (turn < 4) {
+						enemy_turn = turn -1;
+					}else {
+						enemy_turn = 3;
+					}
+					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
+					queue.add(new Entity("enemy"+rand_enemy));
+				}else {
+					queue.add(null);
+				}
+				rand_num--;
+			}
+			
+			troops.add(queue);
+		}
+		
+		return troops;
+	}
+	
 	
 	/************************** Private Fields Block ***************************/
 	
@@ -90,4 +135,13 @@ public class TDController {
 	public void setModel(TDModel model) {
 		this.model = model;
 	}
+	
+	/**
+	 * return the current turn
+	 * @return
+	 */
+	public int getTurn() {
+		return turn;
+	}
+
 }
