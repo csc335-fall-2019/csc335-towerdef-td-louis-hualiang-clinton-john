@@ -28,7 +28,7 @@ public class TDModel extends Observable {
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
-	
+
 	/**
 	 * Purpose: New model for a tower defense game state.
 	 * 
@@ -109,6 +109,4 @@ public class TDModel extends Observable {
 	public int getMoney() {
 		return this.money;
 	}
-	
-
 }

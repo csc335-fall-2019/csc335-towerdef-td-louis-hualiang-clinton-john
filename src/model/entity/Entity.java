@@ -32,6 +32,7 @@ public class Entity {
 	private int speed;
 	private int price;
 	private TowerAnimation animation;
+	private EntityAnimation enemyAnimation;
 	private int frames;
 	private int deathFrames;
 	private int attackFrames;
@@ -87,11 +88,9 @@ public class Entity {
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
 				this.image = new Image("images/tower2.png");
-
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
-
 				this.frames = 6;
 
 			}
@@ -132,40 +131,40 @@ public class Entity {
 		if (this.type.contains("zombie")) {
 			if (this.type.equals("zombie0")) {
 				this.base = "zombie";
-				this.image = new Image("images/zombie0.png");
+				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
 				this.speed = 50;
-				this.deathFrames =0;
-				this.walkFrames = 0;
-				this.attackFrames =0;
+				this.deathFrames =9;
+				this.walkFrames = 9;
+				this.attackFrames =7;
 			}else if (this.type.equals("zombie1")) {
 				this.base = "zombie";
-				this.image = new Image("images/zombie1.png");
+				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
-				this.deathFrames =0;
-				this.walkFrames = 0;
-				this.attackFrames =0;
-			}else if (this.type.equals("enemy2")) {
+				this.deathFrames =5;
+				this.walkFrames = 6;
+				this.attackFrames =8;
+			}else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
-				this.deathFrames =0;
-				this.walkFrames = 0;
-				this.attackFrames =0;
-			}else if (this.type.equals("enemy3")) {
+				this.deathFrames =5;
+				this.walkFrames = 6;
+				this.attackFrames =7;
+			}else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
-				this.deathFrames =0;
-				this.walkFrames = 0;
-				this.attackFrames =0;
+				this.deathFrames =5;
+				this.walkFrames = 8;
+				this.attackFrames =7;
 			}
 		}
 		
@@ -218,6 +217,16 @@ public class Entity {
 		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames);
 		this.animation.start();
 		return this.animation;
+
+	}
+	
+	public EntityAnimation enemyAnimation(StackPane root, int row) {
+		int y = 60 + (150 * row);
+		int speed = 25;
+		String mode = "_attack";
+		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		this.enemyAnimation.start();
+		return this.enemyAnimation;
 
 	}
 	

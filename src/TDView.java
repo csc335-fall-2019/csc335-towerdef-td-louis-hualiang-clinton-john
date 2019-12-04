@@ -134,8 +134,11 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie2";
+		String action = "zombie3";
 		int frames = 6;
+		int death = 5;
+		int walk = 8;
+		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
@@ -144,10 +147,9 @@ public class TDView extends Application implements Observer {
 			}else {
 				speed = 5;
 			}
-			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames);
+			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
-			
-			
+			tower.translate();
 			anime.add(tower);
 		}
 		
@@ -225,12 +227,6 @@ public class TDView extends Application implements Observer {
 				highlight.setHeight(gridSize);
 				highlight.setWidth(gridSize);
 				
-				Rectangle remove = new Rectangle();
-				remove.setFill(Color.YELLOW);
-				remove.setOpacity(0.0);
-				remove.setHeight(gridSize);
-				remove.setWidth(gridSize);
-				
 				/*
 				Rectangle slot2 = new Rectangle();
 				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
@@ -240,6 +236,7 @@ public class TDView extends Application implements Observer {
 				*/
 				
 				SandboxFX slot3 = new SandboxFX();
+				
 				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
