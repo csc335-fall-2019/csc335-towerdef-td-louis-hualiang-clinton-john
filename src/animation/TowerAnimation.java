@@ -29,9 +29,7 @@ public class TowerAnimation extends Node{
     private Image IMAGE = new Image("images/" + action + "_walk.png");
     private StackPane root1;
     private int y_cor;
-    private TranslateTransition walking;
     private BorderPane towerPane;
-    private GridPane pane;
     private int speed;
     private String mode;
     
@@ -56,111 +54,14 @@ public class TowerAnimation extends Node{
         
     	if(mode.equals("_attack")) {
     		attack();
-    	}else if(mode.equals("_walk")) {
-    		walk();
-    	}else if(mode.equals("_death")) {
-    		Death();
     	}else {
     		
     	}
-        
-        
-        
+         
     }
-    
-    public void walk() {
-    	
-    	IMAGE = new Image("images/" + this.action + this.mode+".png");
-    	final ImageView imageView = new ImageView(IMAGE);
-        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-
-        final Animation animation = new SpriteAnimation(
-                imageView,
-                Duration.millis(1000),
-                COUNT, COLUMNS,
-                OFFSET_X, OFFSET_Y,
-                WIDTH, HEIGHT
-        );
-        
-        
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
-        
-        
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
-        this.pane.add(imageView, 0, 0);
-        
-        // move the zombie from right to left
-        this.walking = new TranslateTransition();
-        //this.walking.setDuration(Duration.millis(2000));
-        this.walking.setNode(pane);
-        this.walking.setFromX(1500);
-        this.walking.setToX(300);
-        this.walking.setFromY(this.y_cor);
-       
-        this.walking.setDuration(Duration.seconds(this.speed));
-        this.walking.play();
-        
-        // A Group object has no layout of children easier to use here
-        this.pane.setMouseTransparent(true);
-        this.root1.getChildren().add(pane);
-        this.mode = "_death";
-        this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Death();
-                
-            }
-        });
-    	
-    }
-    
-    public void Death() {
-    	
-    	
-    	this.walking.stop();
-    	this.pane.getChildren().remove(0);
-    	this.COUNT = 9;
-    	IMAGE = new Image("images/" + this.action + this.mode+".png");
-    	final ImageView imageView = new ImageView(IMAGE);
-        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-
-        final Animation animation = new SpriteAnimation(
-                imageView,
-                Duration.millis(1000),
-                this.COUNT, COLUMNS,
-                OFFSET_X, OFFSET_Y,
-                WIDTH, HEIGHT
-        );
-        
-        
-        
-        animation.setCycleCount(1);
-        animation.play();
-        
-        this.pane.add(imageView, 0, 0);
-        animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Delete();
-            }  
-            
-        });
-       
-        
-        // A Group object has no layout of children easier to use here
-        pane.setMouseTransparent(true);
-
-    }
-        
+      
     public void Delete() {
-        	this.pane.getChildren().remove(0);
+        	this.towerPane.setCenter(null);
     }
     
     public void attack() {
@@ -189,9 +90,7 @@ public class TowerAnimation extends Node{
         // A Group object has no layout of children easier to use here
         this.towerPane.setMouseTransparent(true);
         //this.root1.getChildren().add(pane);
-        
-        
-    	
+        	
     }
     
     public BorderPane getPane() {
