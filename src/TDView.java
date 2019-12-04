@@ -149,8 +149,7 @@ public class TDView extends Application implements Observer {
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
-			
-			
+			tower.translate();
 			anime.add(tower);
 		}
 		

@@ -36,6 +36,8 @@ public class EntityAnimation extends Node{
     private int death;
     private int walk;
     private int attack;
+    private Animation animation;
+    private TranslateTransition translation;
     
     
     private int COLUMNS  =   9;
@@ -75,38 +77,13 @@ public class EntityAnimation extends Node{
         
     }
     
-    public void walk() {
-    	
-    	this.COUNT = this.walk;
-    	this.COLUMNS = this.walk;
-    	IMAGE = new Image("images/" + this.action + this.mode+".png");
-    	final ImageView imageView = new ImageView(IMAGE);
-        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-
-        final Animation animation = new SpriteAnimation(
-                imageView,
-                Duration.millis(1000),
-                COUNT, COLUMNS,
-                OFFSET_X, OFFSET_Y,
-                WIDTH, HEIGHT
-        );
-        
-        
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
-        
-        
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
-        this.pane.add(imageView, 0, 0);
-        
-        // move the zombie from right to left
+    public void translate() {
+    	// move the zombie from right to left
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
-        this.walking.setFromX(1500);
-        this.walking.setToX(300);
+        this.walking.setFromX(1700);
+        this.walking.setToX(500);
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.speed));
@@ -125,13 +102,41 @@ public class EntityAnimation extends Node{
                 
             }
         });
+    }
+    
+    public void walk() {
+    	
+    	this.COUNT = this.walk;
+    	this.COLUMNS = this.walk;
+    	IMAGE = new Image("images/" + this.action + this.mode+".png");
+    	final ImageView imageView = new ImageView(IMAGE);
+        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+
+        this.animation = new SpriteAnimation(
+                imageView,
+                Duration.millis(1000),
+                COUNT, COLUMNS,
+                OFFSET_X, OFFSET_Y,
+                WIDTH, HEIGHT
+        );
+        
+        
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+        
+        
+        this.pane = new GridPane();
+        this.pane.setVgap(10);
+        this.pane.setHgap(10);
+        this.pane.add(imageView, 0, 0);
+        
     	
     }
     
     public void Death() {
     	
     	
-    	this.walking.stop();
+    	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
     	this.COLUMNS = this.death;
@@ -139,7 +144,7 @@ public class EntityAnimation extends Node{
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
-        final Animation animation = new SpriteAnimation(
+        this.animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(1000),
                 this.COUNT, COLUMNS,
@@ -149,11 +154,11 @@ public class EntityAnimation extends Node{
         
         
         
-        animation.setCycleCount(1);
-        animation.play();
+        this.animation.setCycleCount(1);
+        this.animation.play();
         
         this.pane.add(imageView, 0, 0);
-        animation.setOnFinished(new EventHandler<ActionEvent>() {
+        this.animation.setOnFinished(new EventHandler<ActionEvent>() {
         	
             @Override
             public void handle(ActionEvent event) {
@@ -175,32 +180,41 @@ public class EntityAnimation extends Node{
     
     public void attack() {
     	
-    	this.COUNT = this.attack;
-    	this.COLUMNS = this.attack;
+    	this.animation.stop();
+    	this.pane.getChildren().remove(0);
+    	this.COUNT = this.death;
+    	this.COLUMNS = this.death;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
-        final Animation animation = new SpriteAnimation(
+        this.animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(1000),
-                COUNT, COLUMNS,
+                this.COUNT, COLUMNS,
                 OFFSET_X, OFFSET_Y,
                 WIDTH, HEIGHT
         );
         
         
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
         
+        this.animation.setCycleCount(1);
+        this.animation.play();
         
-        this.pane = new GridPane();
-       
         this.pane.add(imageView, 0, 0);
+        this.animation.setOnFinished(new EventHandler<ActionEvent>() {
+        	
+            @Override
+            public void handle(ActionEvent event) {
+            	
+                Delete();
+            }  
+            
+        });
+       
         
         // A Group object has no layout of children easier to use here
-        this.pane.setMouseTransparent(true);
-        //this.root1.getChildren().add(pane);
+        pane.setMouseTransparent(true);
         
         
     	
@@ -213,6 +227,14 @@ public class EntityAnimation extends Node{
     
     public void setMode(String mode) {
     	this.mode = mode;
+    }
+    
+    public Animation getAnimation() {
+    	return this.animation;
+    }
+    
+    public TranslateTransition getTranslation() {
+    	return this.translation;
     }
     
 
