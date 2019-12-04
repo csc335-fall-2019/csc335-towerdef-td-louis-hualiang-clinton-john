@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -6,8 +5,6 @@ import java.util.Random;
 
 import model.*;
 import model.entity.*;
-=======
->>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 /**
  * Purpose: Controller for tower defense TD.
  * 
@@ -22,19 +19,12 @@ import model.entity.*;
  * @author Hualiang Qin
  * @author Louis Galluzzi
  * @author Clinton Kral
- * @author John Stockey
+ * @author John Stockey 
  */
-<<<<<<< HEAD
 public class TDController { 
-	private TDModel model;   
-	private int gameSpeed;
 	private int turn;
+	private TDModel model;                    
 	                            
-=======
-public class TDController {
-	private TDModel model;
-	
->>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 	/**
 	 * Purpose: New controller for updating a model of TD.
 	 * 
@@ -46,7 +36,6 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
-		this.gameSpeed = 1;
 	}
 	
 	/**
@@ -81,24 +70,6 @@ public class TDController {
 		return status;
 	}
 	
-	/**
-	 * Purpose: Runs a round of tower defense.
-	 * 
-	 * <pre>
-	 * 
-	 * </pre>
-	 * 
-	 * @return boolean indicating the success of the round.
-	 */
-	public boolean runRound(int rows) {
-		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
-		// Will need to randomly build zombie queue, for now just 1 zombie.
-		model.addEntity(new Entity("enemy0"), 0, 8);
-		
-		model.nextStep();
-		
-		return true;
-	}
 	
 	/**
 	 * Purpose: add enemies to the five queues and each queue represents one row in
@@ -164,16 +135,6 @@ public class TDController {
 	public void setModel(TDModel model) {
 		this.model = model;
 	}
-<<<<<<< HEAD
-	
-	/**
-	 * Setter for game speed.
-	 * 
-	 * @param gameSpeed An int indicating the speed of the rounds.
-	 */
-	public void setGameSpeed(int gameSpeed) {
-		this.gameSpeed = gameSpeed;
-	}
 	
 	/**
 	 * return the current turn
@@ -183,6 +144,4 @@ public class TDController {
 		return turn;
 	}
 
-=======
->>>>>>> parent of 65f8eee... Merge branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git into jbranch
 }
