@@ -57,12 +57,9 @@ public class TowerAnimation extends Node{
     	}else {
     		
     	}
-        
-        
-        
+         
     }
-    
-        
+      
     public void Delete() {
         	this.towerPane.setCenter(null);
     }
@@ -93,9 +90,7 @@ public class TowerAnimation extends Node{
         // A Group object has no layout of children easier to use here
         this.towerPane.setMouseTransparent(true);
         //this.root1.getChildren().add(pane);
-        
-        
-    	
+        	
     }
     
     public BorderPane getPane() {
