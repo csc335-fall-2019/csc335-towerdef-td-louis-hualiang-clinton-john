@@ -33,22 +33,30 @@ public class EntityAnimation extends Node{
     private GridPane pane;
     private int speed;
     private String mode;
+    private int death;
+    private int walk;
+    private int attack;
     
     
-    private static final int COLUMNS  =   9;
+    private int COLUMNS  =   9;
     private int COUNT    =  6;
     private static final int OFFSET_X =  0;
     private static final int OFFSET_Y =  0;
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count) {
+    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
+    	this.death = death;
+    	this.walk = walk;
+    	this.attack = attack;
+    	
+    	
     }
 
     public void start() {
@@ -69,7 +77,9 @@ public class EntityAnimation extends Node{
     
     public void walk() {
     	
-    	IMAGE = new Image("images/" + this.action + "_walk"+".png");
+    	this.COUNT = this.walk;
+    	this.COLUMNS = this.walk;
+    	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
@@ -105,7 +115,7 @@ public class EntityAnimation extends Node{
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
-        this.mode = "_death";
+        this.mode = "_attack";
         this.walking.setOnFinished(new EventHandler<ActionEvent>() {
         	
             @Override
@@ -123,7 +133,8 @@ public class EntityAnimation extends Node{
     	
     	this.walking.stop();
     	this.pane.getChildren().remove(0);
-    	this.COUNT = 9;
+    	this.COUNT = this.death;
+    	this.COLUMNS = this.death;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -164,6 +175,8 @@ public class EntityAnimation extends Node{
     
     public void attack() {
     	
+    	this.COUNT = this.attack;
+    	this.COLUMNS = this.attack;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -197,6 +210,11 @@ public class EntityAnimation extends Node{
     	
     	return this.pane;
     }
+    
+    public void setMode(String mode) {
+    	this.mode = mode;
+    }
+    
 
 	@Override
 	protected boolean impl_computeContains(double arg0, double arg1) {
