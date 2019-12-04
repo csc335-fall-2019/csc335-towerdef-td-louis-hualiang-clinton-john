@@ -73,7 +73,6 @@ public class TDView extends Application implements Observer {
 	private GridPane mainGrid;
 	private List<List<StackPane>> gridBoard; // Index is row column style
 	private GridPane menu;
-	private boolean occupied = false;
 	private String towerChoice;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
@@ -86,16 +85,18 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		// Create a model and add this as an observer
 		TDModel model = new TDModel(ROWMAX, COLMAX);
 		model.addObserver(this);
 		this.controller = new TDController(model);
 		
+		// Toolbar for game options
 		MenuBar toolbar = new MenuBar();
 		Menu fileMenu = new Menu("File");
 		MenuItem newGame = new MenuItem("New Game");
 		MenuItem supriseMode = new MenuItem("Suprised Mode");
 		
+		// Setup the grid visuals
 		buildMainGridPane();
 		buildMenu();
 		
@@ -120,6 +121,9 @@ public class TDView extends Application implements Observer {
 		primaryStage.setTitle("Zombies Defense");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		// Run the game
+		runGame();
 
 	}
 	
@@ -145,18 +149,23 @@ public class TDView extends Application implements Observer {
 
 	
 	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Runs the current game of tower defense.
+	 * 
+	 * <pre>
+	 * 
+	 * </pre>
+	 */
+	private void runGame() {
+		controller.runRound(ROWMAX);
+	}
+	
 	
 	// TODO
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
 		gridBoard = new ArrayList<List<StackPane>>();
-		int occupied = 1;
-		
-		// Set the properties of the grid
-		//mainGrid.setHgap(0);
-		//mainGrid.setVgap(0);
-		//mainGrid.setPadding(new Insets(0));
 		
 		// Fill the grid
 		for (int rowIndex = 0; rowIndex < ROWMAX; rowIndex++) {
@@ -174,14 +183,6 @@ public class TDView extends Application implements Observer {
 				highlight.setOpacity(0.0);
 				highlight.setHeight(80);
 				highlight.setWidth(80);
-				
-				/*
-				Rectangle slot2 = new Rectangle();
-				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
-				slot2.setOpacity(0);
-				slot2.setHeight(30);
-				slot2.setWidth(30);
-				*/
 				
 				SandboxFX slot3 = new SandboxFX();
 				
@@ -244,9 +245,6 @@ public class TDView extends Application implements Observer {
 		            }
 				});
 				
-				// Add the slot to the grid and to the gridBoard
-			    //stack.getChildren().addAll(ground, highlight, slot2);
-				
 				// Add the ground and highlight to the stack
 				stack.getChildren().addAll(ground, highlight);
 				
@@ -299,15 +297,9 @@ public class TDView extends Application implements Observer {
 				StackPane stack = new StackPane();
 				
 				// New ImageView representing a tower choice
-				//Rectangle choice = new Rectangle();
-				
 				// Customize the choice
 				String towerName = "tower"+tower;
 				ImageView choice = new ImageView(new Image("images/"+towerName+".png"));
-				//choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
-				//choice.setStroke(Color.BLACK);
-				//choice.setHeight(80);
-				//choice.setWidth(80);
 				
 				// New Rectangle representing the cover
 				Rectangle cover = new Rectangle();
@@ -357,15 +349,7 @@ public class TDView extends Application implements Observer {
 	 * Purpose: Adds in the info boxes to the menu slots
 	 */
 	private void addMenuInfo() {
-		// Shared background
-		Rectangle infoBackground = new Rectangle();
-		infoBackground.setFill(Color.LIGHTBLUE);
-		infoBackground.setStroke(Color.BLACK);
-		infoBackground.setHeight(155);
-		infoBackground.setWidth(160);
-		
 		// Box for currency info
-		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
 		Label amount = new Label("0");
@@ -374,11 +358,8 @@ public class TDView extends Application implements Observer {
 		// Add the currency info together
 		currencyInfo.getChildren().addAll(currency, amount);
 		
-		// Add the Stacks to have backgrounds and then auxiliary information
-		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
-		
-		// Add the box to the menu
-		menu.add(currencyBox, 0, 3, 2, 1);
+		// Add the currency info to the menu
+		menu.add(currencyInfo, 0, 4);
 	}
 	
 }

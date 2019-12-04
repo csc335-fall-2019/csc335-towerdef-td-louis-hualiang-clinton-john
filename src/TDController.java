@@ -19,7 +19,8 @@ import model.entity.*;
  * @author John Stockey 
  */
 public class TDController { 
-	private TDModel model;                    
+	private TDModel model;   
+	private int gameSpeed;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -32,6 +33,7 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
+		this.gameSpeed = 1;
 	}
 	
 	/**
@@ -66,6 +68,24 @@ public class TDController {
 		return status;
 	}
 	
+	/**
+	 * Purpose: Runs a round of tower defense.
+	 * 
+	 * <pre>
+	 * 
+	 * </pre>
+	 * 
+	 * @return boolean indicating the success of the round.
+	 */
+	public boolean runRound(int rows) {
+		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
+		// Will need to randomly build zombie queue, for now just 1 zombie.
+		model.addEntity(new Entity("enemy0"), 0, 8);
+		
+		model.nextStep();
+		
+		return true;
+	}
 	
 	
 	/************************** Private Fields Block ***************************/
@@ -89,5 +109,14 @@ public class TDController {
 	 */
 	public void setModel(TDModel model) {
 		this.model = model;
+	}
+	
+	/**
+	 * Setter for game speed.
+	 * 
+	 * @param gameSpeed An int indicating the speed of the rounds.
+	 */
+	public void setGameSpeed(int gameSpeed) {
+		this.gameSpeed = gameSpeed;
 	}
 }

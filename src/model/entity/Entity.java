@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * Stores state and provides methods to 
  * 
  * Public Methods:
- *   TDController(TDModel model) - New controller for updating a model of TD.
+ *    Entity(String type) - New entity type.
  *   Getters and Setters
  * </pre>
  * 
@@ -19,11 +19,12 @@ import javafx.scene.image.Image;
  * @author Clinton Kral
  * @author John Stockey
  */
-public class Entity extends Observable{
+public class Entity {
 	private String type;
 	private String base;
 	private boolean isValid;
 	private Image image;
+	private int cost;
 	// More variables for entity specific elements
 	
 	/**
@@ -37,6 +38,7 @@ public class Entity extends Observable{
 	 */
 	public Entity(String type) {
 		this.type = type;
+		this.cost = 0;
 		this.isValid = buildEntity();
 	}
 	
@@ -53,26 +55,32 @@ public class Entity extends Observable{
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
+				this.cost = 0;
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
+				this.cost = 0;
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
 				this.image = new Image("images/tower2.png");
+				this.cost = 0;
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
+				this.cost = 0;
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
+				this.cost = 0;
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
+				this.cost = 0;
 			}
 		}
 		
@@ -87,7 +95,7 @@ public class Entity extends Observable{
 		/****************** Object Creation ******************/
 		if (this.type.contains("object")) {
 			if (this.type.equals("object0")) {
-				this.base = "enemy";
+				this.base = "object";
 				this.image = new Image("images/object0.png");
 			}
 		}
@@ -140,5 +148,14 @@ public class Entity extends Observable{
 	 */
 	public Image getImage() {
 		return this.image;
+	}
+	
+	/**
+	 * Getter for cost.
+	 * 
+	 * @return int indicating costs related to an entity.
+	 */
+	public int getCost() {
+		return this.cost;
 	}
 }
