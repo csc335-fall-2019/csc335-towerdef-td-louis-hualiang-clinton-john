@@ -113,11 +113,11 @@ public class TDController {
 						enemy_turn = 3;
 					}
 					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
-					queue.add(new Entity("enemy"+rand_enemy));
+					queue.add(new Entity("zombie"+rand_enemy));
+					rand_num--;
 				}else {
 					queue.add(null);
 				}
-				rand_num--;
 			}
 			
 			troops.add(queue);
