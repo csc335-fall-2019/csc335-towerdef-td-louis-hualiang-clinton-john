@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import animation.EntityAnimation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -49,6 +50,7 @@ import javafx.util.Duration;
 import sandboxfx.SandboxFX;
 import model.entity.*;
 import model.*;
+import animation.*;
 /**
  * Purpose: GUI window visual for tower defense.
  * 
@@ -76,7 +78,12 @@ public class TDView extends Application implements Observer {
 	private String towerChoice;
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
-	
+	public static int gridSize = 150;
+	public Scene scene;
+	public Stage primaryStage;
+	public BorderPane root;
+	public StackPane root1;
+	 
 	/**
 	 * Purpose: Main window view.
 	 * 
@@ -85,7 +92,11 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+<<<<<<< HEAD
 		// Create a model and add this as an observer
+=======
+
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 		TDModel model = new TDModel(ROWMAX, COLMAX);
 		model.addObserver(this);
 		this.controller = new TDController(model);
@@ -109,15 +120,18 @@ public class TDView extends Application implements Observer {
 		
 		// VBox to hold the toolbar and mainGrid
 		//HBox root = new HBox(3);
-		BorderPane root = new BorderPane();
-		root.setTop(toolbar);
-		root.setCenter(mainGrid);
-		root.setLeft(menu);
+		this.root1 = new StackPane();
+		this.root = new BorderPane();
+		this.root.setTop(toolbar);
+		this.root.setCenter(mainGrid);
+		this.root.setLeft(menu);
+		this.root1.getChildren().add(root);
 		
 		// Create the scene
-		Scene scene = new Scene(root);
+		this.scene = new Scene(root1);
 		
 		// Setup and show the window
+<<<<<<< HEAD
 		primaryStage.setTitle("Zombies Defense");
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -125,6 +139,39 @@ public class TDView extends Application implements Observer {
 		// Run the game
 		runGame();
 
+=======
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("Zombies Defense");
+		
+		
+		// This code is very simple setup of testing zombie walk animation
+		int y = 60;
+		int speed = 60;
+		String mode = "_walk";
+		String action = "zombie2";
+		int frames = 6;
+		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
+		for(int i = 0; i<10; i++) {
+			if(i%2!=0) {
+				speed = 10;
+				y+=150;
+			}else {
+				speed = 5;
+			}
+			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames);
+			tower.start();
+			
+			
+			anime.add(tower);
+		}
+		
+		this.primaryStage.setScene(this.scene);
+		this.primaryStage.show();
+		
+		//Testing out animation
+		
+
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 	}
 	
 	/**
@@ -141,10 +188,16 @@ public class TDView extends Application implements Observer {
 		int col = ((PlacementInfo) target).getCol();
 
 		System.out.println("Making image view for entity");
+		System.out.println(entity.getType());
+		
+		
+		
+		
 		
 		// Create a new Node with the Image and place it into the appropriate grid point
 		ImageView imgView = new ImageView(entity.getImage());
-		gridBoard.get(row).get(col).getChildren().add(imgView);
+		TowerAnimation animation = entity.buildAnimation(this.root1, row);
+		gridBoard.get(row).get(col).getChildren().add(animation.getPane());
 	}
 
 	
@@ -181,8 +234,21 @@ public class TDView extends Application implements Observer {
 				Rectangle highlight = new Rectangle();
 				highlight.setFill(Color.BLUE);
 				highlight.setOpacity(0.0);
+<<<<<<< HEAD
 				highlight.setHeight(80);
 				highlight.setWidth(80);
+=======
+				highlight.setHeight(gridSize);
+				highlight.setWidth(gridSize);
+				
+				/*
+				Rectangle slot2 = new Rectangle();
+				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
+				slot2.setOpacity(0);
+				slot2.setHeight(30);
+				slot2.setWidth(30);
+				*/
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 				
 				SandboxFX slot3 = new SandboxFX();
 				
@@ -234,8 +300,8 @@ public class TDView extends Application implements Observer {
 				}
 				
 				ground.setFill(new ImagePattern(image));
-				ground.setHeight(80);
-				ground.setWidth(80);
+				ground.setHeight(gridSize);
+				ground.setWidth(gridSize);
 				
 				// Stack event to remove placement highlighting
 				stack.setOnMouseExited(new EventHandler<MouseEvent>(){
@@ -299,14 +365,21 @@ public class TDView extends Application implements Observer {
 				// New ImageView representing a tower choice
 				// Customize the choice
 				String towerName = "tower"+tower;
+<<<<<<< HEAD
 				ImageView choice = new ImageView(new Image("images/"+towerName+".png"));
+=======
+				choice.setFill(new ImagePattern(new Image("images/"+towerName+".png")));
+				choice.setStroke(Color.BLACK);
+				choice.setHeight(gridSize);
+				choice.setWidth(gridSize);
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-td-louis-hualiang-clinton-john.git
 				
 				// New Rectangle representing the cover
 				Rectangle cover = new Rectangle();
 				cover.setFill(Color.DIMGREY);
 				cover.setOpacity(0);
-				cover.setHeight(80);
-				cover.setWidth(80);
+				cover.setHeight(gridSize);
+				cover.setWidth(gridSize);
 				coverList.add(cover);
 				
 				// Menu Choice Event

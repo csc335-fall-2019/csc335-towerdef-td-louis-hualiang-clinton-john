@@ -3,6 +3,7 @@ package model.entity;
 public class Tower1 extends Mortal{
 	private final String ID = "T1";
 	private final int PRICE = 110;
+	private final int frames = 1;
 	
 	public Tower1(String type) {
 		super(type);
@@ -16,6 +17,10 @@ public class Tower1 extends Mortal{
 	
 	public int getPrice() {
 		return PRICE;
+	}
+	
+	public int getFrames() {
+		return frames;
 	}
 
 }
