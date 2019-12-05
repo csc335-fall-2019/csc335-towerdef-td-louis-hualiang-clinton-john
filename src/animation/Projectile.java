@@ -111,22 +111,14 @@ public class Projectile {
                 WIDTH, HEIGHT
         );
 
-        this.animation.setCycleCount(10);
+        this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
         this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
         this.pane.add(imageView, 0, 0);
-        this.animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Delete();
-            }  
-            
-        });
+       
        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
