@@ -163,7 +163,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		runGame();
+		runGame(root1);
 	}
 	
 	/**
@@ -208,9 +208,11 @@ public class TDView extends Application implements Observer {
 	 * <pre>
 	 * 
 	 * </pre>
+	 * 
+	 * @param root A StackPane for placing enemy visuals onto
 	 */
-	private void runGame() {
-		controller.runRound(ROWMAX);
+	private void runGame(StackPane root) {
+		controller.runRound(root, ROWMAX);
 	}
 	
 	/**

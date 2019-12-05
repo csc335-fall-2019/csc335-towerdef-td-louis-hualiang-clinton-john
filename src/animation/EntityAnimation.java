@@ -83,7 +83,7 @@ public class EntityAnimation extends Node{
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
         this.walking.setFromX(1700);
-        this.walking.setToX(500);
+        this.walking.setToX(300);
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.speed));
@@ -93,6 +93,7 @@ public class EntityAnimation extends Node{
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
         this.mode = "_attack";
+        /*
         this.walking.setOnFinished(new EventHandler<ActionEvent>() {
         	
             @Override
@@ -102,6 +103,7 @@ public class EntityAnimation extends Node{
                 
             }
         });
+        */
     }
     
     public void walk() {
@@ -202,16 +204,6 @@ public class EntityAnimation extends Node{
         this.animation.play();
         
         this.pane.add(imageView, 0, 0);
-        this.animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Delete();
-            }  
-            
-        });
-       
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
@@ -234,7 +226,7 @@ public class EntityAnimation extends Node{
     }
     
     public TranslateTransition getTranslation() {
-    	return this.translation;
+    	return this.walking;
     }
     
 

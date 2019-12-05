@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 
+import animation.EntityAnimation;
+import javafx.scene.layout.StackPane;
 import model.*;
 import model.entity.*;
 /**
@@ -130,19 +132,29 @@ public class TDController {
 	/**
 	 * Purpose: Runs a round of tower defense.
 	 * 
-	 * <pre>
-	 * 
-	 * </pre>
+	 * @param root A StackPane to place enemy visuals.
+	 * @param rows An int indicating the number of rows.
 	 * 
 	 * @return boolean indicating the success of the round.
 	 */
-	public boolean runRound(int rows) {
+	public boolean runRound(StackPane root, int rows) {
 		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
 		// Will need to randomly build zombie queue, for now just 1 zombie.
-		queueUpEnemy(1);
-		model.addEntity(new Entity("zombie0"), 0, 8);
+		System.out.println("Testing round");
+		Entity tower = new Entity("tower0");
+		model.addEntity(tower, 0, 7);
 		
-		model.nextStep();
+		Entity zom1 = new Entity("zombie0");
+		EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
+		entityAnimation.translate();
+		
+		
+		model.addEntity(zom1, 0, 8);
+		//model.addEntity(new Entity("zombie0"), 0, 8);
+		
+		for (int i = 0; i < 21; i++) {
+			model.nextStep();
+		}
 		
 		return true;
 	}

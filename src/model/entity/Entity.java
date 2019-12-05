@@ -135,7 +135,7 @@ public class Entity {
 				this.health = 300;
 				this.attack = 5;
 				this.speed = 50;
-				this.deathFrames =9;
+				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
 			}else if (this.type.equals("zombie1")) {
@@ -144,25 +144,25 @@ public class Entity {
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
 			}else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
 			}else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
 			}
@@ -203,13 +203,15 @@ public class Entity {
 	}
 	
 	/**
-	 * return true when the health is zero
+	 * return true when the health is zero or less
 	 * 
 	 * @return
 	 */
 	public boolean isDead() {
-		return health == 0;
+		return health <= 0;
 	}
+	
+	
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
 		int y = 60 + (150 * row);
 		int speed = 25;
@@ -223,9 +225,9 @@ public class Entity {
 	
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		//int speed = 25;
+		String mode = "_walk";
+		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 
@@ -270,24 +272,27 @@ public class Entity {
 	}
 	
 	/**
-	 * getter of the health
-	 * @return
+	 * Getter for health
+	 * 
+	 * @return int representing the Entity's health.
 	 */
 	public int getHealth() {
 		return health;
 	}
 	
 	/**
-	 * getter of the attack
-	 * @return
+	 * Getter for attack
+	 * 
+	 * @return int representing the Entity's attack damage.
 	 */
 	public int getAttack() {
 		return attack;
 	}
 	
 	/**
-	 * getter of the price, only tower have the price
-	 * @return
+	 * Getter for price (0 if non-tower)
+	 * 
+	 * @return int indicating cost of Entity.
 	 */
 	public int getPrice() {
 		if (this.base.equals("tower")) {
@@ -297,7 +302,8 @@ public class Entity {
 	}
 	
 	/**
-	 * getter of the speed, only enemy have the speed
+	 * Getter of the speed, only enemy have the speed
+	 * 
 	 * @return
 	 */
 	public int getSpeed() {
@@ -306,8 +312,19 @@ public class Entity {
 		}
 		return 0;
 	}
+	
 	public int getFrames() {
 		return frames;
+
+	}
+	
+	/**
+	 * Getter for enemyAnimation.
+	 * 
+	 * @return EntityAnimation, the animations for an enemy.
+	 */
+	public EntityAnimation getEnemyAnimation() {
+		return enemyAnimation;
 
 	}
 }
