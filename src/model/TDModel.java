@@ -239,7 +239,7 @@ public class TDModel extends Observable {
 		// Visual
 		attacker.getEnemyAnimation();
 		attacker.getEnemyAnimation().getTranslation();
-		//attacker.getEnemyAnimation().getTranslation().pause();
+		attacker.getEnemyAnimation().getTranslation().pause();
 		attacker.getEnemyAnimation().setMode("_attack");
 		attacker.getEnemyAnimation().start();
 		
@@ -250,7 +250,7 @@ public class TDModel extends Observable {
 			grid.get(row).get(col-1).remove(tower);
 			attacker.getEnemyAnimation().setMode("_walk");
 			attacker.getEnemyAnimation().start();
-			//attacker.getEnemyAnimation().getTranslation().play();
+			attacker.getEnemyAnimation().getTranslation().play();
 		}
 	}
 }

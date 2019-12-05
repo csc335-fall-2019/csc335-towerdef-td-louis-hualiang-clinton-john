@@ -58,7 +58,9 @@ public class EntityAnimation extends Node{
     	this.walk = walk;
     	this.attack = attack;
     	
-    	
+    	this.pane = new GridPane();
+        this.pane.setVgap(10);
+        this.pane.setHgap(10);
     }
 
     public void start() {
@@ -127,9 +129,9 @@ public class EntityAnimation extends Node{
         animation.play();
         
         
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
+        //this.pane = new GridPane();
+        //this.pane.setVgap(10);
+        //this.pane.setHgap(10);
         this.pane.add(imageView, 0, 0);
         
     	
