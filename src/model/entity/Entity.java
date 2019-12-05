@@ -210,6 +210,7 @@ public class Entity {
 	public boolean isDead() {
 		return health == 0;
 	}
+	
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
 		int y = 60 + (150 * row);
 		int speed = 25;
@@ -223,9 +224,8 @@ public class Entity {
 	
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		String mode = "_walk";
+		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 

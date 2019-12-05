@@ -88,7 +88,7 @@ public class TowerAnimation extends Node{
         this.animation.play();
         
         String action = "weapon4";
-    	Projectile projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode,action, 8, 1, 300 +(150 * this.x) + 60);
+    	Projectile projectile = new Projectile(this.root1, this.y_cor+10, this.speed -20, this.mode,action, 8, 1, 300 +(150 * this.x) + 60);
     	projectile.start();
     	projectile.translate();
     	

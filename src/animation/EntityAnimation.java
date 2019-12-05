@@ -57,6 +57,9 @@ public class EntityAnimation extends Node{
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
+    	 this.pane = new GridPane();
+         this.pane.setVgap(10);
+         this.pane.setHgap(10);
     	
     	
     }
@@ -83,16 +86,17 @@ public class EntityAnimation extends Node{
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
         this.walking.setFromX(1700);
-        this.walking.setToX(500);
+        this.walking.setToX(300);
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.speed));
         this.walking.play();
         
+        
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
-        this.mode = "_attack";
+        this.mode = "_death";
         this.walking.setOnFinished(new EventHandler<ActionEvent>() {
         	
             @Override
@@ -125,9 +129,7 @@ public class EntityAnimation extends Node{
         animation.play();
         
         
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
+       
         this.pane.add(imageView, 0, 0);
         
     	
@@ -234,7 +236,7 @@ public class EntityAnimation extends Node{
     }
     
     public TranslateTransition getTranslation() {
-    	return this.translation;
+    	return this.walking;
     }
     
 
