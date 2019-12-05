@@ -99,7 +99,7 @@ public class TDModel extends Observable {
 		}
 		
 		grid.get(row).get(col).remove(entity);
-		this.money += (entity.getPrice() - 75);
+		this.money += (entity.getPrice() * .10);
 		setChanged();
 		notifyObservers(new PlacementInfo(entity, row, col, 1));
 		
