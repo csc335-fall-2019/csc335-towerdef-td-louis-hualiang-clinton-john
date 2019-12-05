@@ -90,5 +90,54 @@ public class TDModel extends Observable {
 		return true;
 	}
 	
-
+	
+	/**
+	 * Purpose: Checks each Entity for their round actions and notifies observers.
+	 * 
+	 * @return boolean indicating successful checking.
+	 */
+	public boolean nextStep() {
+		// Iterate over row by row
+		for (int row = 0; row < grid.size(); row++) {
+			List<List<Entity>> rows = grid.get(row);
+			// Iterate over column by column
+			for (int col = 0; col < rows.size(); col++) {
+				List<Entity> column = rows.get(col);
+				// Iterate over each Entity
+				for (Entity entity : column) {
+					// Check entity base type
+					if (entity.getBase().equals("enemy")) {
+						// entity is an enemy, perform actions
+						enemyAction(row, col, entity);
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Performs actions on known enemy entity types.
+	 * 
+	 * @param row An int of the row being checked.
+	 * @param col An int of the column being checked.
+	 * @param entity An Entity of enemy type.
+	 */
+	private void enemyAction(int row, int col, Entity entity) {
+		// Check the space to the left
+		if (col > 0) {
+			System.out.printf("row %d, col %d\n", row, col);
+			Entity check = grid.get(row).get(col-1).get(0);
+			if (check == null) {
+				// Walk to the left
+				System.out.println("Empty");
+				
+			}
+			else if (check.getBase().equals("tower")) {
+				// Do damage to tower
+				System.out.print("Attack");
+			}
+		}
+	}
 }

@@ -156,7 +156,9 @@ public class TDView extends Application implements Observer {
 		
 		//Testing out animation
 		
-
+		
+		// Run the game test
+		runGame();
 	}
 	
 	/**
@@ -187,8 +189,27 @@ public class TDView extends Application implements Observer {
 
 	
 	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Runs the current game of tower defense.
+	 * 
+	 * <pre>
+	 * 
+	 * </pre>
+	 */
+	private void runGame() {
+		controller.runRound(ROWMAX);
+	}
 	
-	// TODO
+	/**
+	 * Purpose: Builds the main grid visual display.
+	 * 
+	 * <pre>
+	 * Creates the List of Lists of StackPanes which hold the ground visual, a 
+	 * highlightable tile, and the Entity visual. Events added to the StackPane 
+	 * determine tower placeability and define the action for tower placement and 
+	 * selling.
+	 * </pre>
+	 */
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
