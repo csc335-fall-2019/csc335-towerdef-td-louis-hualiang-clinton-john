@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import animation.EntityAnimation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -134,8 +133,11 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie2";
+		String action = "zombie3";
 		int frames = 6;
+		int death = 5;
+		int walk = 8;
+		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
@@ -144,18 +146,21 @@ public class TDView extends Application implements Observer {
 			}else {
 				speed = 5;
 			}
-			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames);
+			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
-			
-			
+			tower.translate();
 			anime.add(tower);
 		}
+		
+		String a = "weapon4";
+    	Projectile projectile = new Projectile(this.root1, 60, 25, "_attack",a, 8, 1, 500);
+    	projectile.start();
+    	projectile.translate();
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
 		
 		//Testing out animation
-		
 		
 		// Run the game test
 		runGame();
@@ -173,18 +178,26 @@ public class TDView extends Application implements Observer {
 		Entity entity = ((PlacementInfo) target).getEntity();
 		int row = ((PlacementInfo) target).getRow();
 		int col = ((PlacementInfo) target).getCol();
-
-		System.out.println("Making image view for entity");
-		System.out.println(entity.getType());
 		
-		
-		
-		
-		
-		// Create a new Node with the Image and place it into the appropriate grid point
 		ImageView imgView = new ImageView(entity.getImage());
-		TowerAnimation animation = entity.buildAnimation(this.root1, row);
-		gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
+		
+		//adding a tower
+		if (((PlacementInfo) target).getDel() == 0) {
+			System.out.println("Making image view for entity");
+			System.out.println(entity.getType());
+				
+				// Create a new Node with the Image and place it into the appropriate grid point
+			gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		}
+		
+		//deletion
+		else {
+			gridBoard.get(row).get(col).getChildren().remove(2);
+		}
+		
+		//refresh the menu showing how much money is left
+		addMenuInfo();
 	}
 
 	
@@ -252,7 +265,6 @@ public class TDView extends Application implements Observer {
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
 		            public void handle(MouseEvent Event) {
-
 		            	// Valid placement check
 		                if(stack.getChildren().size() < 3) {
 		                	// Valid placement
@@ -279,6 +291,9 @@ public class TDView extends Application implements Observer {
 		            	if (stack.getChildren().size() < 3) {
 		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
+		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
+		            		System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", towerChoice, row, col);
+		            		controller.removeEntity(towerChoice, row, col);
 		            	}
 		                //slot2.setOpacity(1);
 		                
@@ -430,7 +445,7 @@ public class TDView extends Application implements Observer {
 		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
-		Label amount = new Label("0");
+		Label amount = new Label("" + controller.getMoney());
 		currencyInfo.setAlignment(Pos.TOP_CENTER);
 		
 		// Add the currency info together

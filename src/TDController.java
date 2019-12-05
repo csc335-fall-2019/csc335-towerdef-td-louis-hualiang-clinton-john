@@ -21,7 +21,7 @@ import model.entity.*;
  * @author Clinton Kral
  * @author John Stockey 
  */
-public class TDController { 
+public class TDController {
 	private int turn;
 	private TDModel model;
 	private int gameSpeed;
@@ -60,18 +60,31 @@ public class TDController {
 		
 		// Check creation status
 		boolean status = entity.getIsValid();
+		boolean cost = canAfford(entity);
 		
 		// Successful creations are added to the model
 		System.out.println("Checking entity");
-		if (status) {
+		if (status && cost) {
 			System.out.println("Adding entity");
 			model.addEntity(entity, row, col);
+		} else {
+			System.out.println("Can't afford that!");
 		}
 		
 		// Return the status
 		return status;
 	}
 	
+	public boolean removeEntity(String name, int row, int col) {
+		Entity entity = new Entity(name);
+		model.removeEntity(entity, row, col);
+		
+		return true;
+	}
+	
+	public boolean canAfford(Entity entity) {
+		return ((model.getMoney() - entity.getPrice()) >= 0);
+	}
 	
 	/**
 	 * Purpose: add enemies to the five queues and each queue represents one row in
@@ -101,11 +114,11 @@ public class TDController {
 						enemy_turn = 3;
 					}
 					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
-					queue.add(new Entity("enemy"+rand_enemy));
+					queue.add(new Entity("zombie"+rand_enemy));
+					rand_num--;
 				}else {
 					queue.add(null);
 				}
-				rand_num--;
 			}
 			
 			troops.add(queue);
@@ -113,7 +126,6 @@ public class TDController {
 		
 		return troops;
 	}
-	
 	
 	/**
 	 * Purpose: Runs a round of tower defense.
@@ -140,7 +152,6 @@ public class TDController {
 	
 	
 	/************************ Getters and Setters Block ************************/
-	
 	/**
 	 * Getter for model.
 	 * 
@@ -176,4 +187,11 @@ public class TDController {
 		this.gameSpeed = gameSpeed;
 	}
 
+	/**
+	 * return the amount of money the player currently has
+	 * @return
+	 */
+	public int getMoney() {
+		return model.getMoney();
+	}
 }

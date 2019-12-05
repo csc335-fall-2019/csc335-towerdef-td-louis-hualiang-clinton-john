@@ -20,6 +20,7 @@ public class PlacementInfo {
 	private Entity entity;
 	private int row;
 	private int col;
+	private int del;
 	
 	/**
 	 * Purpose: Information of the Entity created and where it was placed.
@@ -34,10 +35,11 @@ public class PlacementInfo {
 	 * @param row An int of row placed at.
 	 * @param col An int of the column placed at.
 	 */
-	public PlacementInfo(Entity entity, int row, int col) {
+	public PlacementInfo(Entity entity, int row, int col, int del) {
 		this.entity = entity;
 		this.row = row;
 		this.col = col;
+		this.del = del;
 	}
 	
 	
@@ -68,5 +70,14 @@ public class PlacementInfo {
 	 */
 	public int getCol() {
 		return this.col;
+	}
+	
+	/**
+	 * Getter for deletion number.
+	 * 
+	 * @return int
+	 */
+	public int getDel() {
+		return this.del;
 	}
 }
