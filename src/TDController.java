@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+import java.util.TimerTask;
 
 import animation.EntityAnimation;
+import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
 import model.*;
 import model.entity.*;
@@ -140,20 +142,39 @@ public class TDController {
 	public boolean runRound(StackPane root, int rows) {
 		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
 		// Will need to randomly build zombie queue, for now just 1 zombie.
-		System.out.println("Testing round");
-		Entity tower = new Entity("tower0");
-		model.addEntity(tower, 0, 7);
+		Platform.runLater(() -> {
+			System.out.println("Testing round");
+			Entity tower = new Entity("tower0");
+			model.addEntity(tower, 0, 7);
+			model.addEntity(tower, 0, 6);
+			
+			Entity zom1 = new Entity("zombie0");
+			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
+			entityAnimation.translate();
+			
+			
+			model.addEntity(zom1, 0, 8);
+			
+			/*
+			Entity zom2 = new Entity("zombie1");
+			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 0);
+			entityAnimation2.translate();
+			
+			
+			model.addEntity(zom2, 0, 8);
+			*/
+		});
 		
-		Entity zom1 = new Entity("zombie0");
-		EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
-		entityAnimation.translate();
-		
-		
-		model.addEntity(zom1, 0, 8);
-		//model.addEntity(new Entity("zombie0"), 0, 8);
-		
-		for (int i = 0; i < 21; i++) {
-			model.nextStep();
+		for (int i = 0; i < 22; i++) {
+			Platform.runLater(() -> {
+				model.nextStep();
+			});
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return true;

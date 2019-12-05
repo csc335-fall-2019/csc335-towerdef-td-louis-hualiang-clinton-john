@@ -183,21 +183,23 @@ public class TDView extends Application implements Observer {
 		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 		
 		//adding a tower
-		if (((PlacementInfo) target).getDel() == 0) {
-			System.out.println("Making image view for entity");
-			System.out.println(entity.getType());
-				
-				// Create a new Node with the Image and place it into the appropriate grid point
-			gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		if (entity.getBase().equals("tower")) {
+			if (((PlacementInfo) target).getDel() == 0) {
+				System.out.println("Making image view for entity");
+				System.out.println(entity.getType());
+					
+					// Create a new Node with the Image and place it into the appropriate grid point
+				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+			}
+			
+			//deletion
+			else {
+				gridBoard.get(row).get(col).getChildren().remove(2);
+			}
+			
+			//refresh the menu showing how much money is left
+			addMenuInfo();
 		}
-		
-		//deletion
-		else {
-			gridBoard.get(row).get(col).getChildren().remove(2);
-		}
-		
-		//refresh the menu showing how much money is left
-		addMenuInfo();
 	}
 
 	
@@ -212,7 +214,10 @@ public class TDView extends Application implements Observer {
 	 * @param root A StackPane for placing enemy visuals onto
 	 */
 	private void runGame(StackPane root) {
-		controller.runRound(root, ROWMAX);
+		Thread newRound = new Thread(() -> {
+			controller.runRound(root, ROWMAX);
+		});
+		newRound.start();
 	}
 	
 	/**
@@ -440,8 +445,8 @@ public class TDView extends Application implements Observer {
 		Rectangle infoBackground = new Rectangle();
 		infoBackground.setFill(Color.LIGHTBLUE);
 		infoBackground.setStroke(Color.BLACK);
-		infoBackground.setHeight(155);
-		infoBackground.setWidth(160);
+		infoBackground.setHeight(gridSize);
+		infoBackground.setWidth(gridSize);
 		
 		// Box for currency info
 		StackPane currencyBox = new StackPane();
@@ -457,7 +462,7 @@ public class TDView extends Application implements Observer {
 		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
 		
 		// Add the box to the menu
-		menu.add(currencyBox, 0, 3, 2, 1);
+		menu.add(currencyBox, 0, 3);
 	}
 	
 }
