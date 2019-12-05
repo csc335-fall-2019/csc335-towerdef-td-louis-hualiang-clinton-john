@@ -134,7 +134,7 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 50;
+				this.speed = 20;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;

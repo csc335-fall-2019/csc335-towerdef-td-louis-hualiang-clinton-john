@@ -240,8 +240,8 @@ public class TDModel extends Observable {
 		attacker.getEnemyAnimation();
 		attacker.getEnemyAnimation().getTranslation();
 		//attacker.getEnemyAnimation().getTranslation().pause();
-		//attacker.getEnemyAnimation().setMode("_attack");
-		//attacker.getEnemyAnimation().start();
+		attacker.getEnemyAnimation().setMode("_attack");
+		attacker.getEnemyAnimation().start();
 		
 		// Check if tower is defeated
 		if (tower.isDead()) {
