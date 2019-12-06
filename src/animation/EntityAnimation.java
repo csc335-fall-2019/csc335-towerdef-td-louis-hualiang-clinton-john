@@ -31,7 +31,7 @@ public class EntityAnimation extends Node{
     private int y_cor;
     private TranslateTransition walking;
     private GridPane pane;
-    private int speed;
+    private double speed;
     private String mode;
     private int death;
     private int walk;
@@ -42,7 +42,7 @@ public class EntityAnimation extends Node{
     private int difference = 50;
     private boolean isTranslating;
     private boolean isDead = false;
-    private int rate;
+    private double rate;
     
     
     private int COLUMNS  =   9;
@@ -52,7 +52,7 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack) {
+    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
@@ -273,7 +273,7 @@ public class EntityAnimation extends Node{
 	   return this.start;
    }
    
-   public int getRate() {
+   public double getRate() {
 	   return this.rate;
    }
    

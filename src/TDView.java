@@ -135,7 +135,7 @@ public class TDView extends Application implements Observer {
 		
 		// This code is very simple setup of testing zombie walk animation
 		int y = 60;
-		int speed = 60;
+		double speed = 1;
 		String mode = "_walk";
 		String action = "zombie0";
 		int frames = 6;
@@ -145,10 +145,10 @@ public class TDView extends Application implements Observer {
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
-				speed = 10;
+				speed = 0.75;
 				y+=150;
 			}else {
-				speed = 5;
+				speed = 0.75;
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
