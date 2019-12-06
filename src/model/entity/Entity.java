@@ -210,26 +210,29 @@ public class Entity {
 	public boolean isDead() {
 		return health == 0;
 	}
-	public TowerAnimation buildAnimation(StackPane root, int row) {
-		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames);
-		this.animation.start();
-		return this.animation;
-
-	}
 	
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
 		int speed = 25;
 		String mode = "_attack";
-		int x = 9;
-		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames, x);
+		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 
 	}
+
+	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
+		int y = 60 + (150 * row);
+		int speed = 2;
+		String mode = "_attack";
+		int x = col;
+		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames, x);
+		this.animation.start();
+		return this.animation;
+
+	}
+	
+	
 	
 	/************************ Getters and Setters Block ************************/
 	
@@ -268,6 +271,7 @@ public class Entity {
 	public Image getImage() {
 		return this.image;
 	}
+	
 	
 	/**
 	 * getter of the health

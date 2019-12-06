@@ -63,6 +63,9 @@ public class EntityAnimation extends Node{
     	this.walk = walk;
     	this.attack = attack;
     	this.rate = 150/this.speed;
+    	this.pane = new GridPane();
+        this.pane.setVgap(10);
+        this.pane.setHgap(10);
     	
     	
     }
@@ -146,9 +149,7 @@ public class EntityAnimation extends Node{
         animation.play();
         
         
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
+        
         this.pane.add(imageView, 0, 0);
         
     	
@@ -223,16 +224,6 @@ public class EntityAnimation extends Node{
         this.animation.play();
         
         this.pane.add(imageView, 0, 0);
-        this.animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Delete();
-            }  
-            
-        });
-       
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
