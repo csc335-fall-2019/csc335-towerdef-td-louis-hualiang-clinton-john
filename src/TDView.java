@@ -158,8 +158,8 @@ public class TDView extends Application implements Observer {
 		
 		
 		String a = "weapon4";
-		int dif = 600;
-    	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
+		int dif = 300;
+    	Projectile projectile = new Projectile(this.root1, 60, 1, "_attack",a, 8, 1, 500, dif);
     	projectile.start();
     	projectile.translate();
 		
