@@ -18,6 +18,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.DropShadow;
@@ -374,6 +375,44 @@ public class TDView extends Application implements Observer {
 				cover.setWidth(gridSize);
 				coverList.add(cover);
 				
+				Rectangle hover = new Rectangle();
+				hover.setFill(Color.GREENYELLOW);
+				hover.setOpacity(0);
+				hover.setHeight(gridSize);
+				hover.setWidth(gridSize);
+				
+				stack.setOnMouseEntered(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						if (mainGrid.isDisable()) {
+							hover.setOpacity(0.1);
+							Tooltip t = new Tooltip();
+							if (towerName.equals("tower0")) {
+								t.setText("Meow!\n Cost: 110");
+							} else if (towerName.equals("tower1")) {
+								t.setText("Sharpshooter!\n Cost: 120");
+							} else if (towerName.equals("tower2")) {
+								t.setText("Sneaky, Deadly, no Escaping!\n Cost: 210");
+							} else if (towerName.equals("tower3")) {
+								t.setText("Noble Knight!\n Cost: 245");
+							} else if (towerName.equals("tower4")) {
+								t.setText("Barbarian!\n Cost: 335");
+							} else if (towerName.equals("tower5")) {
+								t.setText("YOU SHALL NOT PASS!\n Cost: 90");
+							}
+							Tooltip.install(hover, t);
+						}
+						
+					}
+				});
+				
+				stack.setOnMouseExited(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						hover.setOpacity(0);
+					}
+				});
+				
 				// Menu Choice Event
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		            @Override
@@ -383,6 +422,7 @@ public class TDView extends Application implements Observer {
 		            		towerChoice = towerName;
 		            		
 		            		// Show which is selected and allow for placement checks
+		            		cover.setFill(Color.DIMGREY);
 		            		cover.setOpacity(0.5);
 		            		mainGrid.setDisable(false);
 		            		
@@ -399,7 +439,7 @@ public class TDView extends Application implements Observer {
 				});
 				
 				// Add the rectangles to the stack
-				stack.getChildren().addAll(choice, cover);
+				stack.getChildren().addAll(choice, cover, hover);
 				
 				// Add the slot to the menu
 				menu.add(stack, colIndex, rowIndex);
