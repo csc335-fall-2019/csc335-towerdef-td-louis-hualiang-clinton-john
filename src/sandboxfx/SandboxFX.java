@@ -13,15 +13,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SandboxFX extends Application {
-
-    private static final Image IMAGE = new Image("images/zombie_walk.jpg");
+	static String action = "assasin";
+    private static final Image IMAGE = new Image("images/" + action + "_attack.png");
     
-    private static final int COLUMNS  =   4;
-    private static final int COUNT    =  16;
+    
+    private static final int COLUMNS  =   9;
+    private static final int COUNT    =  6;
     private static final int OFFSET_X =  0;
     private static final int OFFSET_Y =  0;
-    private static final int WIDTH    = 55;
-    private static final int HEIGHT   = 58;
+    private static final int WIDTH    = 90;
+    private static final int HEIGHT   = 86;
 
     public static void main(String[] args) {
         launch(args);
@@ -41,7 +42,7 @@ public class SandboxFX extends Application {
                 WIDTH, HEIGHT
         );
         
-
+        
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
@@ -57,11 +58,13 @@ public class SandboxFX extends Application {
         translateTransition.setNode(pane);
         translateTransition.setFromX(540);
         translateTransition.setToX(0);
+       
         translateTransition.setDuration(Duration.seconds(25));
         translateTransition.play();
+        
         // A Group object has no layout of children easier to use here
         Group root = new Group(pane);
-        Scene scene = new Scene(root, 600, 70);
+        Scene scene = new Scene(root, 600, 600);
 
         primaryStage.setScene(scene);
         primaryStage.show();

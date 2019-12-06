@@ -1,7 +1,9 @@
 package model.entity;
 import java.util.Observable;
+import animation.*;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 
 /**
  * Purpose: Entity for shared features between Tower and Enemy classes.
@@ -29,7 +31,13 @@ public class Entity {
 	private int attack;
 	private int speed;
 	private int price;
-	
+	private TowerAnimation animation;
+	private EntityAnimation enemyAnimation;
+	private int frames;
+	private int deathFrames;
+	private int attackFrames;
+	private int walkFrames;
+	// More variables for entity specific elements
 	
 	/**
 	 * Purpose: New entity type.
@@ -58,16 +66,24 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
+
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
+
+				this.frames = 1;
+
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
+
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
+
+				this.frames = 5;
+		
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
@@ -75,20 +91,29 @@ public class Entity {
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
+				this.frames = 6;
+
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
+
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
+
+				this.frames = 9;
+
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
+
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
+				this.frames = 9;
+
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
@@ -96,35 +121,50 @@ public class Entity {
 				this.health = 352;
 				this.attack = 0;
 				this.price = 90;
+
+				this.frames = 7;
+
 			}
 		}
 		
 		/****************** Enemy Creation ******************/
-		if (this.type.contains("enemy")) {
-			if (this.type.equals("enemy0")) {
-				this.base = "enemy";
-				this.image = new Image("images/enemy0.png");
+		if (this.type.contains("zombie")) {
+			if (this.type.equals("zombie0")) {
+				this.base = "zombie";
+				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
 				this.speed = 50;
-			}else if (this.type.equals("enemy1")) {
-				this.base = "enemy";
-				this.image = new Image("images/enemy0.png");
+				this.deathFrames =9;
+				this.walkFrames = 9;
+				this.attackFrames =7;
+			}else if (this.type.equals("zombie1")) {
+				this.base = "zombie";
+				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
-			}else if (this.type.equals("enemy2")) {
-				this.base = "enemy";
+				this.deathFrames =5;
+				this.walkFrames = 6;
+				this.attackFrames =8;
+			}else if (this.type.equals("zombie2")) {
+				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
-			}else if (this.type.equals("enemy3")) {
-				this.base = "enemy";
+				this.deathFrames =5;
+				this.walkFrames = 6;
+				this.attackFrames =7;
+			}else if (this.type.equals("zombie3")) {
+				this.base = "zombie";
 				this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
+				this.deathFrames =5;
+				this.walkFrames = 8;
+				this.attackFrames =7;
 			}
 		}
 		
@@ -148,6 +188,7 @@ public class Entity {
 		}
 	}
 	
+
 	/**
 	 * Purpose: decrease the health of the entity when it is attacked
 	 * 
@@ -168,6 +209,25 @@ public class Entity {
 	 */
 	public boolean isDead() {
 		return health == 0;
+	}
+	public TowerAnimation buildAnimation(StackPane root, int row) {
+		int y = 60 + (150 * row);
+		int speed = 25;
+		String mode = "_attack";
+		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames);
+		this.animation.start();
+		return this.animation;
+
+	}
+	
+	public EntityAnimation enemyAnimation(StackPane root, int row) {
+		int y = 60 + (150 * row);
+		int speed = 25;
+		String mode = "_attack";
+		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		this.enemyAnimation.start();
+		return this.enemyAnimation;
+
 	}
 	
 	/************************ Getters and Setters Block ************************/
@@ -244,5 +304,9 @@ public class Entity {
 			return speed;
 		}
 		return 0;
+	}
+	public int getFrames() {
+		return frames;
+
 	}
 }
