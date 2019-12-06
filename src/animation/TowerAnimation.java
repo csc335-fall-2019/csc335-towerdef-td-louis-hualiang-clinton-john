@@ -30,7 +30,7 @@ public class TowerAnimation extends Node{
     private StackPane root1;
     private int y_cor;
     private BorderPane towerPane;
-    private int speed;
+    private double speed;
     private String mode;
     private Animation animation;
     private int attack = 1;
@@ -44,7 +44,7 @@ public class TowerAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public TowerAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int x) {
+    public TowerAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int x) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;

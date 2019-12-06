@@ -152,24 +152,25 @@ public class TDController {
 			System.out.println("Testing round");
 			Entity tower = new Entity("tower0");
 			Entity tower1 = new Entity("tower0");
+			Entity tower2 = new Entity("tower0");
 			model.addEntity(tower1, 0, 3);
 			model.addEntity(tower, 0, 5);
+			model.addEntity(tower2, 3, 5);
 			
-			Entity zom1 = new Entity("zombie0");
-			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
-			entityAnimation.translate();
+			//Entity zom1 = new Entity("zombie0");
+			//EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
+			//entityAnimation.translate();
 			
 			
-			model.addEntity(zom1, 0, 8);
+			//model.addEntity(zom1, 0, 8);
 			
-			/*
-			Entity zom2 = new Entity("zombie1");
-			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 0);
+			
+			Entity zom2 = new Entity("zombie3");
+			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 3);
 			entityAnimation2.translate();
 			
+			model.addEntity(zom2, 3, 8);
 			
-			model.addEntity(zom2, 0, 8);
-			*/
 		});
 		
 		for (int i = 0; i < 50; i++) {

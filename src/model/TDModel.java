@@ -276,6 +276,7 @@ public class TDModel extends Observable {
 		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
 			attacker.getEnemyAnimation().getTranslation().pause();
 			attacker.getEnemyAnimation().incrMove();
+			attacker.getEnemyAnimation().minusStart();
 			attacker.getEnemyAnimation().setMode("_attack");
 			attacker.getEnemyAnimation().start();
 		}
@@ -287,6 +288,7 @@ public class TDModel extends Observable {
 			grid.get(row).get(col).remove(tower);
 			attacker.getEnemyAnimation().getTranslation().play();
 			attacker.getEnemyAnimation().incrMove();
+			attacker.getEnemyAnimation().minusStart();
 			attacker.getEnemyAnimation().setMode("_walk");
 			attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();

@@ -97,36 +97,21 @@ public class EntityAnimation extends Node{
 
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(26));
+        this.walking.setDuration(Duration.seconds(25));
         this.walking.setRate((this.difference/50) * (this.speed));
         this.walking.play();
         //minusStart();
         //incrMove();
 
        
-        if(this.isDead == true) {
-        	 this.mode = "_death";
-        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-             	
-                 @Override
-                 public void handle(ActionEvent event) {
-                 	
-                     Death();
-                     minusStart();
-                     
-                 }
-             });
-        } else {
-        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-             	
-                 @Override
-                 public void handle(ActionEvent event) {
-                 	
-                     changeTranslate();
-                     
-                 }
-             });
-        }
+       this.walking.setOnFinished(new EventHandler<ActionEvent>() {
+    	   @Override
+           public void handle(ActionEvent event) {
+                attack();
+
+           }
+       });
+        
     }
     
     
@@ -157,6 +142,7 @@ public class EntityAnimation extends Node{
     
     
     public void Death() {
+    	this.walking.pause();
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -190,11 +176,12 @@ public class EntityAnimation extends Node{
     
     
     public void Delete() {
-        	this.pane.getChildren().remove(0);
+        	this.root1.getChildren().remove(this.pane);
     }
     
     
     public void attack() {
+    	this.mode = "_attack";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.attack;
@@ -228,6 +215,13 @@ public class EntityAnimation extends Node{
     	this.move = 0;
     }
     
+    public void minusStart() {
+    	this.start -= this.rate;
+    }
+    
+    public void incrMove() {
+    	this.move += this.rate;
+    }
     
 	/************************** Private Fields Block ***************************/
 	
@@ -235,13 +229,8 @@ public class EntityAnimation extends Node{
     	this.isTranslating = false;
     }
     
-    public void minusStart() {
-    	this.start -= this.difference;
-    }
     
-    public void incrMove() {
-    	this.move += this.rate;
-    }
+    
     
 	/************************ Getters and Setters Block ************************/
     

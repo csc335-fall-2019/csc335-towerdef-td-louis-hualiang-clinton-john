@@ -29,7 +29,7 @@ public class Entity {
 	// More variables for entity specific elementsprivate int health;
 	private int health;
 	private int attack;
-	private int speed;
+	private double speed;
 	private int price;
 	private TowerAnimation animation;
 	private EntityAnimation enemyAnimation;
@@ -130,7 +130,7 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 1;
+				this.speed = 1.5;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
@@ -139,8 +139,8 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
-				this.attack = 50;
-				this.speed = 80;
+				this.attack = 5;
+				this.speed = 1;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
@@ -149,8 +149,8 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
-				this.attack = 50;
-				this.speed = 20;
+				this.attack = 5;
+				this.speed = 0.75;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
@@ -159,8 +159,8 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
-				this.attack = 10;
-				this.speed = 110;
+				this.attack = 5;
+				this.speed = 1;
 				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
@@ -327,7 +327,7 @@ public class Entity {
 	 * 
 	 * @return int indicating enemy speed.
 	 */
-	public int getSpeed() {
+	public double getSpeed() {
 		if (this.base.equals("enemy")) {
 			return speed;
 		}
