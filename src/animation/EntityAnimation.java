@@ -38,6 +38,7 @@ public class EntityAnimation extends Node{
     private int attack;
     private Animation animation;
     private TranslateTransition translation;
+    private int x;
     
     
     private int COLUMNS  =   9;
@@ -47,7 +48,7 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack) {
+    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack, int x) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
@@ -57,6 +58,7 @@ public class EntityAnimation extends Node{
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
+    	this.x = 1570 + ((x - 9) * 150);
     	
     	
     }
@@ -82,8 +84,8 @@ public class EntityAnimation extends Node{
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
-        this.walking.setFromX(1700);
-        this.walking.setToX(500);
+        this.walking.setFromX(this.x);
+        this.walking.setToX(this.x - 150);
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.speed));

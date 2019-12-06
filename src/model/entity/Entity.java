@@ -224,7 +224,8 @@ public class Entity {
 		int y = 60 + (150 * row);
 		int speed = 25;
 		String mode = "_attack";
-		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		int x = 9;
+		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames, x);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 
