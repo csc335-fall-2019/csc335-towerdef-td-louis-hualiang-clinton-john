@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -168,7 +169,8 @@ public class TDView extends Application implements Observer {
 		
 		//Testing out animation
 		
-
+		// Run the game test
+		// runGame(root1);
 	}
 	
 	/**
@@ -187,28 +189,61 @@ public class TDView extends Application implements Observer {
 		ImageView imgView = new ImageView(entity.getImage());
 		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 		
-		//adding a tower
-		if (((PlacementInfo) target).getDel() == 0) {
-			System.out.println("Making image view for entity");
-			System.out.println(entity.getType());
-				
+		// Add a tower
+		if (entity.getBase().equals("tower")) {
+			if (((PlacementInfo) target).getDel() == 0) {
+				System.out.println("Making image view for entity");
+				System.out.println(entity.getType());
+					
 				// Create a new Node with the Image and place it into the appropriate grid point
-			gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+			}
+			
+			//deletion
+			else {
+				gridBoard.get(row).get(col).getChildren().remove(2);
+			}
 		}
 		
-		//deletion
-		else {
-			gridBoard.get(row).get(col).getChildren().remove(2);
+		// Add an obstable
+		else if (entity.getBase().equals("object")) {
+			// Create a new Node with the Image and place it into the appropriate grid point
+			ImageView objView = new ImageView(entity.getImage());
+			gridBoard.get(row).get(col).getChildren().add(objView);
 		}
 		
-		//refresh the menu showing how much money is left
+		// refresh the menu showing how much money is left
 		addMenuInfo();
 	}
 
 	
 	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Runs the current game of tower defense.
+	 * 
+	 * <pre>
+	 * 
+	 * </pre>
+	 * 
+	 * @param root A StackPane for placing enemy visuals onto
+	 */
+	private void runGame(StackPane root) {
+		Thread newRound = new Thread(() -> {
+			controller.runRound(root, ROWMAX);
+		});
+		newRound.start();
+	}
 	
-	// TODO
+	/**
+	 * Purpose: Builds the main grid visual display.
+	 * 
+	 * <pre>
+	 * Creates the List of Lists of StackPanes which hold the ground visual, a 
+	 * highlightable tile, and the Entity visual. Events added to the StackPane 
+	 * determine tower placeability and define the action for tower placement and 
+	 * selling.
+	 * </pre>
+	 */
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
@@ -463,8 +498,8 @@ public class TDView extends Application implements Observer {
 		Rectangle infoBackground = new Rectangle();
 		infoBackground.setFill(Color.LIGHTBLUE);
 		infoBackground.setStroke(Color.BLACK);
-		infoBackground.setHeight(155);
-		infoBackground.setWidth(160);
+		infoBackground.setHeight(gridSize);
+		infoBackground.setWidth(gridSize);
 		
 		// Box for currency info
 		StackPane currencyBox = new StackPane();
@@ -480,7 +515,7 @@ public class TDView extends Application implements Observer {
 		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
 		
 		// Add the box to the menu
-		menu.add(currencyBox, 0, 3, 2, 1);
+		menu.add(currencyBox, 0, 3);
 	}
 	
 }
