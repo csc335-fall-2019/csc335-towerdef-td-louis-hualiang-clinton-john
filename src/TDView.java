@@ -1,8 +1,10 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -18,6 +20,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.DropShadow;
@@ -133,9 +136,9 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie3";
+		String action = "zombie0";
 		int frames = 6;
-		int death = 5;
+		int death = 6;
 		int walk = 8;
 		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
@@ -149,11 +152,15 @@ public class TDView extends Application implements Observer {
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
 			tower.translate();
+			
 			anime.add(tower);
 		}
 		
+		
+		
 		String a = "weapon4";
-    	Projectile projectile = new Projectile(this.root1, 60, 25, "_attack",a, 8, 1, 500);
+		int dif = 600;
+    	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
     	projectile.start();
     	projectile.translate();
 		
@@ -163,7 +170,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		runGame(root1);
+		// runGame(root1);
 	}
 	
 	/**
@@ -182,13 +189,13 @@ public class TDView extends Application implements Observer {
 		ImageView imgView = new ImageView(entity.getImage());
 		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 		
-		//adding a tower
+		// Add a tower
 		if (entity.getBase().equals("tower")) {
 			if (((PlacementInfo) target).getDel() == 0) {
 				System.out.println("Making image view for entity");
 				System.out.println(entity.getType());
 					
-					// Create a new Node with the Image and place it into the appropriate grid point
+				// Create a new Node with the Image and place it into the appropriate grid point
 				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
 			}
 			
@@ -196,10 +203,17 @@ public class TDView extends Application implements Observer {
 			else {
 				gridBoard.get(row).get(col).getChildren().remove(2);
 			}
-			
-			//refresh the menu showing how much money is left
-			addMenuInfo();
 		}
+		
+		// Add an obstable
+		else if (entity.getBase().equals("object")) {
+			// Create a new Node with the Image and place it into the appropriate grid point
+			ImageView objView = new ImageView(entity.getImage());
+			gridBoard.get(row).get(col).getChildren().add(objView);
+		}
+		
+		// refresh the menu showing how much money is left
+		addMenuInfo();
 	}
 
 	
@@ -401,6 +415,44 @@ public class TDView extends Application implements Observer {
 				cover.setWidth(gridSize);
 				coverList.add(cover);
 				
+				Rectangle hover = new Rectangle();
+				hover.setFill(Color.GREENYELLOW);
+				hover.setOpacity(0);
+				hover.setHeight(gridSize);
+				hover.setWidth(gridSize);
+				
+				stack.setOnMouseEntered(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						if (mainGrid.isDisable()) {
+							hover.setOpacity(0.1);
+							Tooltip t = new Tooltip();
+							if (towerName.equals("tower0")) {
+								t.setText("Meow!\n Cost: 110");
+							} else if (towerName.equals("tower1")) {
+								t.setText("Sharpshooter!\n Cost: 120");
+							} else if (towerName.equals("tower2")) {
+								t.setText("Sneaky, Deadly, no Escaping!\n Cost: 210");
+							} else if (towerName.equals("tower3")) {
+								t.setText("Noble Knight!\n Cost: 245");
+							} else if (towerName.equals("tower4")) {
+								t.setText("Barbarian!\n Cost: 335");
+							} else if (towerName.equals("tower5")) {
+								t.setText("YOU SHALL NOT PASS!\n Cost: 90");
+							}
+							Tooltip.install(hover, t);
+						}
+						
+					}
+				});
+				
+				stack.setOnMouseExited(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						hover.setOpacity(0);
+					}
+				});
+				
 				// Menu Choice Event
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		            @Override
@@ -410,6 +462,7 @@ public class TDView extends Application implements Observer {
 		            		towerChoice = towerName;
 		            		
 		            		// Show which is selected and allow for placement checks
+		            		cover.setFill(Color.DIMGREY);
 		            		cover.setOpacity(0.5);
 		            		mainGrid.setDisable(false);
 		            		
@@ -426,7 +479,7 @@ public class TDView extends Application implements Observer {
 				});
 				
 				// Add the rectangles to the stack
-				stack.getChildren().addAll(choice, cover);
+				stack.getChildren().addAll(choice, cover, hover);
 				
 				// Add the slot to the menu
 				menu.add(stack, colIndex, rowIndex);

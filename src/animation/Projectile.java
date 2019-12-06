@@ -8,7 +8,6 @@ import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -30,6 +29,8 @@ public class Projectile {
     private Animation animation;
     private TranslateTransition translation;
     private int x;
+    private int difference = 150;
+    private int rate;
     
     
     private int COLUMNS  =   9;
@@ -39,7 +40,7 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
-    public Projectile(StackPane stage, int y, int speed, String mode, String action, int count, int attack, int x) {
+    public Projectile(StackPane stage, int y, int speed, String mode, String action, int count, int attack, int x, int dif) {
     	this.root1 = stage;
     	this.y_cor = y + 10;
     	this.speed = speed;
@@ -48,6 +49,11 @@ public class Projectile {
     	this.COUNT = count;
     	this.x = x + 10;
     	this.attack = attack;
+    	this.rate = 150/this.speed;
+    	this.difference = dif;
+    	this.pane = new GridPane();
+        this.pane.setVgap(10);
+        this.pane.setHgap(10);
     	
     	
     }
@@ -70,10 +76,10 @@ public class Projectile {
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
         this.walking.setFromX(this.x);
-        this.walking.setToX(this.x+500);
+        this.walking.setToX(this.x + this.difference);
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(this.speed));
+        this.walking.setDuration(Duration.seconds((this.difference/150) * this.speed));
         this.walking.play();
         
         // A Group object has no layout of children easier to use here
@@ -115,10 +121,9 @@ public class Projectile {
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
-        this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
+       
         this.pane.add(imageView, 0, 0);
+
        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
@@ -142,7 +147,22 @@ public class Projectile {
     	return this.translation;
     }
     
+    public int getStart() {
+    	return this.x;
+    }
+   
+   public int getRate() {
+	   return this.rate;
+   }
+   
+   public void setDifference(int dif) {
+	   this.difference = dif;
+   }
+   
+   public int getDif() {
+	   return this.difference;
+   }
+    
 
 	
 }
-

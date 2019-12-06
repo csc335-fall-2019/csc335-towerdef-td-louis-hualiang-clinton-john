@@ -66,24 +66,20 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-
+				this.speed = 2;
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
-
 				this.frames = 1;
-
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
-
+				this.speed = 2;
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
-
 				this.frames = 5;
-		
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
@@ -91,24 +87,24 @@ public class Entity {
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
+				this.price = 210;
 				this.frames = 6;
-
+				this.speed = 2;
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
-
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
-
+				this.speed = 2;
 				this.frames = 9;
 
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
-
+				this.speed = 2;
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
@@ -121,7 +117,7 @@ public class Entity {
 				this.health = 352;
 				this.attack = 0;
 				this.price = 90;
-
+				this.speed = 2;
 				this.frames = 7;
 
 			}
@@ -210,27 +206,23 @@ public class Entity {
 	public boolean isDead() {
 		return health <= 0;
 	}
-	
-	
-	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
-		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		int x = col;
-		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames, x);
-		this.animation.start();
-		return this.animation;
 
-	}
 	
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
-		//int speed = 25;
 		String mode = "_walk";
 		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
+	}
 
+	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
+		int y = 60 + (150 * row);
+		String mode = "_attack";
+		int x = col;
+		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
+		this.animation.start();
+		return this.animation;
 	}
 	
 	/************************ Getters and Setters Block ************************/
@@ -304,7 +296,7 @@ public class Entity {
 	/**
 	 * Getter of the speed, only enemy have the speed
 	 * 
-	 * @return
+	 * @return int indicating enemy speed.
 	 */
 	public int getSpeed() {
 		if (this.base.equals("enemy")) {
@@ -313,6 +305,11 @@ public class Entity {
 		return 0;
 	}
 	
+	/**
+	 * Getter for frames.
+	 * 
+	 * @return int indicating number of sprites on sprite sheet.
+	 */
 	public int getFrames() {
 		return frames;
 
