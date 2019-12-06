@@ -31,7 +31,7 @@ public class EntityAnimation extends Node{
     private int y_cor;
     private TranslateTransition walking;
     private GridPane pane;
-    private int speed;
+    private double speed;
     private String mode;
     private int death;
     private int walk;
@@ -42,7 +42,9 @@ public class EntityAnimation extends Node{
     private int difference = 50;
     private boolean isTranslating;
     private boolean isDead = false;
-    private int rate;
+    private double rate;
+    private double move;
+    
     private int COLUMNS  =   9;
     private int COUNT    =  6;
     private static final int OFFSET_X =  0;
@@ -50,7 +52,7 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack) {
+    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
@@ -61,9 +63,15 @@ public class EntityAnimation extends Node{
     	this.walk = walk;
     	this.attack = attack;
     	this.rate = 50 * this.speed;
+    	this.move = 0;
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
+        
+        
+        // A Group object has no layout of children easier to use here
+        this.pane.setMouseTransparent(true);
+        this.root1.getChildren().add(pane);
     }
 
     public void start() {
@@ -90,11 +98,8 @@ public class EntityAnimation extends Node{
         this.walking.setDuration(Duration.seconds(1));
         this.walking.setRate((this.difference/50) * this.speed);
         this.walking.play();
-        
-        
-        // A Group object has no layout of children easier to use here
-        this.pane.setMouseTransparent(true);
-        this.root1.getChildren().add(pane);
+        minusStart();
+        incrMove();
 
        
         if(this.isDead == true) {
@@ -116,7 +121,6 @@ public class EntityAnimation extends Node{
                  public void handle(ActionEvent event) {
                  	
                      changeTranslate();
-                     minusStart();
                      
                  }
              });
@@ -125,6 +129,10 @@ public class EntityAnimation extends Node{
     
     
     public void walk() {
+    	if (this.animation != null) {
+    		this.animation.stop();
+        	this.pane.getChildren().remove(0);
+    	}
     	this.COUNT = this.walk;
     	this.COLUMNS = this.walk;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
@@ -187,8 +195,8 @@ public class EntityAnimation extends Node{
     public void attack() {
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
-    	this.COUNT = this.death;
-    	this.COLUMNS = this.death;
+    	this.COUNT = this.attack;
+    	this.COLUMNS = this.attack;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -211,12 +219,40 @@ public class EntityAnimation extends Node{
     }
     
     
+    /**
+     * Purpose: Resets move to 0.
+     */
+    public void resetMove() {
+    	this.move = 0;
+    }
+    
+    
+	/************************** Private Fields Block ***************************/
+	
+    private void changeTranslate() {
+    	this.isTranslating = false;
+    }
+    
+    private void minusStart() {
+    	this.start -= this.difference;
+    }
+    
+    private void incrMove() {
+    	this.move += this.rate;
+    }
+    
+	/************************ Getters and Setters Block ************************/
+    
     public GridPane getPane() {
     	return this.pane;
     }
     
     public void setMode(String mode) {
     	this.mode = mode;
+    }
+    
+    public String getMode() {
+    	return this.mode;
     }
     
     public Animation getAnimation() {
@@ -227,14 +263,6 @@ public class EntityAnimation extends Node{
     	return this.walking;
     }
     
-    private void changeTranslate() {
-    	this.isTranslating = false;
-    }
-    
-    private void minusStart() {
-    	this.start -= this.difference;
-    }
-    
     public void setDeath() {
     	this.isDead = true;
     }
@@ -243,8 +271,12 @@ public class EntityAnimation extends Node{
 	   return this.start;
    }
    
-   public int getRate() {
+   public double getRate() {
 	   return this.rate;
+   }
+   
+   public double getMove() {
+	   return this.move;
    }
    
    public void setDifference(int dif) {

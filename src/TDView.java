@@ -119,10 +119,10 @@ public class TDView extends Application implements Observer {
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
-				speed = 10;
+				speed = 1;
 				y+=150;
 			}else {
-				speed = 5;
+				speed = 1;
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
@@ -145,7 +145,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		// runGame(root1);
+		runGame(root1);
 	}
 	
 	/**

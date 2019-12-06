@@ -130,11 +130,12 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 20;
+				this.speed = 1;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
-			}else if (this.type.equals("zombie1")) {
+			}
+			else if (this.type.equals("zombie1")) {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
@@ -143,7 +144,8 @@ public class Entity {
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
-			}else if (this.type.equals("zombie2")) {
+			}
+			else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
@@ -152,7 +154,8 @@ public class Entity {
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
-			}else if (this.type.equals("zombie3")) {
+			}
+			else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
@@ -167,8 +170,16 @@ public class Entity {
 		/****************** Object Creation ******************/
 		if (this.type.contains("object")) {
 			if (this.type.equals("object0")) {
-				this.base = "enemy";
+				this.base = "object";
 				this.image = new Image("images/object0.png");
+			}
+			else if (this.type.equals("object1")) {
+				this.base = "object";
+				this.image = new Image("images/object1.png");
+			}
+			else if (this.type.equals("object2")) {
+				this.base = "object";
+				this.image = new Image("images/object2.png");
 			}
 		}
 		
@@ -186,9 +197,9 @@ public class Entity {
 	
 
 	/**
-	 * Purpose: decrease the health of the entity when it is attacked
+	 * Purpose: Decrease the health of the entity.
 	 * 
-	 * @param damage
+	 * @param damage An int of the damage to be applied.
 	 */
 	public void beAttacked(int damage) {
 		if (health > damage) {
@@ -199,15 +210,23 @@ public class Entity {
 	}
 	
 	/**
-	 * return true when the health is zero or less
+	 * Purpose: Checks if entity health is 0 or less.
 	 * 
-	 * @return
+	 * @return boolean indicating if the entity has died.
 	 */
 	public boolean isDead() {
 		return health <= 0;
 	}
-
 	
+	
+	/**
+	 * Purpose: Constructs a new enemy animation for visual display.
+	 * 
+	 * @param root A StackPane of the root to place visuals onto.
+	 * @param row An int of the row to place the Animation onto.
+	 * 
+	 * @return EntityAnimation the animation class for the enemy visual.
+	 */
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
 		String mode = "_walk";
@@ -215,7 +234,17 @@ public class Entity {
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 	}
-
+	
+	
+	/**
+	 * Purpose: Constructs a new tower animation for visual display.
+	 * 
+	 * @param root A StackPane of the root to place visuals onto.
+	 * @param row An int of the row to place the Animation onto.
+	 * @param col An int of the column to place the Animation onto.
+	 * 
+	 * @return TowerAnimation the animation class for the tower visual.
+	 */
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
 		int y = 60 + (150 * row);
 		String mode = "_attack";

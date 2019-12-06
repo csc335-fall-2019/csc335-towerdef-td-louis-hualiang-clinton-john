@@ -184,7 +184,7 @@ public class TDModel extends Observable {
 				// Non-tower means movement
 				if (check == null || !check.getBase().contentEquals("tower")) {
 					// Move current enemy to the left
-					moveLeft(row, col, position, gridCopy);
+					tryMoveLeft(row, col, position, gridCopy);
 				}
 				// Previous checks failed so this is a tower
 				else {
@@ -195,7 +195,7 @@ public class TDModel extends Observable {
 			// Left entry didnt have elements to grab, thus open space
 			else {
 				// Move current enemy to the left
-				moveLeft(row, col, position, gridCopy);
+				tryMoveLeft(row, col, position, gridCopy);
 			}
 		}
 		
@@ -209,7 +209,7 @@ public class TDModel extends Observable {
 	}
 	
 	/**
-	 * Purpose: Moves entities at a specified location left.
+	 * Purpose: Visually moves entities at a specified location left.
 	 * 
 	 * <pre>
 	 * row, col, and position specify the original Entity to move.
@@ -222,15 +222,25 @@ public class TDModel extends Observable {
 	 * @param position An int of the Entity's position.
 	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for moving entries.
 	 */
-	private void moveLeft(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
-		System.out.println("Moved left");
-		
+	private void tryMoveLeft(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		// Find the enemy in the copy
 		Entity moved = gridCopy.get(row).get(col).get(position);
 		
-		// Add to the state grid and then remove by object
-		grid.get(row).get(col-1).add(moved);
-		grid.get(row).get(col).remove(moved);
+		// Check if the entity is visually moved
+		if (moved.getEnemyAnimation().getMove() < 150) {
+			System.out.println("Translate");
+			// Still need to visually move
+			moved.getEnemyAnimation().translate();
+		} else {
+			// Can now physically move
+			System.out.println("Moved left");
+			moved.getEnemyAnimation().translate();
+			moved.getEnemyAnimation().resetMove();
+			
+			// Add to the state grid and then remove by object
+			grid.get(row).get(col-1).add(moved);
+			grid.get(row).get(col).remove(moved);
+		}
 	}
 	
 	/**
@@ -259,11 +269,10 @@ public class TDModel extends Observable {
 		tower.beAttacked(attacker.getAttack());
 		
 		// Visual
-		attacker.getEnemyAnimation();
-		attacker.getEnemyAnimation().getTranslation();
-		attacker.getEnemyAnimation().getTranslation().pause();
-		attacker.getEnemyAnimation().setMode("_attack");
-		attacker.getEnemyAnimation().start();
+		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
+			attacker.getEnemyAnimation().setMode("_attack");
+			attacker.getEnemyAnimation().start();
+		}
 		
 		// Check if tower is defeated
 		if (tower.isDead()) {
@@ -272,7 +281,7 @@ public class TDModel extends Observable {
 			grid.get(row).get(col-1).remove(tower);
 			attacker.getEnemyAnimation().setMode("_walk");
 			attacker.getEnemyAnimation().start();
-			attacker.getEnemyAnimation().getTranslation().play();
+			//attacker.getEnemyAnimation().getTranslation().play();
 		}
 	}
 	
