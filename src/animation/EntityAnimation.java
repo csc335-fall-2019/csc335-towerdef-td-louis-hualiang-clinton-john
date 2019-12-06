@@ -38,7 +38,11 @@ public class EntityAnimation extends Node{
     private int attack;
     private Animation animation;
     private TranslateTransition translation;
-    private int x;
+    private int start = 1570;
+    private int difference = 150;
+    private boolean isTranslating;
+    private boolean isDead = false;
+    private int rate;
     
     
     private int COLUMNS  =   9;
@@ -48,7 +52,7 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack, int x) {
+    public EntityAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int death, int walk, int attack) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
@@ -58,7 +62,7 @@ public class EntityAnimation extends Node{
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
-    	this.x = 1570 + ((x - 9) * 150);
+    	this.rate = 150/this.speed;
     	
     	
     }
@@ -84,26 +88,41 @@ public class EntityAnimation extends Node{
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
-        this.walking.setFromX(this.x);
-        this.walking.setToX(this.x - 150);
+        this.walking.setFromX(this.start);
+        this.walking.setToX(this.start - this.difference);
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(this.speed));
+        this.walking.setDuration(Duration.seconds((this.difference/150) * this.speed));
         this.walking.play();
         
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
         this.mode = "_attack";
-        this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Death();
-                
-            }
-        });
+        if(this.isDead == true) {
+        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
+             	
+                 @Override
+                 public void handle(ActionEvent event) {
+                 	
+                     Death();
+                     minusStart();
+                     
+                 }
+             });
+        }else {
+        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
+             	
+                 @Override
+                 public void handle(ActionEvent event) {
+                 	
+                     changeTranslate();
+                     minusStart();
+                     
+                 }
+             });
+        }
+       
     }
     
     public void walk() {
@@ -239,6 +258,33 @@ public class EntityAnimation extends Node{
     	return this.translation;
     }
     
+    private void changeTranslate() {
+    	this.isTranslating = false;
+    }
+    
+    private void minusStart() {
+    	this.start -= this.difference;
+    }
+    
+    public void setDeath() {
+    	this.isDead = true;
+    }
+    
+   public int getStart() {
+	   return this.start;
+   }
+   
+   public int getRate() {
+	   return this.rate;
+   }
+   
+   public void setDifference(int dif) {
+	   this.difference = dif;
+   }
+   
+   public int getDif() {
+	   return this.difference;
+   }
 
 	@Override
 	protected boolean impl_computeContains(double arg0, double arg1) {
