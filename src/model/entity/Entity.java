@@ -70,9 +70,7 @@ public class Entity {
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
-
 				this.frames = 1;
-
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
@@ -81,9 +79,7 @@ public class Entity {
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
-
 				this.frames = 5;
-		
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
@@ -91,14 +87,13 @@ public class Entity {
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
+				this.price = 210;
 				this.frames = 6;
 				this.speed = 2;
-
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
-
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
@@ -135,8 +130,8 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 50;
-				this.deathFrames =9;
+				this.speed = 20;
+				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
 			}else if (this.type.equals("zombie1")) {
@@ -145,25 +140,25 @@ public class Entity {
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
 			}else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
 			}else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
 			}
@@ -204,13 +199,12 @@ public class Entity {
 	}
 	
 	/**
-	 * return true when the health is zero
+	 * return true when the health is zero or less
 	 * 
 	 * @return
 	 */
 	public boolean isDead() {
-		return health == 0;
-
+		return health <= 0;
 	}
 
 	
@@ -220,7 +214,6 @@ public class Entity {
 		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
-
 	}
 
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
@@ -230,10 +223,7 @@ public class Entity {
 		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
 		this.animation.start();
 		return this.animation;
-
 	}
-	
-	
 	
 	/************************ Getters and Setters Block ************************/
 	
@@ -273,26 +263,28 @@ public class Entity {
 		return this.image;
 	}
 	
-	
 	/**
-	 * getter of the health
-	 * @return
+	 * Getter for health
+	 * 
+	 * @return int representing the Entity's health.
 	 */
 	public int getHealth() {
 		return health;
 	}
 	
 	/**
-	 * getter of the attack
-	 * @return
+	 * Getter for attack
+	 * 
+	 * @return int representing the Entity's attack damage.
 	 */
 	public int getAttack() {
 		return attack;
 	}
 	
 	/**
-	 * getter of the price, only tower have the price
-	 * @return
+	 * Getter for price (0 if non-tower)
+	 * 
+	 * @return int indicating cost of Entity.
 	 */
 	public int getPrice() {
 		if (this.base.equals("tower")) {
@@ -302,8 +294,9 @@ public class Entity {
 	}
 	
 	/**
-	 * getter of the speed, only enemy have the speed
-	 * @return
+	 * Getter of the speed, only enemy have the speed
+	 * 
+	 * @return int indicating enemy speed.
 	 */
 	public int getSpeed() {
 		if (this.base.equals("enemy")) {
@@ -311,8 +304,24 @@ public class Entity {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Getter for frames.
+	 * 
+	 * @return int indicating number of sprites on sprite sheet.
+	 */
 	public int getFrames() {
 		return frames;
+
+	}
+	
+	/**
+	 * Getter for enemyAnimation.
+	 * 
+	 * @return EntityAnimation, the animations for an enemy.
+	 */
+	public EntityAnimation getEnemyAnimation() {
+		return enemyAnimation;
 
 	}
 }
