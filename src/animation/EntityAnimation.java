@@ -43,7 +43,9 @@ public class EntityAnimation extends Node{
     private boolean isTranslating;
     private boolean isDead = false;
     private double rate;
-    
+
+    private double move;
+
     
     private int COLUMNS  =   9;
     private int COUNT    =  6;
@@ -61,32 +63,27 @@ public class EntityAnimation extends Node{
     	this.COUNT = count;
     	this.death = death;
     	this.walk = walk;
-
     	this.attack = attack;
     	this.rate = 50 * this.speed;
-
+    	this.move = 0;
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
-
-    	
-    	
+        
+        
+        // A Group object has no layout of children easier to use here
+        this.pane.setMouseTransparent(true);
+        this.root1.getChildren().add(pane);
     }
 
     public void start() {
-        
     	if(mode.equals("_attack")) {
     		attack();
     	}else if(mode.equals("_walk")) {
     		walk();
     	}else if(mode.equals("_death")) {
     		Death();
-    	}else {
-    		
     	}
-        
-        
-        
     }
     
     public void translate() {
@@ -96,19 +93,15 @@ public class EntityAnimation extends Node{
         this.walking.setNode(pane);
 
         this.walking.setFromX(this.start);
-        this.walking.setToX(this.start - this.difference);
+        this.walking.setToX(this.start - 1200);
 
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(1));
-        this.walking.setRate((this.difference/50) * this.speed);
+        this.walking.setDuration(Duration.seconds(26));
+        this.walking.setRate((this.difference/50) * (this.speed));
         this.walking.play();
-        
-        
-        
-        // A Group object has no layout of children easier to use here
-        this.pane.setMouseTransparent(true);
-        this.root1.getChildren().add(pane);
+        //minusStart();
+        //incrMove();
 
        
         if(this.isDead == true) {
@@ -123,22 +116,25 @@ public class EntityAnimation extends Node{
                      
                  }
              });
-        }else {
+        } else {
         	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
              	
                  @Override
                  public void handle(ActionEvent event) {
                  	
                      changeTranslate();
-                     minusStart();
                      
                  }
              });
         }
     }
     
+    
     public void walk() {
-    	
+    	if (this.animation != null) {
+    		this.animation.stop();
+        	this.pane.getChildren().remove(0);
+    	}
     	this.COUNT = this.walk;
     	this.COLUMNS = this.walk;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
@@ -153,19 +149,14 @@ public class EntityAnimation extends Node{
                 WIDTH, HEIGHT
         );
         
-        
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
-    
         this.pane.add(imageView, 0, 0);
-        
-    	
     }
     
+    
     public void Death() {
-    	
-    	
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -181,39 +172,33 @@ public class EntityAnimation extends Node{
                 OFFSET_X, OFFSET_Y,
                 WIDTH, HEIGHT
         );
-        
-        
         
         this.animation.setCycleCount(1);
         this.animation.play();
         
         this.pane.add(imageView, 0, 0);
         this.animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
             @Override
             public void handle(ActionEvent event) {
-            	
                 Delete();
-            }  
-            
+            }
         });
        
-        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-
     }
-        
+    
+    
     public void Delete() {
         	this.pane.getChildren().remove(0);
     }
     
+    
     public void attack() {
-    	
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
-    	this.COUNT = this.death;
-    	this.COLUMNS = this.death;
+    	this.COUNT = this.attack;
+    	this.COLUMNS = this.attack;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -225,8 +210,6 @@ public class EntityAnimation extends Node{
                 OFFSET_X, OFFSET_Y,
                 WIDTH, HEIGHT
         );
-        
-        
         
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
@@ -235,18 +218,43 @@ public class EntityAnimation extends Node{
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-        
-        
-    	
     }
     
+    
+    /**
+     * Purpose: Resets move to 0.
+     */
+    public void resetMove() {
+    	this.move = 0;
+    }
+    
+    
+	/************************** Private Fields Block ***************************/
+	
+    private void changeTranslate() {
+    	this.isTranslating = false;
+    }
+    
+    public void minusStart() {
+    	this.start -= this.difference;
+    }
+    
+    public void incrMove() {
+    	this.move += this.rate;
+    }
+    
+	/************************ Getters and Setters Block ************************/
+    
     public GridPane getPane() {
-    	
     	return this.pane;
     }
     
     public void setMode(String mode) {
     	this.mode = mode;
+    }
+    
+    public String getMode() {
+    	return this.mode;
     }
     
     public Animation getAnimation() {
@@ -255,14 +263,6 @@ public class EntityAnimation extends Node{
     
     public TranslateTransition getTranslation() {
     	return this.walking;
-    }
-    
-    private void changeTranslate() {
-    	this.isTranslating = false;
-    }
-    
-    private void minusStart() {
-    	this.start -= this.difference;
     }
     
     public void setDeath() {
@@ -275,6 +275,10 @@ public class EntityAnimation extends Node{
    
    public double getRate() {
 	   return this.rate;
+   }
+   
+   public double getMove() {
+	   return this.move;
    }
    
    public void setDifference(int dif) {

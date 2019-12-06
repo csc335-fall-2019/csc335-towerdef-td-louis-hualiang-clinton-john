@@ -1,55 +1,29 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import sandboxfx.SandboxFX;
 import model.entity.*;
 import model.*;
@@ -145,10 +119,12 @@ public class TDView extends Application implements Observer {
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
-				speed = 0.75;
+				speed = 1;
+
 				y+=150;
 			}else {
-				speed = 0.75;
+				speed = 1;
+
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
@@ -171,7 +147,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		// runGame(root1);
+		runGame(root1);
 	}
 	
 	/**

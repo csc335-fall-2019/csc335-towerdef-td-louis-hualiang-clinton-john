@@ -91,14 +91,20 @@ public class TDController {
 	}
 	
 	/**
-	 * Purpose: add enemies to the five queues and each queue represents one row in
+	 * Purpose: Builds the enemies to send down each row over a round.
+	 * 
+	 * <pre>
+	 * Add enemies to the five queues and each queue represents one row in
 	 * the map. It take the turn as parameter and each queue generate enemies from 
 	 * 3 to 5 for first turn, 6 to 8 for second turn, 9 to 11 for third turn
 	 * The enemy type is also various from turn to turn. For the first turn, only enemy0
 	 * will show up, for second turn, enemy0 and enemy1 are possible. After third turn, all
 	 * types of enemy are possible to show up
-	 * @param turn indicate the different turn (form 1 to infinite)
-	 * @return
+	 * </pre>
+	 * 
+	 * @param turn An int indicating the different turn (from 1 to infinite).
+	 * 
+	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
 	 */
 	public List<List<Entity>> queueUpEnemy(int turn){
 		List<List<Entity>> troops = new ArrayList<List<Entity>>();
@@ -145,8 +151,9 @@ public class TDController {
 		Platform.runLater(() -> {
 			System.out.println("Testing round");
 			Entity tower = new Entity("tower0");
-			model.addEntity(tower, 0, 7);
-			model.addEntity(tower, 0, 6);
+			Entity tower1 = new Entity("tower0");
+			model.addEntity(tower1, 0, 3);
+			model.addEntity(tower, 0, 5);
 			
 			Entity zom1 = new Entity("zombie0");
 			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
@@ -165,12 +172,12 @@ public class TDController {
 			*/
 		});
 		
-		for (int i = 0; i < 22; i++) {
+		for (int i = 0; i < 50; i++) {
 			Platform.runLater(() -> {
 				model.nextStep();
 			});
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
