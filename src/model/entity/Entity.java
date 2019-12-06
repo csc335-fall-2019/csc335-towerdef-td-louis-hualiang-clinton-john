@@ -114,7 +114,7 @@ public class Entity {
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
-				this.health = 352;
+				this.health = 15;
 				this.attack = 0;
 				this.price = 90;
 				this.speed = 2;

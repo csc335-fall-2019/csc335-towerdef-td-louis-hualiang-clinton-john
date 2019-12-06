@@ -43,7 +43,7 @@ public class TDModel extends Observable {
 		this.rows = rows;
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
-		this.money = 500;
+		this.money = 10000;
 		
 		// Setup the Inner list of lists of entities
 		for (int i = 0; i < rows; i++) {
@@ -240,7 +240,6 @@ public class TDModel extends Observable {
 			moved.getEnemyAnimation().resetMove();
 			moved.getEnemyAnimation().incrMove();
 			//moved.getEnemyAnimation().translate();
-			
 			// Add to the state grid and then remove by object
 			grid.get(row).get(col-1).add(moved);
 			grid.get(row).get(col).remove(moved);
@@ -275,7 +274,13 @@ public class TDModel extends Observable {
 		// Visual
 		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
 			attacker.getEnemyAnimation().getTranslation().pause();
-			attacker.getEnemyAnimation().incrMove();
+			if(attacker.getEnemyAnimation().getMove() == 150) {
+				attacker.getEnemyAnimation().resetMove();
+				attacker.getEnemyAnimation().incrMove();
+			}else {
+				attacker.getEnemyAnimation().incrMove();
+			}
+			
 			attacker.getEnemyAnimation().minusStart();
 			attacker.getEnemyAnimation().setMode("_attack");
 			attacker.getEnemyAnimation().start();
@@ -287,7 +292,12 @@ public class TDModel extends Observable {
 			System.out.println("Tower defeated");
 			grid.get(row).get(col).remove(tower);
 			attacker.getEnemyAnimation().getTranslation().play();
-			attacker.getEnemyAnimation().incrMove();
+			if(attacker.getEnemyAnimation().getMove() == 150) {
+				attacker.getEnemyAnimation().resetMove();
+				attacker.getEnemyAnimation().incrMove();
+			}else {
+				attacker.getEnemyAnimation().incrMove();
+			}
 			attacker.getEnemyAnimation().minusStart();
 			attacker.getEnemyAnimation().setMode("_walk");
 			attacker.getEnemyAnimation().start();

@@ -168,6 +168,7 @@ public class TDController {
 			Entity zom2 = new Entity("zombie3");
 			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 3);
 			entityAnimation2.translate();
+			//entityAnimation2.incrMove();
 			
 			model.addEntity(zom2, 3, 8);
 			
