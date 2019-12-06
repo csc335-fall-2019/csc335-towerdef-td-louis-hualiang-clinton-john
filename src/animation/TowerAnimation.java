@@ -32,6 +32,9 @@ public class TowerAnimation extends Node{
     private BorderPane towerPane;
     private int speed;
     private String mode;
+    private Animation animation;
+    private int attack = 1;
+    private int x;
     
     
     private static final int COLUMNS  =   9;
@@ -41,21 +44,23 @@ public class TowerAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public TowerAnimation(StackPane stage, int y, int speed, String mode, String action, int count) {
+    public TowerAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int x) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
+    	this.x = x;
     }
 
     public void start() {
         
     	if(mode.equals("_attack")) {
     		attack();
+    		this.attack = 1;
     	}else {
-    		
+    		this.attack = 0;
     	}
          
     }
@@ -70,7 +75,7 @@ public class TowerAnimation extends Node{
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
 
-        final Animation animation = new SpriteAnimation(
+         this.animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(1000),
                 COUNT, COLUMNS,
@@ -79,8 +84,16 @@ public class TowerAnimation extends Node{
         );
         
         
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
+        this.animation.setCycleCount(Animation.INDEFINITE);
+        this.animation.play();
+        
+        
+        
+        String action = "weapon4";
+    	Projectile projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode,action, 8, 1, 300 +(150 * this.x) + 60);
+    	projectile.start();
+    	projectile.translate();
+        
         
         
         this.towerPane = new BorderPane();

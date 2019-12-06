@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import animation.EntityAnimation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -154,6 +153,11 @@ public class TDView extends Application implements Observer {
 			anime.add(tower);
 		}
 		
+		String a = "weapon4";
+    	Projectile projectile = new Projectile(this.root1, 60, 25, "_attack",a, 8, 1, 500);
+    	projectile.start();
+    	projectile.translate();
+		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
 		
@@ -176,7 +180,7 @@ public class TDView extends Application implements Observer {
 		int col = ((PlacementInfo) target).getCol();
 		
 		ImageView imgView = new ImageView(entity.getImage());
-		TowerAnimation animation = entity.buildAnimation(this.root1, row);
+		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 		
 		//adding a tower
 		if (((PlacementInfo) target).getDel() == 0) {
