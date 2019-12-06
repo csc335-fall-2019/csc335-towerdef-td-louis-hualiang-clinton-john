@@ -66,7 +66,7 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-
+				this.speed = 2;
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
@@ -77,7 +77,7 @@ public class Entity {
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
-
+				this.speed = 2;
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
@@ -92,6 +92,7 @@ public class Entity {
 				this.attack = 50;
 				this.price = 210;
 				this.frames = 6;
+				this.speed = 2;
 
 			}
 			else if (this.type.equals("tower3")) {
@@ -101,14 +102,14 @@ public class Entity {
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
-
+				this.speed = 2;
 				this.frames = 9;
 
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
-
+				this.speed = 2;
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
@@ -121,7 +122,7 @@ public class Entity {
 				this.health = 352;
 				this.attack = 0;
 				this.price = 90;
-
+				this.speed = 2;
 				this.frames = 7;
 
 			}
@@ -224,10 +225,9 @@ public class Entity {
 
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
 		int y = 60 + (150 * row);
-		int speed = 2;
 		String mode = "_attack";
 		int x = col;
-		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames, x);
+		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
 		this.animation.start();
 		return this.animation;
 
