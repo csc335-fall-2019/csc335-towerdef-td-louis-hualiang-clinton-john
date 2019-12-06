@@ -43,8 +43,6 @@ public class EntityAnimation extends Node{
     private boolean isTranslating;
     private boolean isDead = false;
     private int rate;
-    
-    
     private int COLUMNS  =   9;
     private int COUNT    =  6;
     private static final int OFFSET_X =  0;
@@ -61,32 +59,21 @@ public class EntityAnimation extends Node{
     	this.COUNT = count;
     	this.death = death;
     	this.walk = walk;
-
     	this.attack = attack;
     	this.rate = 50 * this.speed;
-
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
-
-    	
-    	
     }
 
     public void start() {
-        
     	if(mode.equals("_attack")) {
     		attack();
     	}else if(mode.equals("_walk")) {
     		walk();
     	}else if(mode.equals("_death")) {
     		Death();
-    	}else {
-    		
     	}
-        
-        
-        
     }
     
     public void translate() {
@@ -103,7 +90,6 @@ public class EntityAnimation extends Node{
         this.walking.setDuration(Duration.seconds(1));
         this.walking.setRate((this.difference/50) * this.speed);
         this.walking.play();
-        
         
         
         // A Group object has no layout of children easier to use here
@@ -123,7 +109,7 @@ public class EntityAnimation extends Node{
                      
                  }
              });
-        }else {
+        } else {
         	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
              	
                  @Override
@@ -137,8 +123,8 @@ public class EntityAnimation extends Node{
         }
     }
     
+    
     public void walk() {
-    	
     	this.COUNT = this.walk;
     	this.COLUMNS = this.walk;
     	IMAGE = new Image("images/" + this.action + this.mode+".png");
@@ -153,19 +139,14 @@ public class EntityAnimation extends Node{
                 WIDTH, HEIGHT
         );
         
-        
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
-    
         this.pane.add(imageView, 0, 0);
-        
-    	
     }
     
+    
     public void Death() {
-    	
-    	
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -181,35 +162,29 @@ public class EntityAnimation extends Node{
                 OFFSET_X, OFFSET_Y,
                 WIDTH, HEIGHT
         );
-        
-        
         
         this.animation.setCycleCount(1);
         this.animation.play();
         
         this.pane.add(imageView, 0, 0);
         this.animation.setOnFinished(new EventHandler<ActionEvent>() {
-        	
             @Override
             public void handle(ActionEvent event) {
-            	
                 Delete();
-            }  
-            
+            }
         });
        
-        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-
     }
-        
+    
+    
     public void Delete() {
         	this.pane.getChildren().remove(0);
     }
     
+    
     public void attack() {
-    	
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -225,8 +200,6 @@ public class EntityAnimation extends Node{
                 OFFSET_X, OFFSET_Y,
                 WIDTH, HEIGHT
         );
-        
-        
         
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
@@ -235,13 +208,10 @@ public class EntityAnimation extends Node{
         
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-        
-        
-    	
     }
     
+    
     public GridPane getPane() {
-    	
     	return this.pane;
     }
     

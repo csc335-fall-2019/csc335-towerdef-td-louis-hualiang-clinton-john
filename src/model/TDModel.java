@@ -2,9 +2,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Random;
-
-import javafx.application.Platform;
 import model.entity.*;
 
 /**
