@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -134,9 +135,9 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie3";
+		String action = "zombie0";
 		int frames = 6;
-		int death = 5;
+		int death = 6;
 		int walk = 8;
 		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
@@ -150,8 +151,11 @@ public class TDView extends Application implements Observer {
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
 			tower.translate();
+			
 			anime.add(tower);
 		}
+		
+		
 		
 		String a = "weapon4";
 		int dif = 600;

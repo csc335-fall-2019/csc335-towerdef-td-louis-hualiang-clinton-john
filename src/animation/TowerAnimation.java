@@ -87,16 +87,12 @@ public class TowerAnimation extends Node{
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
-        
-        
         String action = "weapon4";
         int dif = 600;
     	Projectile projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode,action, 8, 1, 300 +(150 * this.x) + 60, dif);
     	projectile.start();
     	projectile.translate();
-        
-        
-        
+    	
         this.towerPane = new BorderPane();
        
         this.towerPane.setCenter(imageView);

@@ -118,11 +118,12 @@ public class Projectile {
                 WIDTH, HEIGHT
         );
 
-        this.animation.setCycleCount(10);
+        this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
        
         this.pane.add(imageView, 0, 0);
+
        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);

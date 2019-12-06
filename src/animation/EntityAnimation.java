@@ -66,6 +66,7 @@ public class EntityAnimation extends Node{
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
+
     	
     	
     }
@@ -91,18 +92,23 @@ public class EntityAnimation extends Node{
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
+
         this.walking.setFromX(this.start);
         this.walking.setToX(this.start - this.difference);
+
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds((this.difference/150) * this.speed));
         this.walking.play();
         
+        
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
-        this.mode = "_attack";
+
+       
         if(this.isDead == true) {
+        	 this.mode = "_death";
         	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
              	
                  @Override
@@ -125,7 +131,6 @@ public class EntityAnimation extends Node{
                  }
              });
         }
-       
     }
     
     public void walk() {
@@ -148,8 +153,7 @@ public class EntityAnimation extends Node{
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
         
-        
-        
+    
         this.pane.add(imageView, 0, 0);
         
     	
@@ -220,7 +224,7 @@ public class EntityAnimation extends Node{
         
         
         
-        this.animation.setCycleCount(1);
+        this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
         this.pane.add(imageView, 0, 0);
@@ -246,7 +250,7 @@ public class EntityAnimation extends Node{
     }
     
     public TranslateTransition getTranslation() {
-    	return this.translation;
+    	return this.walking;
     }
     
     private void changeTranslate() {
