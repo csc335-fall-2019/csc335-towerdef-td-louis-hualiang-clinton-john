@@ -61,10 +61,8 @@ public class EntityAnimation extends Node{
     	this.COUNT = count;
     	this.death = death;
     	this.walk = walk;
-
     	this.attack = attack;
     	this.rate = 50 * this.speed;
-
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
