@@ -65,8 +65,8 @@ public class EntityAnimation extends Node{
     	this.rate = 50 * this.speed;
     	this.move = 0;
     	this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
+        this.pane.setVgap(0);
+        this.pane.setHgap(0);
         
         
         // A Group object has no layout of children easier to use here
@@ -95,7 +95,7 @@ public class EntityAnimation extends Node{
 
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(1));
+        this.walking.setDuration(Duration.seconds(0.5));
         this.walking.setRate((this.difference/50) * this.speed);
         this.walking.play();
         minusStart();
