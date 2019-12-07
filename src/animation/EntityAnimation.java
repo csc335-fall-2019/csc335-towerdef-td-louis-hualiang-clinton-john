@@ -7,6 +7,7 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -70,6 +71,10 @@ public class EntityAnimation extends Node{
         this.pane.setVgap(10);
         this.pane.setHgap(10);
         
+        Timeline timeline = new Timeline(
+        		new KeyFrame(Duration.millis(100),
+        		new AnimationHandler()));
+        
         
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
@@ -93,12 +98,12 @@ public class EntityAnimation extends Node{
         this.walking.setNode(pane);
 
         this.walking.setFromX(this.start);
-        this.walking.setToX(this.start - 1200);
+        this.walking.setToX(this.start - 1270);
 
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(25));
-        this.walking.setRate((this.difference/50) * (this.speed));
+        this.walking.setDuration(Duration.seconds(25.4));
+        //this.walking.setRate((this.difference/50) * (this.speed));
         this.walking.play();
         //minusStart();
         //incrMove();

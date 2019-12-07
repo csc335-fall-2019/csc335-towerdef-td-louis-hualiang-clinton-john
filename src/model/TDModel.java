@@ -43,7 +43,7 @@ public class TDModel extends Observable {
 		this.rows = rows;
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
-		this.money = 500;
+		this.money = 1000;
 		
 		// Setup the Inner list of lists of entities
 		for (int i = 0; i < rows; i++) {
@@ -275,8 +275,11 @@ public class TDModel extends Observable {
 		// Visual
 		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
 			attacker.getEnemyAnimation().getTranslation().pause();
-			attacker.getEnemyAnimation().incrMove();
-			attacker.getEnemyAnimation().minusStart();
+			if(attacker.getEnemyAnimation().getMove() == 0) {
+				attacker.getEnemyAnimation().incrMove();
+				attacker.getEnemyAnimation().minusStart();
+			}
+			
 			attacker.getEnemyAnimation().setMode("_attack");
 			attacker.getEnemyAnimation().start();
 		}
