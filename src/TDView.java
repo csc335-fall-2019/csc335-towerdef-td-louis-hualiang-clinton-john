@@ -127,20 +127,21 @@ public class TDView extends Application implements Observer {
 
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
-			tower.start();
-			tower.translate();
+			//tower.start();
+			//tower.translate();
 			
 			anime.add(tower);
 		}
 		
 		
-		
+		/*
 		String a = "weapon4";
 		int dif = 600;
     	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
     	projectile.start();
     	projectile.translate();
-		
+		*/
+    	
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
 		
@@ -163,8 +164,7 @@ public class TDView extends Application implements Observer {
 		int row = ((PlacementInfo) target).getRow();
 		int col = ((PlacementInfo) target).getCol();
 		
-		ImageView imgView = new ImageView(entity.getImage());
-		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
+		//ImageView imgView = new ImageView(entity.getImage());
 		
 		// Add a tower
 		if (entity.getBase().equals("tower")) {
@@ -173,6 +173,7 @@ public class TDView extends Application implements Observer {
 				System.out.println(entity.getType());
 					
 				// Create a new Node with the Image and place it into the appropriate grid point
+				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
 			}
 			

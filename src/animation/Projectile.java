@@ -74,17 +74,32 @@ public class Projectile {
     }
     
     public void translate() {
-    	// move the zombie from right to left
+    	// move the projectile from left to right
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
+        /*
         this.walking.setFromX(this.x);
         this.walking.setToX(this.x + (this.rate * this.duration));
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.duration));
         this.walking.setRate(this.rate/150);
+        */
+        
+        
+        this.walking.setFromX(this.x);
+        this.walking.setByX(this.x + this.difference);
+
+        this.walking.setFromY(this.y_cor);
+       
+        this.walking.setDuration(Duration.seconds(this.duration));
+        this.walking.setRate((this.difference/50) * (this.speed));
+        
+        
         this.walking.play();
+        
+        
         
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
@@ -106,8 +121,6 @@ public class Projectile {
     }
     
     public void attack() {
-    	
-
     	
     	this.COLUMNS = this.COUNT;
     	Image IMAGE = new Image("images/" + this.action +".png");
@@ -159,11 +172,11 @@ public class Projectile {
 	   return this.rate;
    }
    
-   public void setDifference(int dif) {
+   public void setDifference(double dif) {
 	   this.difference = dif;
    }
    
-   public double getDif() {
+   public double getDifference() {
 	   return this.difference;
    }
     

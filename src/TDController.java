@@ -153,9 +153,11 @@ public class TDController {
 			Entity tower = new Entity("tower0");
 			Entity tower1 = new Entity("tower0");
 			Entity tower2 = new Entity("tower0");
+			Entity tower3 = new Entity("tower0");
 			model.addEntity(tower1, 0, 3);
 			model.addEntity(tower, 0, 5);
 			model.addEntity(tower2, 3, 7);
+			model.addEntity(tower3, 3, 3);
 			
 			//Entity zom1 = new Entity("zombie0");
 			//EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);

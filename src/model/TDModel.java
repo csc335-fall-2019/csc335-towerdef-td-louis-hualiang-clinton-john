@@ -139,8 +139,8 @@ public class TDModel extends Observable {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
-			// Iterate over column by column
-			for (int col = 0; col < rows.size(); col++) {
+			// Iterate over column by column starting from rightmost
+			for (int col = rows.size()-1; col >= 0; col--) {
 				List<Entity> column = rows.get(col);
 				// Iterate over each Entity
 				for (int position = 0; position < column.size(); position++) {
@@ -152,8 +152,8 @@ public class TDModel extends Observable {
 						enemyAction(row, col, position, gridCopy);
 					} else if (entity.getBase().equals("tower")) {
 						// entity is a tower
-						// Calculate how many check to the right to perform
-						int range = this.cols - col;
+						// Calculate how many checks to the right to perform (-1 for looking 1 to the right)
+						int range = this.cols - col - 1;
 						int hits = 1;
 						
 						// tower3 is melee, so limit range to 1
@@ -166,7 +166,7 @@ public class TDModel extends Observable {
 						}
 						
 						// perform the actions
-						towerAction(row, col, position, range, hits, gridCopy);
+						//towerAction(row, col, position, range, hits, gridCopy);
 					}
 				}
 			}
@@ -393,11 +393,14 @@ public class TDModel extends Observable {
 		// Visual - Projectile spawned when final enemy hit is found
 		if (hitsLeft == 0) {
 			// Final enemy that the projectile will hit
+			tower.fireProjectile(enemy);
+			/*
 			enemy.getEnemyAnimation();
 			enemy.getEnemyAnimation().getTranslation();
 			enemy.getEnemyAnimation().getTranslation().pause();
 			enemy.getEnemyAnimation().setMode("_attack");
 			enemy.getEnemyAnimation().start();
+			*/
 		}
 		
 		// Check if enemy is defeated
