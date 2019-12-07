@@ -81,7 +81,7 @@ public class TDController {
 	
 	public boolean removeEntity(String name, int row, int col) {
 		Entity entity = new Entity(name);
-		model.removeEntity(entity, row, col);
+		model.removeEntity(entity, row, col, true);
 		
 		return true;
 	}
@@ -155,7 +155,7 @@ public class TDController {
 			Entity tower2 = new Entity("tower0");
 			model.addEntity(tower1, 0, 3);
 			model.addEntity(tower, 0, 5);
-			model.addEntity(tower2, 3, 5);
+			model.addEntity(tower2, 3, 7);
 			
 			//Entity zom1 = new Entity("zombie0");
 			//EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
