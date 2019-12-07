@@ -168,7 +168,7 @@ public class TDModel extends Observable {
 						}
 						
 						// perform the actions
-						towerAction(row, col, position, range, hits, gridCopy);
+						//towerAction(row, col, position, range, hits, gridCopy);
 					}
 				}
 			}
