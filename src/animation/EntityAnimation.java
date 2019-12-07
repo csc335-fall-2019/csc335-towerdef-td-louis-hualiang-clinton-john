@@ -27,6 +27,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.TDModel;
+import model.entity.Entity;
 
 public class EntityAnimation extends Node{
 	private String action = "zombie1";
@@ -42,14 +44,17 @@ public class EntityAnimation extends Node{
     private int attack;
     private Animation animation;
     private Timeline translation;
-    private int start = 1650;
+    private int start = 1570;
     private int difference = 50;
     private boolean isTranslating;
     private boolean isDead = false;
     private double rate;
     public double tic = 0;
     public double duration = 1;
-    
+    private TDModel model;
+    public int col;
+    public Entity zom;
+    public int row;
     
     private double move;
 
@@ -61,7 +66,7 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack) {
+    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack, TDModel model, int col, Entity zom, int row) {
     	this.root1 = stage;
     	this.y_cor = y;
     	this.speed = speed;
@@ -74,10 +79,12 @@ public class EntityAnimation extends Node{
     	this.rate = 1/this.speed;
     	this.move = 0;
     	this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
-        pane.setTranslateX(this.start);
         
+        pane.setTranslateX(this.start);
+        this.model = model;
+        this.col = col;
+        this.zom = zom;
+        this.row = row;
         
         // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
@@ -106,18 +113,28 @@ public class EntityAnimation extends Node{
                     public void handle(ActionEvent event) {
                     	
                     	//TranslateTransition transition = getTranslation();
+                    	TDModel model = getModel();
                     	int start = getStart();
                     	int y_cor = getY();
                     	double x = check1();
                     	double y = getSpeed();
-                    	if(x % y == 0) {
-                    		incrMove();
-                    		minusStart();
-                    	}
-                    	inc2();
+                    	
+                    	
+                    	
                     	
                     	pane.setTranslateX(pane.getTranslateX() - 1);
                     	pane.setTranslateY(y_cor);
+                    	
+                    	if(x % y == 0) {
+                    		incrMove();
+                    		minusStart();
+                    		if(getMove() % 150 == 0) {
+                        		model.updateSpot(col, row, zom);
+                        		col -= 1;
+                        	}
+                    	}
+                    	inc2();
+                    	
                     	// move the zombie from right to left
                     	//transition = new TranslateTransition();
 					    //this.walking.setDuration(Duration.millis(2000));
@@ -334,6 +351,10 @@ public class EntityAnimation extends Node{
    
    public void inc2() {
    	this.tic += 1;
+   }
+   
+   public TDModel getModel() {
+	   return this.model;
    }
 
 	@Override

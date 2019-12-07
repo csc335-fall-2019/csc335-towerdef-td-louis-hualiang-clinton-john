@@ -4,6 +4,7 @@ import animation.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import model.TDModel;
 
 /**
  * Purpose: Entity for shared features between Tower and Enemy classes.
@@ -38,6 +39,7 @@ public class Entity {
 	private int attackFrames;
 	private int walkFrames;
 	private int rate;
+	private TDModel model;
 	// More variables for entity specific elements
 	
 	/**
@@ -49,9 +51,10 @@ public class Entity {
 	 * 
 	 * @param type A String of the entity type.
 	 */
-	public Entity(String type) {
+	public Entity(String type, TDModel model) {
 		this.type = type;
 		this.isValid = buildEntity();
+		this.model = model;
 	}
 	
 	
@@ -115,7 +118,7 @@ public class Entity {
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
-				this.health = 352;
+				this.health = 50;
 				this.attack = 0;
 				this.price = 90;
 				this.speed = 2;
@@ -131,7 +134,6 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				
 				this.speed = 75;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
@@ -231,10 +233,10 @@ public class Entity {
 	 * 
 	 * @return EntityAnimation the animation class for the enemy visual.
 	 */
-	public EntityAnimation enemyAnimation(StackPane root, int row) {
+	public EntityAnimation enemyAnimation(StackPane root, int row, int col, Entity zom) {
 		int y = 60 + (150 * row);
 		String mode = "_walk";
-		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames, this.model, col, zom, row);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 	}
