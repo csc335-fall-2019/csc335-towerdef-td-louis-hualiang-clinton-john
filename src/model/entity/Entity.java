@@ -37,6 +37,7 @@ public class Entity {
 	private int deathFrames;
 	private int attackFrames;
 	private int walkFrames;
+	private int rate;
 	// More variables for entity specific elements
 	
 	/**
@@ -130,7 +131,8 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 1.5;
+				
+				this.speed = 75;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
@@ -140,7 +142,8 @@ public class Entity {
 				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
 				this.attack = 5;
-				this.speed = 1;
+				
+				this.speed = 50;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
@@ -150,7 +153,8 @@ public class Entity {
 				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 5;
-				this.speed = 0.75;
+				
+				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
@@ -160,7 +164,7 @@ public class Entity {
 				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 5;
-				this.speed = 1;
+				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
