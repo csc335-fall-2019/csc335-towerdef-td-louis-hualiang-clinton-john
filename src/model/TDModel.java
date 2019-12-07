@@ -43,7 +43,9 @@ public class TDModel extends Observable {
 		this.rows = rows;
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
+
 		this.money = 10000;
+
 		
 		// Setup the Inner list of lists of entities
 		for (int i = 0; i < rows; i++) {
@@ -222,6 +224,8 @@ public class TDModel extends Observable {
 			// End of row actions
 			System.out.println("End of row action");
 			Entity removed = gridCopy.get(row).get(col).get(position);
+			removed.getEnemyAnimation().getTranslation().pause();
+			removed.getEnemyAnimation().Death();
 			grid.get(row).get(col).remove(removed);
 		}
 	}
@@ -252,9 +256,7 @@ public class TDModel extends Observable {
 		
 		// Check if the entity is visually moved
 		if (moved.getEnemyAnimation().getMove() < 150) {
-			//System.out.println("Translate");
-			moved.getEnemyAnimation().minusStart();
-			moved.getEnemyAnimation().incrMove();
+			System.out.println("Translate");
 			// Still need to visually move
 			//moved.getEnemyAnimation().translate();
 		} else {
@@ -262,7 +264,7 @@ public class TDModel extends Observable {
 			//System.out.println("Moved left");
 			moved.getEnemyAnimation().minusStart();
 			moved.getEnemyAnimation().resetMove();
-			moved.getEnemyAnimation().incrMove();
+			//moved.getEnemyAnimation().incrMove();
 			//moved.getEnemyAnimation().translate();
 			// Add to the state grid and then remove by object
 			grid.get(row).get(col-1).add(moved);
@@ -298,17 +300,6 @@ public class TDModel extends Observable {
 		// Visual
 		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
 			attacker.getEnemyAnimation().getTranslation().pause();
-			
-			/*
-			if(attacker.getEnemyAnimation().getMove() == 150) {
-				attacker.getEnemyAnimation().resetMove();
-				attacker.getEnemyAnimation().incrMove();
-			}else {
-				attacker.getEnemyAnimation().incrMove();
-			}
-			
-			attacker.getEnemyAnimation().minusStart();
-			*/
 			attacker.getEnemyAnimation().setMode("_attack");
 			attacker.getEnemyAnimation().start();
 		}
@@ -316,23 +307,12 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			//System.out.println("Tower defeated");
+			System.out.println("Tower defeated");
 			removeEntity(tower, row, col, false);
-			//grid.get(row).get(col).remove(tower);
-			//attacker.getEnemyAnimation().getTranslation().play();
-			
-			/*
-			if(attacker.getEnemyAnimation().getMove() == 150) {
-				attacker.getEnemyAnimation().resetMove();
-				attacker.getEnemyAnimation().incrMove();
-			}else {
-				attacker.getEnemyAnimation().incrMove();
-			}
-			attacker.getEnemyAnimation().minusStart();
-			*/
-			
-			//attacker.getEnemyAnimation().setMode("_walk");
-			//attacker.getEnemyAnimation().start();
+			attacker.getEnemyAnimation().getTranslation().play();
+
+			attacker.getEnemyAnimation().setMode("_walk");
+			attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();
 		}
 	}

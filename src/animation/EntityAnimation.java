@@ -1,5 +1,7 @@
 package animation;
 
+import java.util.ArrayList;
+
 import com.sun.javafx.geom.BaseBounds;
 import com.sun.javafx.geom.transform.BaseTransform;
 import com.sun.javafx.jmx.MXNodeAlgorithm;
@@ -7,6 +9,8 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -37,13 +41,14 @@ public class EntityAnimation extends Node{
     private int walk;
     private int attack;
     private Animation animation;
-    private TranslateTransition translation;
-    private int start = 1570;
+    private Timeline translation;
+    private int start = 1650;
     private int difference = 50;
     private boolean isTranslating;
     private boolean isDead = false;
     private double rate;
-
+    public double tic = 0;
+    public double duration = 1;
     private double move;
 
     
@@ -64,11 +69,12 @@ public class EntityAnimation extends Node{
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
-    	this.rate = 50 * this.speed;
+    	this.rate = 1/this.speed;
     	this.move = 0;
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
+        pane.setTranslateX(this.start);
         
         
         // A Group object has no layout of children easier to use here
@@ -87,32 +93,61 @@ public class EntityAnimation extends Node{
     }
     
     public void translate() {
-    	// move the zombie from right to left
-        this.walking = new TranslateTransition();
-        //this.walking.setDuration(Duration.millis(2000));
-        this.walking.setNode(pane);
-
-        this.walking.setFromX(this.start);
-        this.walking.setToX(this.start - 1200);
-
-        this.walking.setFromY(this.y_cor);
-       
-        this.walking.setDuration(Duration.seconds(27));
-        this.walking.setRate((this.difference/50) * (this.speed));
-        this.walking.play();
-        //minusStart();
-        //incrMove();
-
-       
-       this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-    	   @Override
-           public void handle(ActionEvent event) {
-                attack();
-
-           }
-       });
+    	this.translation = new Timeline();
         
-    }
+        this.translation.setCycleCount(Timeline.INDEFINITE);
+        
+        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
+                new EventHandler<ActionEvent>() {
+
+                    public void handle(ActionEvent event) {
+                    	
+                    	//TranslateTransition transition = getTranslation();
+                    	int start = getStart();
+                    	int y_cor = getY();
+                    	double x = check1();
+                    	double y = getSpeed();
+                    	if(x % y == 0) {
+                    		incrMove();
+                    		minusStart();
+                    	}
+                    	inc2();
+                    	
+                    	pane.setTranslateX(pane.getTranslateX() - 1);
+                    	pane.setTranslateY(y_cor);
+                    	// move the zombie from right to left
+                    	//transition = new TranslateTransition();
+					    //this.walking.setDuration(Duration.millis(2000));
+                    	//transition.setNode(pane);
+					
+                    	//transition.setFromX(start);
+                    	//transition.setToX(start - 1200);
+					
+                    	//transition.setFromY(y_cor);
+					   
+                    	//transition.setDuration(Duration.seconds(25));
+                    	//transition.setRate((this.difference/50) * (this.speed));
+                    	
+                    	//transition.play();
+					    //minusStart();
+					    //incrMove();
+					
+					   
+//                    	transition.setOnFinished(new EventHandler<ActionEvent>() {
+//						   @Override
+//					       public void handle(ActionEvent event) {
+//					            attack();
+//					
+//					       }
+//					   });
+					   
+                    }
+                    
+        		});
+        this.translation.getKeyFrames().add(moveBall);
+        this.translation.play();
+        
+        }
     
     
     public void walk() {
@@ -142,7 +177,7 @@ public class EntityAnimation extends Node{
     
     
     public void Death() {
-    	this.walking.pause();
+    	this.mode = "_death";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -216,11 +251,11 @@ public class EntityAnimation extends Node{
     }
     
     public void minusStart() {
-    	this.start -= this.rate;
+    	this.start -= this.speed;
     }
     
     public void incrMove() {
-    	this.move += this.rate;
+    	this.move += this.speed;
     }
     
 	/************************** Private Fields Block ***************************/
@@ -238,6 +273,10 @@ public class EntityAnimation extends Node{
     	return this.pane;
     }
     
+    public double getSpeed() {
+    	return this.speed;
+    }
+    
     public void setMode(String mode) {
     	this.mode = mode;
     }
@@ -250,8 +289,8 @@ public class EntityAnimation extends Node{
     	return this.animation;
     }
     
-    public TranslateTransition getTranslation() {
-    	return this.walking;
+    public Timeline getTranslation() {
+    	return this.translation;
     }
     
     public void setDeath() {
@@ -276,6 +315,22 @@ public class EntityAnimation extends Node{
    
    public int getDif() {
 	   return this.difference;
+   }
+   
+   public int getY() {
+	   return this.y_cor;
+   }
+
+   public double check() {
+   	return this.duration;
+   }
+   
+   public double check1() {
+   	return this.tic;
+   }
+   
+   public void inc2() {
+   	this.tic += 1;
    }
 
 	@Override
