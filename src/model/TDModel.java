@@ -49,7 +49,7 @@ public class TDModel extends Observable {
 		for (int i = 0; i < rows; i++) {
 			List<List<Entity>> innerList = new ArrayList<List<Entity>>();
 			
-			// Setup the inner innet list of entities
+			// Setup the inner inner list of entities
 			for (int j = 0; j < cols; j++) {
 				List<Entity> entityList = new ArrayList<Entity>();
 				innerList.add(entityList);
@@ -140,7 +140,7 @@ public class TDModel extends Observable {
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
 			// Iterate over column by column starting from rightmost
-			for (int col = rows.size()-1; col >= 0; col--) {
+			for (int col = 0; col < rows.size(); col++) {
 				List<Entity> column = rows.get(col);
 				// Iterate over each Entity
 				for (int position = 0; position < column.size(); position++) {
@@ -166,7 +166,7 @@ public class TDModel extends Observable {
 						}
 						
 						// perform the actions
-						//towerAction(row, col, position, range, hits, gridCopy);
+						towerAction(row, col, position, range, hits, gridCopy);
 					}
 				}
 			}
@@ -193,7 +193,7 @@ public class TDModel extends Observable {
 	private void enemyAction(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		// Check the space to the left
 		if (col > 0) {
-			System.out.printf("row %d, col %d, position %d\n", row, col, position);
+			//System.out.printf("row %d, col %d, position %d\n", row, col, position);
 			// Left entry has elements to grab
 			if (!grid.get(row).get(col).isEmpty()) {
 				// Get check from real grid
@@ -244,17 +244,23 @@ public class TDModel extends Observable {
 		// Find the enemy in the copy
 		Entity moved = gridCopy.get(row).get(col).get(position);
 		
+		if (!moved.getEnemyAnimation().getMode().equals("_walk")) {
+			moved.getEnemyAnimation().setMode("_walk");
+			moved.getEnemyAnimation().getTranslation().play();
+			moved.getEnemyAnimation().start();
+		}
+		
 		// Check if the entity is visually moved
 		if (moved.getEnemyAnimation().getMove() < 150) {
-			System.out.println("Translate");
+			//System.out.println("Translate");
 			moved.getEnemyAnimation().minusStart();
 			moved.getEnemyAnimation().incrMove();
 			// Still need to visually move
 			//moved.getEnemyAnimation().translate();
 		} else {
 			// Can now physically move
-			System.out.println("Moved left");
-			
+			//System.out.println("Moved left");
+			moved.getEnemyAnimation().minusStart();
 			moved.getEnemyAnimation().resetMove();
 			moved.getEnemyAnimation().incrMove();
 			//moved.getEnemyAnimation().translate();
@@ -280,7 +286,7 @@ public class TDModel extends Observable {
 	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for getting and moving entries.
 	 */
 	private void damageTower(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
-		System.out.println("Attack");
+		//System.out.println("Attack");
 		
 		// Grab the attacker and tower for their state
 		Entity attacker = gridCopy.get(row).get(col).get(position);
@@ -293,7 +299,7 @@ public class TDModel extends Observable {
 		if (!attacker.getEnemyAnimation().getMode().equals("_attack")) {
 			attacker.getEnemyAnimation().getTranslation().pause();
 			
-			
+			/*
 			if(attacker.getEnemyAnimation().getMove() == 150) {
 				attacker.getEnemyAnimation().resetMove();
 				attacker.getEnemyAnimation().incrMove();
@@ -302,6 +308,7 @@ public class TDModel extends Observable {
 			}
 			
 			attacker.getEnemyAnimation().minusStart();
+			*/
 			attacker.getEnemyAnimation().setMode("_attack");
 			attacker.getEnemyAnimation().start();
 		}
@@ -309,10 +316,12 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			System.out.println("Tower defeated");
+			//System.out.println("Tower defeated");
 			removeEntity(tower, row, col, false);
 			//grid.get(row).get(col).remove(tower);
-			attacker.getEnemyAnimation().getTranslation().play();
+			//attacker.getEnemyAnimation().getTranslation().play();
+			
+			/*
 			if(attacker.getEnemyAnimation().getMove() == 150) {
 				attacker.getEnemyAnimation().resetMove();
 				attacker.getEnemyAnimation().incrMove();
@@ -320,8 +329,10 @@ public class TDModel extends Observable {
 				attacker.getEnemyAnimation().incrMove();
 			}
 			attacker.getEnemyAnimation().minusStart();
-			attacker.getEnemyAnimation().setMode("_walk");
-			attacker.getEnemyAnimation().start();
+			*/
+			
+			//attacker.getEnemyAnimation().setMode("_walk");
+			//attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();
 		}
 	}
@@ -347,6 +358,7 @@ public class TDModel extends Observable {
 
 		//System.out.printf("row %d, col %d, position %d\n", row, col, position);
 		while (shift <= range && hitsLeft > 0) {
+			System.out.printf("Column checking %d\n", col+shift);
 			// Check the spaces to the right
 			if (col+shift < this.cols) {
 				// Check that right entry has elements to grab
@@ -361,6 +373,7 @@ public class TDModel extends Observable {
 							
 							// Apply tower's damage to the enemy
 							Entity tower = gridCopy.get(row).get(col).get(position);
+							System.out.printf("Tower at: row %d, col %d\n", row, col);
 							damageEnemy(row, col+shift, hitsLeft, tower, check);
 						}
 					}

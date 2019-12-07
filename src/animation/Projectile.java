@@ -41,7 +41,7 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
-    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, int dif) {
+    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, int dif, EntityAnimation target) {
     	this.root1 = stage;
     	this.y_cor = y + 10;
     	this.speed = speed;
@@ -55,12 +55,17 @@ public class Projectile {
     	this.pane = new GridPane();
         this.pane.setVgap(10);
         this.pane.setHgap(10);
-        //this.target = target;
-        //this.duration = (target.getStart() - this.x)/(target.getRate() + this.rate);
+        this.target = target;
+        this.duration = (target.getStart() - this.x)/(target.getRate() + this.rate);
+        System.out.printf("Projectile info\nthis.x = %d\ntarget.getStart() = %d\nthis.rate = %d\ntarget.getRate() = %f\n", this.x, target.getStart(), this.rate, target.getRate());
     	
     	
     }
-
+    
+    public void setNew() {
+    	
+    }
+    
     public void start() {
         
     	if(mode.equals("_attack")) {
@@ -78,24 +83,25 @@ public class Projectile {
         this.walking = new TranslateTransition();
         //this.walking.setDuration(Duration.millis(2000));
         this.walking.setNode(pane);
-        /*
+        
         this.walking.setFromX(this.x);
         this.walking.setToX(this.x + (this.rate * this.duration));
+        System.out.printf("From x = %d to x = %f over %f seconds\n\n", this.x, this.x + (this.rate * this.duration), this.duration);
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.duration));
         this.walking.setRate(this.rate/150);
-        */
         
         
+        /*
         this.walking.setFromX(this.x);
         this.walking.setByX(this.x + this.difference);
 
         this.walking.setFromY(this.y_cor);
        
         this.walking.setDuration(Duration.seconds(this.duration));
-        this.walking.setRate((this.difference/50) * (this.speed));
-        
+        this.walking.setRate(this.rate/150);
+        */
         
         this.walking.play();
         

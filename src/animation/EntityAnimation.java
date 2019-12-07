@@ -97,7 +97,7 @@ public class EntityAnimation extends Node{
 
         this.walking.setFromY(this.y_cor);
        
-        this.walking.setDuration(Duration.seconds(25));
+        this.walking.setDuration(Duration.seconds(27));
         this.walking.setRate((this.difference/50) * (this.speed));
         this.walking.play();
         //minusStart();

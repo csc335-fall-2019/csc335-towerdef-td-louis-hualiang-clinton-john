@@ -269,10 +269,14 @@ public class Entity {
 		*/
 		
 		// Get the tower and enemy x locations to calculate difference
+		this.animation.makeProjectile(enemy.getEnemyAnimation());
+		
+		/*
 		int towerX = this.animation.getProjectile().getStart();
 		int enemyX = enemy.getEnemyAnimation().getStart();
 		this.animation.setDif(towerX - enemyX);
 		this.animation.start();
+		*/
 	}
 	
 	/************************ Getters and Setters Block ************************/
