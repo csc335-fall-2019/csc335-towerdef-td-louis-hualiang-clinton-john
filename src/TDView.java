@@ -119,11 +119,11 @@ public class TDView extends Application implements Observer {
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
-				speed = 1;
+				speed = 0.0200;
 
 				y+=150;
 			}else {
-				speed = 1;
+				speed = 0.0200;
 
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
