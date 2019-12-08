@@ -494,28 +494,32 @@ public class TDView extends Application implements Observer {
 	 * Purpose: Adds in the info boxes to the menu slots
 	 */
 	private void addMenuInfo() {
-		// Shared background
-		Rectangle infoBackground = new Rectangle();
-		infoBackground.setFill(Color.LIGHTBLUE);
-		infoBackground.setStroke(Color.BLACK);
-		infoBackground.setHeight(gridSize);
-		infoBackground.setWidth(gridSize);
+		// Round start button
+		Circle startBackground = new Circle();
+		startBackground.setFill(Color.GREEN);
+		startBackground.setStroke(Color.BLACK);
+		startBackground.setRadius(gridSize/2-5);
 		
-		// Box for currency info
-		StackPane currencyBox = new StackPane();
-		VBox currencyInfo = new VBox(2);
-		Label currency = new Label("Money");
-		Label amount = new Label("" + controller.getMoney());
-		currencyInfo.setAlignment(Pos.TOP_CENTER);
+		StackPane roundStartBox = new StackPane();
+		VBox rsBox = new VBox(1);
+		Label roundTag = new Label("Start");
+		roundTag.setFont(Font.font(32));
+		rsBox.setAlignment(Pos.CENTER);
+		rsBox.getChildren().add(roundTag);
 		
-		// Add the currency info together
-		currencyInfo.getChildren().addAll(currency, amount);
+		// Add background and label to roundStartBox
+		roundStartBox.getChildren().addAll(startBackground, rsBox);
 		
-		// Add the Stacks to have backgrounds and then auxiliary information
-		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
+		// Add the roundStart box as a menu choice
+		menu.add(roundStartBox, 1, 3);
 		
-		// Add the box to the menu
-		menu.add(currencyBox, 0, 3);
+		// Event for clicking on round
+		roundStartBox.setOnMouseClicked((e) -> {
+			if (newRound == null || !newRound.isAlive()) {
+				// If a round isn't running, run a round
+				runGame(root1);
+			}
+		});
 		
 		
 		// Double speed button
@@ -583,6 +587,7 @@ public class TDView extends Application implements Observer {
 					Node tower = towers.get(i);
 					tower.setDisable(true);
 				}
+				pauseBox.setDisable(false);
 				controller.pause();
 			}
 			pause = !pause;
@@ -592,6 +597,29 @@ public class TDView extends Application implements Observer {
 		
 		menu.add(pauseBox, 1, 4);
 		
+
+		// Currency info box
+		Rectangle infoBackground = new Rectangle();
+		infoBackground.setFill(Color.LIGHTBLUE);
+		infoBackground.setStroke(Color.BLACK);
+		infoBackground.setHeight(gridSize);
+		infoBackground.setWidth(gridSize);
+		
+		// Box for currency info
+		StackPane currencyBox = new StackPane();
+		VBox currencyInfo = new VBox(2);
+		Label currency = new Label("Money");
+		Label amount = new Label("" + controller.getMoney());
+		currencyInfo.setAlignment(Pos.TOP_CENTER);
+		
+		// Add the currency info together
+		currencyInfo.getChildren().addAll(currency, amount);
+		
+		// Add the Stacks to have backgrounds and then auxiliary information
+		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
+		
+		// Add the box to the menu
+		menu.add(currencyBox, 0, 3);
 	}
 	
 	/**
