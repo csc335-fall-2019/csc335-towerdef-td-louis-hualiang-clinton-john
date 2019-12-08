@@ -89,11 +89,7 @@ public class TDController {
 	public boolean removeEntity(String name, int row, int col) {
 
 		Entity entity = new Entity(name, this.model);
-		//model.removeEntity(entity, row, col);
-
-		//Entity entity = new Entity(name);
-		//model.removeEntity(entity, row, col, true);
-
+		model.removeEntity(entity, row, col, true);
 		
 		return true;
 	}
@@ -143,6 +139,39 @@ public class TDController {
 		}
 		
 		return troops;
+	}
+	
+	public boolean buildStage2() {
+		model.addEntity(new Entity("object0", this.model), 0, 7);
+		model.addEntity(new Entity("object0", this.model), 1, 7);
+		model.addEntity(new Entity("object0", this.model), 1, 6);
+		model.addEntity(new Entity("object1", this.model), 3, 7);
+		model.addEntity(new Entity("object1", this.model), 4, 8);
+		model.addEntity(new Entity("object1", this.model), 2, 8);
+		model.addEntity(new Entity("object2", this.model), 3, 8);
+		model.addEntity(new Entity("object2", this.model), 2, 7);
+		model.addEntity(new Entity("object3", this.model), 0, 6);
+		
+		return true;
+	}
+	
+	public boolean buildRandomStage(int row, int col) {
+		Random rand = new Random();
+		
+		//15% chance of spawning an object in between (0,1) - (8,8)
+		for (int i = 0; i < row; i++) {
+			for (int j = 1; j < col; j++) {
+				if (rand.nextInt(100) <= 15) {
+					//selects random object
+					model.addEntity(new Entity("object"+rand.nextInt(2), this.model), i, j);
+				}
+				else if (rand.nextInt(100) > 15 && rand.nextInt(15) >= 10) {
+					model.addEntity(new Entity("object3", this.model), i, j);
+				}
+			}
+		}
+		
+		return true;
 	}
 	
 	/**
