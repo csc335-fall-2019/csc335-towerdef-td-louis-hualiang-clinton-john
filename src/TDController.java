@@ -137,6 +137,20 @@ public class TDController {
 		return troops;
 	}
 	
+	public boolean buildStage2() {
+		model.addEntity(new Entity("object0"), 0, 7);
+		model.addEntity(new Entity("object0"), 1, 7);
+		model.addEntity(new Entity("object0"), 1, 6);
+		model.addEntity(new Entity("object1"), 3, 7);
+		model.addEntity(new Entity("object1"), 4, 8);
+		model.addEntity(new Entity("object1"), 2, 8);
+		model.addEntity(new Entity("object2"), 3, 8);
+		model.addEntity(new Entity("object2"), 2, 7);
+		model.addEntity(new Entity("object3"), 0, 6);
+		
+		return true;
+	}
+	
 	/**
 	 * Purpose: Runs a round of tower defense.
 	 * 
