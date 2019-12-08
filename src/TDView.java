@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -22,7 +23,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import sandboxfx.SandboxFX;
 import model.entity.*;
@@ -64,6 +67,8 @@ public class TDView extends Application implements Observer {
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
+	public boolean pause = false;
+	public boolean doubleSpeed = false;
 	 
 	/**
 	 * Purpose: Main window view.
@@ -262,7 +267,7 @@ public class TDView extends Application implements Observer {
 				*/
 				
 				SandboxFX slot3 = new SandboxFX();
-				
+				 
 				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
@@ -500,6 +505,82 @@ public class TDView extends Application implements Observer {
 		
 		// Add the box to the menu
 		menu.add(currencyBox, 0, 3);
+		
+		
+		// Double speed button
+		Circle dsBackground = new Circle();
+		dsBackground.setFill(Color.BLUEVIOLET);
+		dsBackground.setStroke(Color.BLACK);
+		dsBackground.setRadius(gridSize/2-5);
+		
+		StackPane dsBox = new StackPane();
+		VBox dsVbox = new VBox(1);
+		Label dsTag = new Label("Double");
+		dsTag.setFont(Font.font(32));
+		dsVbox.setAlignment(Pos.CENTER);
+		dsVbox.getChildren().add(dsTag);
+		
+		dsBox.getChildren().addAll(dsBackground, dsVbox);
+		
+		dsBox.setOnMouseClicked(event->{
+			if (doubleSpeed) {   // normal speed now
+				dsTag.setText("Double");
+				dsBackground.setFill(Color.BLUEVIOLET);
+				System.out.println("back to normal speed");
+//				controller.setSpeed(0.5);  //assume there is setSpeed() method takes in an multiplier
+			}else {      // double speed now
+				dsTag.setText("Normal");
+				dsBackground.setFill(Color.CORNFLOWERBLUE);
+				System.out.println("double speed");
+//				controller.setSpeed(2);  //assume there is setSpeed() method takes in an multiplier
+			}
+			doubleSpeed = !doubleSpeed;
+		});
+		
+		menu.add(dsBox, 0, 4);
+		
+		// Pause button
+		Circle pauseBackground = new Circle();
+		pauseBackground.setFill(Color.RED);
+		pauseBackground.setStroke(Color.BLACK);
+		pauseBackground.setRadius(gridSize/2-5);
+		
+		StackPane pauseBox = new StackPane();
+		VBox pVbox = new VBox(1);
+		Label tag = new Label("Pause");
+		tag.setFont(Font.font(32));
+		pVbox.setAlignment(Pos.CENTER);
+		pVbox.getChildren().add(tag);
+		
+		pauseBox.getChildren().addAll(pauseBackground, pVbox);
+		
+		pauseBox.setOnMouseClicked(event->{
+			if (pause) {  // resume now
+				tag.setText("Pause");
+				pauseBackground.setFill(Color.RED);
+				List<Node> towers = menu.getChildren();
+				for (int i=0; i<towers.size()-1; i++) {
+					Node tower = towers.get(i);
+					tower.setDisable(false);
+				}
+//				controller.resume();   //assume there is resume() method takes in an multiplier
+			}else {     // pause now
+				tag.setText("Resume");
+				pauseBackground.setFill(Color.LIMEGREEN);
+				List<Node> towers = menu.getChildren();
+				for (int i=0; i<towers.size()-1; i++) {
+					Node tower = towers.get(i);
+					tower.setDisable(true);
+				}
+				controller.pause();
+			}
+			pause = !pause;
+			
+			
+		});
+		
+		menu.add(pauseBox, 1, 4);
+		
 	}
 	
 	/**

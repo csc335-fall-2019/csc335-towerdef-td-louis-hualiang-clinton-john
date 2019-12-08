@@ -154,6 +154,10 @@ public class TowerAnimation extends Node{
     	return this.towerPane;
     }
     
+    public Animation getAnimation() {
+    	return this.animation;
+    }
+    
     public Projectile getProjectile() {
     	return this.projectile;
     }

@@ -206,6 +206,14 @@ public class TDModel extends Observable {
 		}
 	}
 	
+	// a test pause method
+	public void pause(int col, int row) {
+		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
+			Entity entity = grid.get(row).get(col).get(i);
+			entity.pause(entity.getBase());
+		}
+	}
+	
 	/************************** Private Fields Block ***************************/
 	
 	/**
@@ -483,4 +491,13 @@ public class TDModel extends Observable {
 	public int getMoney() {
 		return this.money;
 	}
+	
+	public int getRows() {
+		return rows;
+	}
+	
+	public int getCols() {
+		return cols;
+	}
+	
 }
