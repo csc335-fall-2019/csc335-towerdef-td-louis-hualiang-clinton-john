@@ -55,7 +55,7 @@ public class EntityAnimation extends Node{
     public int col;
     public Entity zom;
     public int row;
-    private int gameSpeed = 2;
+    private int gameSpeed = 1;
     
     private double move;
 

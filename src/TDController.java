@@ -28,7 +28,7 @@ import model.entity.*;
 public class TDController {
 	private int turn;
 	private TDModel model;
-	private int gameSpeed = 2;
+	private int gameSpeed = 1;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.

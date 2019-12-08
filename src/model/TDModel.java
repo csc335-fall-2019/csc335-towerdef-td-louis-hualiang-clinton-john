@@ -149,7 +149,7 @@ public class TDModel extends Observable {
 						}
 						
 						// perform the actions
-						//towerAction(row, col, position, range, hits, gridCopy);
+						towerAction(row, col, position, range, hits, gridCopy);
 					}
 				}
 			}
@@ -389,23 +389,17 @@ public class TDModel extends Observable {
 	 */
 	private void damageEnemy(int row, int col, Entity tower, Entity attacker, List<List<List<Entity>>> gridCopy) {
 		// Apply damage
-		tower.beAttacked(attacker.getAttack());
+		//tower.beAttacked(attacker.getAttack());
 		
 		// Visual
-		attacker.getEnemyAnimation();
-		attacker.getEnemyAnimation().getTranslation();
-		attacker.getEnemyAnimation().getTranslation().pause();
-		attacker.getEnemyAnimation().setMode("_attack");
-		attacker.getEnemyAnimation().start();
+		tower.getAnimation().spawnProjectile(attacker);
 		
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
 			System.out.println("Tower defeated");
 			grid.get(row).get(col-1).remove(tower);
-			attacker.getEnemyAnimation().setMode("_walk");
-			attacker.getEnemyAnimation().start();
-			attacker.getEnemyAnimation().getTranslation().play();
+			tower.getAnimation().Delete();
 		}
 	}
 }

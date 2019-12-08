@@ -39,7 +39,7 @@ public class Projectile {
     private double duration = 5;
     public int row;
     public int col;
-    private int gameSpeed;
+    private int gameSpeed = 1;
     public boolean lethal = false;
     
     private int COLUMNS  =   9;
@@ -49,22 +49,22 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
-    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, int dif, Entity target) {
+    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target) {
     	this.root1 = stage;
-    	this.y_cor = 60 + (60 * y);
+    	this.y_cor = 150 + (150 * y);
     	this.row = y;
-    	this.speed = speed;
+    	this.speed = speed * this.gameSpeed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
-    	this.x = 300 + (x * 150);
+    	this.x = 350 + (x * 150);
     	this.col = x;
     	this.attack = attack;
     	this.rate = (1/150)/this.gameSpeed;
-    	this.difference = dif;
     	this.pane = new GridPane();
         this.target = target;
         pane.setTranslateX(this.x);
+        this.root1.getChildren().add(pane);
         
     	
     	

@@ -255,7 +255,7 @@ public class Entity {
 		int y = 60 + (150 * row);
 		String mode = "_attack";
 		int x = col;
-		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
+		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col);
 		this.animation.start();
 		return this.animation;
 	}
@@ -358,5 +358,9 @@ public class Entity {
 	public EntityAnimation getEnemyAnimation() {
 		return enemyAnimation;
 
+	}
+	
+	public TowerAnimation getAnimation() {
+		return this.animation;
 	}
 }
