@@ -237,7 +237,7 @@ public class TDController {
 						
 						// Check if anything to place
 						if (zom != null) {
-							EntityAnimation entityAnimation = zom.enemyAnimation(root, 0, 8, zom);
+							EntityAnimation entityAnimation = zom.enemyAnimation(root, currRow, 8, zom);
 							entityAnimation.translate();
 							
 							// Place zombie at end of current row
@@ -260,6 +260,7 @@ public class TDController {
 		}
 		
 		// Reached when the round finishes
+		model.incrTurn();
 		return true;
 		
 		/*
