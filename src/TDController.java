@@ -41,7 +41,7 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
-		this.gameSpeed = 2;
+		this.gameSpeed = 1;
 	}
 	
 	/**

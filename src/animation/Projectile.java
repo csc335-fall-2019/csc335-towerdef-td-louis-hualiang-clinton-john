@@ -26,7 +26,7 @@ public class Projectile {
     private StackPane root1;
     private int y_cor;
     private TranslateTransition walking;
-    private GridPane pane;
+    public GridPane pane;
     private double speed;
     private String mode;
     private int attack;
@@ -34,7 +34,7 @@ public class Projectile {
     private Timeline translation;
     private int x;
     private double difference = 150;
-    private int rate;
+    private double myrate;
     private Entity target;
     private double duration = 5;
     public int row;
@@ -52,20 +52,22 @@ public class Projectile {
 
     public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target) {
     	this.root1 = stage;
-    	this.y_cor = 60 + (150 * y);
+    	this.y_cor = 80 + (150 * y);
     	this.row = y;
     	this.speed = speed * this.gameSpeed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
-    	this.x = 350 + (x * 150);
+    	this.x = 400 + (x * 150);
     	this.col = x;
     	this.attack = attack;
-    	this.rate = (1/150)/this.gameSpeed;
+    	this.myrate = (1.0/150.0)/this.speed;
+    	System.out.println(this.myrate);
     	this.pane = new GridPane();
-
+    	pane.setMouseTransparent(true);
         this.target = target;
         pane.setTranslateX(this.x);
+        pane.setTranslateY(this.y_cor);
         this.root1.getChildren().add(pane);
         this.target = target;
         //System.out.printf("Projectile info\nthis.x = %d\ntarget.getStart() = %d\nthis.rate = %d\ntarget.getRate() = %f\n", this.x, target.getStart(), this.rate, target.getRate());
@@ -96,7 +98,7 @@ public class Projectile {
 
         this.translation.setCycleCount(Timeline.INDEFINITE);
         
-        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
+        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.myrate),
                 new EventHandler<ActionEvent>() {
 
                     public void handle(ActionEvent event) {
@@ -106,8 +108,9 @@ public class Projectile {
                     	pane.setTranslateX(pane.getTranslateX() + 1);
                     	pane.setTranslateY(y_cor);
                     	
-                    	if(pane.getTranslateX() == target.getEnemyAnimation().getTranslateX()) {
-                    		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), enemy.getEnemyAnimation().getXCollision());
+                    	//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getPane().getTranslateX());
+                    	if((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 2) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+2)) {
+                    		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getTranslateX());
                     		transition.pause();
                     		Delete();
                     		if(lethal == true) {
@@ -178,8 +181,8 @@ public class Projectile {
     	return this.x;
     }
    
-   public int getRate() {
-	   return this.rate;
+   public double getRate() {
+	   return this.myrate;
    }
    
    public void setDifference(double dif) {

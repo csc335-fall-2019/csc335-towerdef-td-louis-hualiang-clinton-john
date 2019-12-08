@@ -156,7 +156,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		//runGame(root1);
+		runGame(root1);
 	}
 	
 	/**

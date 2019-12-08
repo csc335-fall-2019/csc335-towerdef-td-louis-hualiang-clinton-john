@@ -117,9 +117,10 @@ public class TowerAnimation extends Node{
 
     public void spawnProjectile(Entity target) {
     	String action = "weapon4";
+    	//System.out.print(this.y);
        	Projectile projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
-   		projectile.start();
    		projectile.translate();
+   		projectile.start();
     }
 
     /**
