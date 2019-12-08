@@ -51,7 +51,7 @@ public class Projectile {
 
     public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target) {
     	this.root1 = stage;
-    	this.y_cor = 150 + (150 * y);
+    	this.y_cor = 60 + (150 * y);
     	this.row = y;
     	this.speed = speed * this.gameSpeed;
     	this.mode = mode;
@@ -94,7 +94,7 @@ public class Projectile {
                     public void handle(ActionEvent event) {
                     	
                     	Timeline transition = getTranslation();
-                    	
+                    	int y_cor = getY();
                     	pane.setTranslateX(pane.getTranslateX() + 1);
                     	pane.setTranslateY(y_cor);
                     	
@@ -182,6 +182,10 @@ public class Projectile {
    
    public void setSpeed(int speed) {
 	   this.gameSpeed = speed;
+   }
+   
+   public int getY() {
+	   return this.y_cor;
    }
  
 }
