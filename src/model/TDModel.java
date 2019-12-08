@@ -221,6 +221,9 @@ public class TDModel extends Observable {
 	 * @return boolean indicating successful reset.
 	 */
 	public boolean reset() {
+		// Reset money
+		this.money = 10000;
+		
 		// Grab a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
 		
