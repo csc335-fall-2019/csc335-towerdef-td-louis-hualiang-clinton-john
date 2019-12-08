@@ -107,6 +107,7 @@ public class Projectile {
                     	pane.setTranslateY(y_cor);
                     	
                     	if(pane.getTranslateX() == target.getEnemyAnimation().getTranslateX()) {
+                    		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), enemy.getEnemyAnimation().getXCollision());
                     		transition.pause();
                     		Delete();
                     		if(lethal == true) {

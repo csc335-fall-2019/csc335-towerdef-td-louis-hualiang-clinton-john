@@ -142,7 +142,7 @@ public class TDModel extends Observable {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
-			// Iterate over column by column starting from rightmost
+			// Iterate over column by column starting from leftmost
 			for (int col = 0; col < rows.size(); col++) {
 				List<Entity> column = rows.get(col);
 				// Iterate over each Entity
@@ -212,6 +212,39 @@ public class TDModel extends Observable {
 			Entity entity = grid.get(row).get(col).get(i);
 			entity.pause(entity.getBase());
 		}
+	}
+	
+	
+	/**
+	 * Purpose: Resets the state of grid by removing entities.
+	 * 
+	 * @return boolean indicating successful reset.
+	 */
+	public boolean reset() {
+		// Reset money
+		this.money = 10000;
+		
+		// Grab a copy of the grid for iteration
+		List<List<List<Entity>>> gridCopy = grid;
+		
+		// Iterate over the rows
+		for (int row = 0; row < gridCopy.size(); row++) {
+			List<List<Entity>> rows = gridCopy.get(row);
+			
+			// Iterate over the columns
+			for (int col = 0; col < rows.size(); col++) {
+				List<Entity> cols = rows.get(col);
+				
+				// Iterate over the entities and remove them
+				for (int i = 0; i < cols.size(); i++) {
+					Entity entity = cols.get(i);
+					this.removeEntity(entity, row, col, false);
+				}
+			}
+		}
+		
+		// Reached if removal successful
+		return true;
 	}
 	
 	/************************** Private Fields Block ***************************/
