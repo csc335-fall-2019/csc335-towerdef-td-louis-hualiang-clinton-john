@@ -28,7 +28,7 @@ import model.entity.*;
 public class TDController {
 	private int turn;
 	private TDModel model;
-	private int gameSpeed;
+	private int gameSpeed = 1;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -41,7 +41,7 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
-		this.gameSpeed = 1;
+		this.gameSpeed = 2;
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class TDController {
 	 */
 	public boolean placeEntity(String name, int row, int col) {
 		// Attempt to create the entity
-		Entity entity = new Entity(name);
+		Entity entity = new Entity(name, this.model);
 		
 		// Check creation status
 		boolean status = entity.getIsValid();
@@ -80,7 +80,7 @@ public class TDController {
 	}
 	
 	public boolean removeEntity(String name, int row, int col) {
-		Entity entity = new Entity(name);
+		Entity entity = new Entity(name, this.model);
 		model.removeEntity(entity, row, col);
 		
 		return true;
@@ -124,7 +124,7 @@ public class TDController {
 						enemy_turn = 3;
 					}
 					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
-					queue.add(new Entity("zombie"+rand_enemy));
+					queue.add(new Entity("zombie"+rand_enemy, this.model));
 					rand_num--;
 				}else {
 					queue.add(null);
@@ -150,23 +150,39 @@ public class TDController {
 		// Will need to randomly build zombie queue, for now just 1 zombie.
 		Platform.runLater(() -> {
 			System.out.println("Testing round");
-			Entity tower = new Entity("tower0");
-			Entity tower1 = new Entity("tower0");
-			Entity tower2 = new Entity("tower0");
+			Entity tower = new Entity("tower0", this.model);
+			Entity tower1 = new Entity("tower0", this.model);
+			Entity tower2 = new Entity("tower0", this.model);
 			model.addEntity(tower1, 0, 3);
 			model.addEntity(tower, 0, 5);
 			model.addEntity(tower2, 3, 5);
 			
-			Entity zom1 = new Entity("zombie0");
-			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
+			Entity zom1 = new Entity("zombie0", this.model);
+			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0, 8, zom1);
 			entityAnimation.translate();
 			
 			
 			model.addEntity(zom1, 0, 8);
 			
 			
-			Entity zom2 = new Entity("zombie2");
-			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 3);
+			Entity zom3 = new Entity("zombie0", this.model);
+			EntityAnimation entityAnimation1 = zom3.enemyAnimation(root, 0, 8, zom3);
+			entityAnimation1.translate();
+			
+			
+			model.addEntity(zom3, 0, 8);
+			
+			
+			Entity zom4 = new Entity("zombie2", this.model);
+			EntityAnimation entityAnimation3 = zom4.enemyAnimation(root, 0, 8, zom4);
+			entityAnimation3.translate();
+			
+			
+			model.addEntity(zom4, 0, 8);
+			
+			
+			Entity zom2 = new Entity("zombie2", this.model);
+			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 3, 8, zom2);
 			entityAnimation2.translate();
 			//entityAnimation2.incrMove();
 			
@@ -179,7 +195,7 @@ public class TDController {
 				model.nextStep();
 			});
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1000/this.gameSpeed);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -235,5 +251,9 @@ public class TDController {
 	 */
 	public int getMoney() {
 		return model.getMoney();
+	}
+	
+	public void setSpeed(int x) {
+		this.gameSpeed = x;
 	}
 }

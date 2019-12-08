@@ -108,38 +108,38 @@ public class TDView extends Application implements Observer {
 		
 		
 		// This code is very simple setup of testing zombie walk animation
-		int y = 60;
-		double speed = 1;
-		String mode = "_walk";
-		String action = "zombie0";
-		int frames = 6;
-		int death = 6;
-		int walk = 8;
-		int attack =7;
-		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
-		for(int i = 0; i<10; i++) {
-			if(i%2!=0) {
-				speed = 0.0200;
-
-				y+=150;
-			}else {
-				speed = 0.0200;
-
-			}
-			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
-			tower.start();
-			tower.translate();
-			
-			anime.add(tower);
-		}
+//		int y = 60;
+//		double speed = 1;
+//		String mode = "_walk";
+//		String action = "zombie0";
+//		int frames = 6;
+//		int death = 6;
+//		int walk = 8;
+//		int attack =7;
+//		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
+//		for(int i = 0; i<10; i++) {
+//			if(i%2!=0) {
+//				speed = 0.0200;
+//
+//				y+=150;
+//			}else {
+//				speed = 0.0200;
+//
+//			}
+//			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
+//			tower.start();
+//			tower.translate();
+//			
+//			anime.add(tower);
+//		}
 		
 		
 		
-		String a = "weapon4";
-		int dif = 600;
-    	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
-    	projectile.start();
-    	projectile.translate();
+//		String a = "weapon4";
+//		int dif = 600;
+//    	Projectile projectile = new Projectile(this.root1, 1, 2, "_attack",a, 8, 1, 500, dif);
+//    	projectile.start();
+//    	projectile.translate();
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
