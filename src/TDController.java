@@ -145,12 +145,12 @@ public class TDController {
 		model.addEntity(new Entity("object0", this.model), 0, 7);
 		model.addEntity(new Entity("object0", this.model), 1, 7);
 		model.addEntity(new Entity("object0", this.model), 1, 6);
-		model.addEntity(new Entity("object1", this.model), 3, 7);
-		model.addEntity(new Entity("object1", this.model), 4, 8);
-		model.addEntity(new Entity("object1", this.model), 2, 8);
-		model.addEntity(new Entity("object2", this.model), 3, 8);
-		model.addEntity(new Entity("object2", this.model), 2, 7);
-		model.addEntity(new Entity("object3", this.model), 0, 6);
+		model.addEntity(new Entity("object2", this.model), 2, 3);
+		model.addEntity(new Entity("object2", this.model), 1, 3);
+		model.addEntity(new Entity("object2", this.model), 4, 3);
+		model.addEntity(new Entity("object1", this.model), 3, 8);
+		model.addEntity(new Entity("object1", this.model), 2, 7);
+		model.addEntity(new Entity("object3", this.model), 2, 4);
 		
 		return true;
 	}
@@ -165,7 +165,7 @@ public class TDController {
 					//selects random object
 					model.addEntity(new Entity("object"+rand.nextInt(2), this.model), i, j);
 				}
-				else if (rand.nextInt(100) > 15 && rand.nextInt(15) >= 10) {
+				else if (rand.nextInt(100) > 50 && rand.nextInt(15) >= 14) {
 					model.addEntity(new Entity("object3", this.model), i, j);
 				}
 			}
@@ -292,7 +292,6 @@ public class TDController {
 		
 		// Returns true if all objects were successfully placed.
 		return true;
-
 	}
 	
 	/**
