@@ -222,64 +222,47 @@ public class TDController {
 	 * @return boolean indicating the success of the round.
 	 */
 	public boolean runRound(StackPane root, int rows) {
-		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
-		// Will need to randomly build zombie queue, for now just 1 zombie.
-		Platform.runLater(() -> {
-			System.out.println("Testing round");
-
-			Entity tower = new Entity("tower0", this.model);
-			Entity tower1 = new Entity("tower0", this.model);
-			Entity tower2 = new Entity("tower0", this.model);
-			model.addEntity(tower1, 0, 3);
-
-//			Entity tower = new Entity("tower0");
-//			Entity tower1 = new Entity("tower0");
-//			Entity tower2 = new Entity("tower0");
-//			Entity tower3 = new Entity("tower0");
-//			Entity tower4 = new Entity("tower0");
-//			Entity tower5 = new Entity("tower0");
-			//model.addEntity(tower2, 0, 2);
-			//model.addEntity(tower1, 0, 3);
-			//model.addEntity(tower4, 0, 4);
-
-			model.addEntity(tower, 0, 5);
-			//model.addEntity(tower2, 3, 7);
-			//model.addEntity(tower3, 3, 3);
-			//model.addEntity(tower5, 0, 1);
-			
-			Entity zom1 = new Entity("zombie0", this.model);
-			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0, 8, zom1);
-			entityAnimation.translate();
-			
-			
-			model.addEntity(zom1, 0, 8);
-			
-			
-			Entity zom3 = new Entity("zombie0", this.model);
-			EntityAnimation entityAnimation1 = zom3.enemyAnimation(root, 0, 8, zom3);
-			entityAnimation1.translate();
-			
-			
-			model.addEntity(zom3, 0, 8);
-			
-			
-			Entity zom4 = new Entity("zombie2", this.model);
-			EntityAnimation entityAnimation3 = zom4.enemyAnimation(root, 0, 8, zom4);
-			entityAnimation3.translate();
-			
-			
-			model.addEntity(zom4, 0, 8);
-			
-			
-			Entity zom2 = new Entity("zombie2", this.model);
-			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 3, 8, zom2);
-			entityAnimation2.translate();
-			//entityAnimation2.incrMove();
-			
-			model.addEntity(zom2, 3, 8);
-			
-		});
+		// Build a randomized queue
+		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
 		
+		// Loop over placing from the queue and progressing round, until round ends
+		//TODO testing as a for, to be while !roundOver or something of that flavor
+		for (int i = 0; i < 100; i++) {
+			Platform.runLater(() -> {
+				// Progressing through the queue, place entities when they appear in queue
+				for (int currRow = 0; currRow < rows; currRow++) {
+					// Guard against empty queues
+					if (enemyQueue.get(currRow).size() > 0) {
+						Entity zom = enemyQueue.get(currRow).remove(0);
+						
+						// Check if anything to place
+						if (zom != null) {
+							EntityAnimation entityAnimation = zom.enemyAnimation(root, 0, 8, zom);
+							entityAnimation.translate();
+							
+							// Place zombie at end of current row
+							model.addEntity(zom, currRow, 8);
+						}
+					}
+				}
+				
+				// Perform the model progression		
+				model.nextStep();
+			});
+			
+			// Sleep the thread, interrupts return false
+			try {
+				Thread.sleep(1000/this.gameSpeed);
+			} catch (InterruptedException e) {
+				// Interrupt indicates stop thread
+				return false;
+			}
+		}
+		
+		// Reached when the round finishes
+		return true;
+		
+		/*
 		for (int i = 0; i < 100; i++) {
 			Platform.runLater(() -> {
 				model.nextStep();
@@ -292,7 +275,7 @@ public class TDController {
 			}
 		}
 		
-		return true;
+		return true;*/
 	}
 	
 	//a test pause method

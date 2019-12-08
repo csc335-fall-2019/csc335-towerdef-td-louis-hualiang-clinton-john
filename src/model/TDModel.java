@@ -26,6 +26,7 @@ public class TDModel extends Observable {
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
+	private int turn;
 	
 
 	/**
@@ -46,6 +47,7 @@ public class TDModel extends Observable {
 		this.grid = new ArrayList<List<List<Entity>>>();
 
 		this.money = 10000;
+		this.turn = 1;
 
 		
 		// Setup the Inner list of lists of entities
@@ -221,8 +223,9 @@ public class TDModel extends Observable {
 	 * @return boolean indicating successful reset.
 	 */
 	public boolean reset() {
-		// Reset money
+		// Reset money and turn
 		this.money = 10000;
+		this.turn = 1;
 		
 		// Grab a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
@@ -245,6 +248,16 @@ public class TDModel extends Observable {
 		
 		// Reached if removal successful
 		return true;
+	}
+	
+	/**
+	 * Purpose: Increment turn.
+	 * 
+	 * @return int of the new turn.
+	 */
+	public int incrTurn() {
+		this.turn++;
+		return this.turn;
 	}
 	
 	/************************** Private Fields Block ***************************/
@@ -333,7 +346,7 @@ public class TDModel extends Observable {
 		
 		// Check if the entity is visually moved
 		if (moved.getEnemyAnimation().getMove() < 150) {
-			System.out.println("Translate");
+			//System.out.println("Translate");
 			// Still need to visually move
 			//moved.getEnemyAnimation().translate();
 		} else {
@@ -384,7 +397,7 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			System.out.println("Tower defeated");
+			//System.out.println("Tower defeated");
 
 			grid.get(row).get(col).remove(tower);
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
@@ -426,7 +439,7 @@ public class TDModel extends Observable {
 		int shift = 0;
 		int hitsLeft = hits;
 
-		//System.out.printf("row %d, col %d, position %d\n", row, col, position);
+		// Loop over the row based on range
 		while (shift < range && hitsLeft > 0) {
 			System.out.printf("Column checking %d\n", col+shift);
 			// Check the spaces to the right
@@ -471,7 +484,6 @@ public class TDModel extends Observable {
 	private void damageEnemy(int row, int col, int hitsLeft, Entity tower, Entity enemy) {
 		System.out.println("Attacking zombie");
 		// Apply damage
-		//tower.beAttacked(attacker.getAttack());
 		enemy.beAttacked(tower.getAttack());
 
 		// Visual
@@ -488,13 +500,6 @@ public class TDModel extends Observable {
 		if (hitsLeft == 0) {
 			// Final enemy that the projectile will hit
 			tower.fireProjectile(enemy);
-			/*
-			enemy.getEnemyAnimation();
-			enemy.getEnemyAnimation().getTranslation();
-			enemy.getEnemyAnimation().getTranslation().pause();
-			enemy.getEnemyAnimation().setMode("_attack");
-			enemy.getEnemyAnimation().start();
-			*/
 		}
 		
 		// Check if enemy is defeated
@@ -523,12 +528,31 @@ public class TDModel extends Observable {
 		return this.money;
 	}
 	
+	/*
+	 * Purpose: Getter for rows.
+	 * 
+	 * @return int indicating number of rows.
+	 */
 	public int getRows() {
 		return rows;
 	}
 	
+	/*
+	 * Purpose: Getter for cols.
+	 * 
+	 * @return int indicating number of columns.
+	 */
 	public int getCols() {
 		return cols;
+	}
+	
+	/*
+	 * Purpose: Getter for turn.
+	 * 
+	 * @return int indicating current turn.
+	 */
+	public int getTurn() {
+		return turn;
 	}
 	
 }
