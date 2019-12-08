@@ -187,9 +187,7 @@ public class TDView extends Application implements Observer {
 			
 			//deletion
 			else {
-				System.out.println(gridBoard.get(row).get(col).getChildren());
 				gridBoard.get(row).get(col).getChildren().remove(2);
-				System.out.println(gridBoard.get(row).get(col).getChildren());
 			}
 			
 			// refresh the menu showing how much money is left
@@ -309,8 +307,11 @@ public class TDView extends Application implements Observer {
 		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
 		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
-		            		System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", towerChoice, row, col);
-		            		controller.removeEntity(towerChoice, row, col);
+		            		// if this is not an object, remove the tower.
+		            		if (!(gridBoard.get(row).get(col).getChildren().get(2) instanceof ImageView)) {
+		            			System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", gridBoard.get(row).get(col).getChildren().get(2), row, col);
+		            			controller.removeEntity(towerChoice, row, col);
+		            		}
 		            	}
 		                //slot2.setOpacity(1);
 		                
@@ -602,6 +603,7 @@ public class TDView extends Application implements Observer {
 		// Create MenuItems for the different stages
 		MenuItem stage1 = new MenuItem("Stage 1");
 		MenuItem stage2 = new MenuItem("Stage 2");
+		MenuItem stage3 = new MenuItem("Stage 3");
 		MenuItem randomStage = new MenuItem("Randomized Obstacles");
 		MenuItem surpriseMode = new MenuItem("Surprise Mode");
 		
@@ -634,6 +636,21 @@ public class TDView extends Application implements Observer {
 				// Build stage 2
 				System.out.println("Stage 2");
 				this.controller.buildStage2();
+			}
+		});
+		
+		// Create Stage 3 on action
+		stage3.setOnAction((e) -> {
+			if (newRound != null && newRound.isAlive()) {
+				// Wait for rounds to finish
+				newRoundPrevention();
+			} else {
+				// Reset the model
+				this.controller.reset();
+				
+				// Build stage 3
+				System.out.println("Stage 3");
+				this.controller.buildStage3();
 			}
 		});
 		
@@ -672,7 +689,7 @@ public class TDView extends Application implements Observer {
 		});
 		
 		// Add the MenuItem's to the Menu passed in
-		stageMenu.getItems().addAll(stage1, stage2, randomStage, surpriseMode);
+		stageMenu.getItems().addAll(stage1, stage2, stage3, randomStage, surpriseMode);
 	}
 	
 	/**

@@ -212,6 +212,21 @@ public class Entity {
 				this.base = "object";
 				this.image = new Image("images/object7.png");
 			}
+			else if (this.type.equals("object8")) {
+				// Plus path
+				this.base = "object";
+				this.image = new Image("images/object8.png");
+			}
+			else if (this.type.equals("object9")) {
+				// NS Path
+				this.base = "object";
+				this.image = new Image("images/object9.png");
+			}
+			else if (this.type.equals("object10")) {
+				// EW Path
+				this.base = "object";
+				this.image = new Image("images/object10.png");
+			}
 		}
 		
 		

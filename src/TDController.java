@@ -141,20 +141,54 @@ public class TDController {
 		return troops;
 	}
 	
+	/**
+	 * Purpose: Builds a preset stage 2 object layout.
+	 * 
+	 * @return boolean indicating successful stage creation.
+	 */
 	public boolean buildStage2() {
 		model.addEntity(new Entity("object0", this.model), 0, 7);
 		model.addEntity(new Entity("object0", this.model), 1, 7);
 		model.addEntity(new Entity("object0", this.model), 1, 6);
-		model.addEntity(new Entity("object1", this.model), 3, 7);
-		model.addEntity(new Entity("object1", this.model), 4, 8);
-		model.addEntity(new Entity("object1", this.model), 2, 8);
-		model.addEntity(new Entity("object2", this.model), 3, 8);
-		model.addEntity(new Entity("object2", this.model), 2, 7);
-		model.addEntity(new Entity("object3", this.model), 0, 6);
-		
+		model.addEntity(new Entity("object2", this.model), 2, 3);
+		model.addEntity(new Entity("object2", this.model), 1, 3);
+		model.addEntity(new Entity("object2", this.model), 4, 3);
+		model.addEntity(new Entity("object1", this.model), 3, 8);
+		model.addEntity(new Entity("object1", this.model), 2, 7);
+		model.addEntity(new Entity("object3", this.model), 2, 4);
+
+		// Reached when successful layout creation.
 		return true;
 	}
 	
+	/**
+	 * Purpose: Builds a preset stage 3 object layout.
+	 * 
+	 * @return boolean indicating successful stage creation.
+	 */
+	public boolean buildStage3() {
+		// Layout path
+		model.addEntity(new Entity("object10", this.model), 2, 0);
+		model.addEntity(new Entity("object8", this.model), 2, 1);
+		model.addEntity(new Entity("object9", this.model), 1, 1);
+		model.addEntity(new Entity("object9", this.model), 3, 1);
+		model.addEntity(new Entity("object10", this.model), 2, 2);
+		
+		// Layout buildings
+		model.addEntity(new Entity("object5", this.model), 4, 1);
+		model.addEntity(new Entity("object6", this.model), 0, 1);
+		model.addEntity(new Entity("object7", this.model), 0, 1);
+		model.addEntity(new Entity("object7", this.model), 0, 1);
+
+		// Reached when successful layout creation.
+		return true;
+	}
+	
+	/**
+	 * Purpose: Builds a random stage object layout.
+	 * 
+	 * @return boolean indicating successful stage creation.
+	 */
 	public boolean buildRandomStage(int row, int col) {
 		Random rand = new Random();
 		
@@ -165,12 +199,13 @@ public class TDController {
 					//selects random object
 					model.addEntity(new Entity("object"+rand.nextInt(2), this.model), i, j);
 				}
-				else if (rand.nextInt(100) > 15 && rand.nextInt(15) >= 10) {
+				else if (rand.nextInt(100) > 50 && rand.nextInt(15) >= 14) {
 					model.addEntity(new Entity("object3", this.model), i, j);
 				}
 			}
 		}
 		
+		// Reached when successful layout creation.
 		return true;
 	}
 	
@@ -292,7 +327,6 @@ public class TDController {
 		
 		// Returns true if all objects were successfully placed.
 		return true;
-
 	}
 	
 	/**

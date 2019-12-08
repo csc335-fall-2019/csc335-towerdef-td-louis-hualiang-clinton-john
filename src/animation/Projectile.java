@@ -61,8 +61,10 @@ public class Projectile {
     	this.x = 400 + (x * 150);
     	this.col = x;
     	this.attack = attack;
-    	this.myrate = (1.0/150.0)/this.speed;
+
+    	this.myrate = (1.0/150.0)/this.gameSpeed;
     	System.out.println(this.myrate);
+
     	this.pane = new GridPane();
     	pane.setMouseTransparent(true);
         this.target = target;
