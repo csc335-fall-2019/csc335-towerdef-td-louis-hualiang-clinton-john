@@ -198,9 +198,17 @@ public class TDView extends Application implements Observer {
 		
 		// Add an obstable
 		else if (entity.getBase().equals("object")) {
-			// Create a new Node with the Image and place it into the appropriate grid point
-			ImageView objView = new ImageView(entity.getImage());
-			gridBoard.get(row).get(col).getChildren().add(objView);
+			// Add object
+			if (((PlacementInfo) target).getDel() == 0) {
+				// Create a new Node with the Image and place it into the appropriate grid point
+				ImageView objView = new ImageView(entity.getImage());
+				gridBoard.get(row).get(col).getChildren().add(objView);
+			}
+			
+			// Delete object
+			else {
+				gridBoard.get(row).get(col).getChildren().remove(2);
+			}
 		}
 	}
 
@@ -603,13 +611,11 @@ public class TDView extends Application implements Observer {
 				// Wait for rounds to finish
 				newRoundPrevention();
 			} else {
-				// Reset the model and controller
-				TDModel model = new TDModel(ROWMAX, COLMAX);
-				model.addObserver(this);
-				this.controller = new TDController(model);
+				// Reset the model
+				this.controller.reset();
 				
-				// Reset the grid
-				buildMainGridPane();
+				// Fill in column 0 with the randomized town
+				controller.randomizeTownCol0(ROWMAX);
 			}
 		});
 		
@@ -619,15 +625,14 @@ public class TDView extends Application implements Observer {
 				// Wait for rounds to finish
 				newRoundPrevention();
 			} else {
-				// Reset the model and controller
-				TDModel model = new TDModel(ROWMAX, COLMAX);
-				model.addObserver(this);
-				this.controller = new TDController(model);
+				// Reset the model
+				this.controller.reset();
 				
-				// Reset the grid
-				buildMainGridPane();
+				// Fill in column 0 with the randomized town
+				controller.randomizeTownCol0(ROWMAX);
 				
 				// Build stage 2
+				System.out.println("Stage 2");
 				this.controller.buildStage2();
 			}
 		});
@@ -638,13 +643,11 @@ public class TDView extends Application implements Observer {
 				// Wait for rounds to finish
 				newRoundPrevention();
 			} else {
-				// Reset the model and controller
-				TDModel model = new TDModel(ROWMAX, COLMAX);
-				model.addObserver(this);
-				this.controller = new TDController(model);
+				// Reset the model
+				this.controller.reset();
 				
-				// Reset the grid
-				buildMainGridPane();
+				// Fill in column 0 with the randomized town
+				controller.randomizeTownCol0(ROWMAX);
 				
 				// Build random stage
 				this.controller.buildRandomStage(ROWMAX, COLMAX);
@@ -657,13 +660,11 @@ public class TDView extends Application implements Observer {
 				// Wait for rounds to finish
 				newRoundPrevention();
 			} else {
-				// Reset the model and controller
-				TDModel model = new TDModel(ROWMAX, COLMAX);
-				model.addObserver(this);
-				this.controller = new TDController(model);
+				// Reset the model
+				this.controller.reset();
 				
-				// Reset the grid
-				buildMainGridPane();
+				// Fill in column 0 with the randomized town
+				controller.randomizeTownCol0(ROWMAX);
 				
 				// Set surprise mode
 				//this.controller.setSurpriseMode();

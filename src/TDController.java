@@ -260,7 +260,7 @@ public class TDController {
 	public void pause() {
 		// Iterate over row by row
 		for (int row = 0; row < model.getRows(); row++) {
-			// Iterate over column by column starting from rightmost
+			// Iterate over column by column starting from leftmost
 			for (int col = 0; col < model.getCols(); col++) {
 				// Iterate over each Entity
 				model.pause(col, row);
@@ -293,6 +293,16 @@ public class TDController {
 		// Returns true if all objects were successfully placed.
 		return true;
 
+	}
+	
+	/**
+	 * Purpose: Resets the model's state.
+	 * 
+	 * @return boolean indicating successful reset of model's state.
+	 */
+	public boolean reset() {
+		// Have model reset itself
+		return model.reset();
 	}
 	
 	
