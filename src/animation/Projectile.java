@@ -91,6 +91,8 @@ public class Projectile {
     }
     
     public void translate() {
+    	
+    	this.translation = new Timeline();
 
         this.translation.setCycleCount(Timeline.INDEFINITE);
         
