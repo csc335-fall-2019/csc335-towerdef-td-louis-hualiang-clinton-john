@@ -188,6 +188,30 @@ public class Entity {
 				this.base = "object";
 				this.image = new Image("images/object2.png");
 			}
+			else if (this.type.equals("object3")) {
+				this.base = "object";
+				this.image = new Image("images/object3.png");
+			}
+			else if (this.type.equals("object4")) {
+				// Jail building
+				this.base = "object";
+				this.image = new Image("images/object4.png");
+			}
+			else if (this.type.equals("object5")) {
+				// Inn building
+				this.base = "object";
+				this.image = new Image("images/object5.png");
+			}
+			else if (this.type.equals("object6")) {
+				// Bar building
+				this.base = "object";
+				this.image = new Image("images/object6.png");
+			}
+			else if (this.type.equals("object7")) {
+				// Watchtower building
+				this.base = "object";
+				this.image = new Image("images/object7.png");
+			}
 		}
 		
 		

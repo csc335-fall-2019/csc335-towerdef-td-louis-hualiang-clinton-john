@@ -177,6 +177,43 @@ public class TDModel extends Observable {
 		return true;
 	}
 	
+	/**
+	 * Purpose: Moves an Entity from one column to the column left of it.
+	 * 
+	 * <pre>
+	 * Updates the state grid by moving the designated entity to the column 1 
+	 * space to the left and then removes it from the column it's on.
+	 * </pre>
+	 * 
+	 * @param col An int of the column the entity is on.
+	 * @param row An int of the row the entity is on.
+	 * @param moved An Entity of the entity to move.
+	 */
+	public void updateSpot(int col, int row, Entity moved) {
+		grid.get(row).get(col-1).add(moved);
+		grid.get(row).get(col).remove(moved);
+	}
+	
+	
+	public void resume(int col, int row, List<List<List<Entity>>> gridCopy) {
+		for(int i = 0; i<gridCopy.get(row).get(col).size()-1; i++ ) {
+			if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
+			}
+			
+		}
+	}
+	
+	// a test pause method
+	public void pause(int col, int row) {
+		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
+			Entity entity = grid.get(row).get(col).get(i);
+			entity.pause(entity.getBase());
+		}
+	}
+	
 	/************************** Private Fields Block ***************************/
 	
 	/**
@@ -236,31 +273,6 @@ public class TDModel extends Observable {
 //				
 //			}
 			
-		}
-	}
-	
-	public void updateSpot(int col, int row, Entity moved) {
-		grid.get(row).get(col-1).add(moved);
-		grid.get(row).get(col).remove(moved);
-
-	}
-	
-	public void resume(int col, int row, List<List<List<Entity>>> gridCopy) {
-		for(int i = 0; i<gridCopy.get(row).get(col).size()-1; i++ ) {
-			if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
-				gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
-				gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
-				gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
-			}
-			
-		}
-	}
-	
-	// a test pause method
-	public void pause(int col, int row) {
-		for(int i = 0; i<grid.get(row).get(col).size()-1; i++ ) {
-			Entity entity = grid.get(row).get(col).get(i);
-			entity.pause(entity.getBase());
 		}
 	}
 	
