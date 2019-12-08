@@ -187,7 +187,9 @@ public class TDView extends Application implements Observer {
 			
 			//deletion
 			else {
+				System.out.println(gridBoard.get(row).get(col).getChildren());
 				gridBoard.get(row).get(col).getChildren().remove(2);
+				System.out.println(gridBoard.get(row).get(col).getChildren());
 			}
 			
 			// refresh the menu showing how much money is left
@@ -626,7 +628,7 @@ public class TDView extends Application implements Observer {
 				buildMainGridPane();
 				
 				// Build stage 2
-				//this.controller.buildStage2();
+				this.controller.buildStage2();
 			}
 		});
 		
@@ -645,7 +647,7 @@ public class TDView extends Application implements Observer {
 				buildMainGridPane();
 				
 				// Build random stage
-				//this.controller.buildRandomStage(ROWMAX, COLMAX);
+				this.controller.buildRandomStage(ROWMAX, COLMAX);
 			}
 		});
 		
