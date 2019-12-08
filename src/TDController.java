@@ -225,9 +225,13 @@ public class TDController {
 		// Build a randomized queue
 		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
 		
+		// Set model's round status
+		model.setRoundStatus(0);
+		
 		// Loop over placing from the queue and progressing round, until round ends
-		//TODO testing as a for, to be while !roundOver or something of that flavor
-		for (int i = 0; i < 100; i++) {
+		boolean roundOver = false;
+		while (!roundOver) {
+			System.out.println("Running round");
 			Platform.runLater(() -> {
 				// Progressing through the queue, place entities when they appear in queue
 				for (int currRow = 0; currRow < rows; currRow++) {
@@ -248,7 +252,15 @@ public class TDController {
 				
 				// Perform the model progression		
 				model.nextStep();
+				
+				// 
 			});
+			
+			// Check if round over
+			if (model.getRoundStatus() != 0) {
+				System.out.println("Round over");
+				roundOver = true;
+			}
 			
 			// Sleep the thread, interrupts return false
 			try {
@@ -262,21 +274,6 @@ public class TDController {
 		// Reached when the round finishes
 		model.incrTurn();
 		return true;
-		
-		/*
-		for (int i = 0; i < 100; i++) {
-			Platform.runLater(() -> {
-				model.nextStep();
-			});
-			try {
-				Thread.sleep(1000/this.gameSpeed);
-			} catch (InterruptedException e) {
-				// Interrupt indicates stop thread
-				return false;
-			}
-		}
-		
-		return true;*/
 	}
 	
 	//a test pause method

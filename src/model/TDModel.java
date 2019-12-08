@@ -27,6 +27,8 @@ public class TDModel extends Observable {
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
 	private int turn;
+	private int enemyCount;
+	private int roundStatus;
 	
 
 	/**
@@ -48,6 +50,8 @@ public class TDModel extends Observable {
 
 		this.money = 10000;
 		this.turn = 1;
+		this.enemyCount = 0;
+		this.roundStatus = 0;
 
 		
 		// Setup the Inner list of lists of entities
@@ -92,6 +96,11 @@ public class TDModel extends Observable {
 		setChanged();
 		notifyObservers(new PlacementInfo(entity, row, col, 0));
 		
+		// zombie types increment enemy count
+		if (entity.getBase().equals("zombie")) {
+			this.enemyCount++;
+		}
+		
 		// Return successful placement
 		return true;
 	}
@@ -135,9 +144,9 @@ public class TDModel extends Observable {
 	/**
 	 * Purpose: Checks each Entity for their round actions and notifies observers.
 	 * 
-	 * @return boolean indicating successful checking.
+	 * @return int indicating round continuation, loss, or win.
 	 */
-	public boolean nextStep() {
+	public int nextStep() {
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
 		
@@ -154,7 +163,13 @@ public class TDModel extends Observable {
 					// Check entity base type
 					if (entity.getBase().equals("zombie")) {
 						// entity is an enemy, perform actions
-						enemyAction(row, col, position, gridCopy);
+						boolean roundContinue = enemyAction(row, col, position, gridCopy);
+						
+						// Return -1 if round was lost
+						if (!roundContinue) {
+							this.roundStatus = -1;
+							return -1;
+						}
 					} else if (entity.getBase().equals("tower")) {
 						// entity is a tower
 						// Calculate how many checks to the right to perform (-1 for looking 1 to the right)
@@ -176,7 +191,17 @@ public class TDModel extends Observable {
 				}
 			}
 		}
-		return true;
+		
+		// Check if the round will continue or is won
+		if (this.enemyCount == 0) {
+			// No more enemies and the round wasn't previously lost
+			this.roundStatus = 1;
+			return 1;
+		} else {
+			// Round continues on
+			this.roundStatus = 0;
+			return 0;
+		}
 	}
 	
 	/**
@@ -223,9 +248,10 @@ public class TDModel extends Observable {
 	 * @return boolean indicating successful reset.
 	 */
 	public boolean reset() {
-		// Reset money and turn
+		// Reset status variables
 		this.money = 10000;
 		this.turn = 1;
+		this.enemyCount = 0;
 		
 		// Grab a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
@@ -275,8 +301,10 @@ public class TDModel extends Observable {
 	 * @param col An int of the column being checked.
 	 * @param position An int of the Entity's position.
 	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for moving entries.
+	 * 
+	 * @return boolean indicating if round continues (was not lost).
 	 */
-	private void enemyAction(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
+	private boolean enemyAction(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		// Check the space to the left
 		if (col > 0) {
 			//System.out.printf("row %d, col %d, position %d\n", row, col, position);
@@ -317,7 +345,12 @@ public class TDModel extends Observable {
 					grid.get(row).get(col).remove(removed);
 				}
 			}
+			
+			return false;
 		}
+		
+		// Reached when round was not lost
+		return true;
 	}
 	
 	/**
@@ -512,6 +545,9 @@ public class TDModel extends Observable {
 			
 			// Reward money
 			this.money += 50;
+			
+			// Update enemyCount
+			this.enemyCount--;
 		}
 		}
 	}
@@ -553,6 +589,24 @@ public class TDModel extends Observable {
 	 */
 	public int getTurn() {
 		return turn;
+	}
+	
+	/*
+	 * Purpose: Getter for roundStatus.
+	 * 
+	 * @return int indicating a round's status.
+	 */
+	public int getRoundStatus() {
+		return roundStatus;
+	}
+	
+	/**
+	 * Purpose: Setter for roundStatus.
+	 * 
+	 * @param roundStatus An int to set roundStatus.
+	 */
+	public void setRoundStatus(int roundStatus) {
+		this.roundStatus = roundStatus;
 	}
 	
 }
