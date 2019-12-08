@@ -246,7 +246,7 @@ public class TDController {
 		
 		// Loop over the rows at column 0
 		for (int i = 0; i < rows; i++) {
-			model.addEntity(new Entity("object"+(rand.nextInt(4)+4)), i, 0);
+			model.addEntity(new Entity("object"+(rand.nextInt(4)+4), this.model), i, 0);
 		}
 		
 		// Returns true if all objects were successfully placed.
