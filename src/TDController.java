@@ -227,6 +227,18 @@ public class TDController {
 		return true;
 	}
 	
+	//a test pause method
+	public void pause() {
+		// Iterate over row by row
+		for (int row = 0; row < model.getRows(); row++) {
+			// Iterate over column by column starting from rightmost
+			for (int col = 0; col < model.getCols(); col++) {
+				// Iterate over each Entity
+				model.pause(col, row);
+			}
+		}
+	}
+
 	/**
 	 * Purpose: Places town objects on column 0 randomly.
 	 * 
@@ -251,6 +263,7 @@ public class TDController {
 		
 		// Returns true if all objects were successfully placed.
 		return true;
+
 	}
 	
 	
