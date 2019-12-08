@@ -11,6 +11,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -89,7 +91,7 @@ public class TDView extends Application implements Observer {
 		buildMenu();
 		
 		// Add events to stageMenu
-		//newStageEvents(stageMenu);
+		newStageEvents(stageMenu);
 		
 		// VBox to hold the toolbar and mainGrid
 		//HBox root = new HBox(3);
@@ -149,7 +151,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		runGame(root1);
+		//runGame(root1);
 	}
 	
 	/**
@@ -514,64 +516,89 @@ public class TDView extends Application implements Observer {
 		
 		// Create Stage 1 on action
 		stage1.setOnAction((e) -> {
-			// Wrap up any threads
 			if (newRound != null && newRound.isAlive()) {
-				newRound.interrupt();
+				// Wait for rounds to finish
+				newRoundPrevention();
+			} else {
+				// Reset the model and controller
+				TDModel model = new TDModel(ROWMAX, COLMAX);
+				model.addObserver(this);
+				this.controller = new TDController(model);
+				
+				// Reset the grid
+				buildMainGridPane();
 			}
-			
-			// Reset the model and controller
-			TDModel model = new TDModel(ROWMAX, COLMAX);
-			model.addObserver(this);
-			this.controller = new TDController(model);
-			
-			// Reset the grid
-			buildMainGridPane();
 		});
 		
 		// Create Stage 2 on action
 		stage2.setOnAction((e) -> {
-			// Reset the model and controller
-			TDModel model = new TDModel(ROWMAX, COLMAX);
-			model.addObserver(this);
-			this.controller = new TDController(model);
-			
-			// Reset the grid
-			buildMainGridPane();
-			
-			// Build stage 2
-			//this.controller.buildStage2();
+			if (newRound != null && newRound.isAlive()) {
+				// Wait for rounds to finish
+				newRoundPrevention();
+			} else {
+				// Reset the model and controller
+				TDModel model = new TDModel(ROWMAX, COLMAX);
+				model.addObserver(this);
+				this.controller = new TDController(model);
+				
+				// Reset the grid
+				buildMainGridPane();
+				
+				// Build stage 2
+				//this.controller.buildStage2();
+			}
 		});
 		
 		// Create Random Stage on action
 		randomStage.setOnAction((e) -> {
-			// Reset the model and controller
-			TDModel model = new TDModel(ROWMAX, COLMAX);
-			model.addObserver(this);
-			this.controller = new TDController(model);
-			
-			// Reset the grid
-			buildMainGridPane();
-			
-			// Build random stage
-			//this.controller.buildRandomStage(ROWMAX, COLMAX);
+			if (newRound != null && newRound.isAlive()) {
+				// Wait for rounds to finish
+				newRoundPrevention();
+			} else {
+				// Reset the model and controller
+				TDModel model = new TDModel(ROWMAX, COLMAX);
+				model.addObserver(this);
+				this.controller = new TDController(model);
+				
+				// Reset the grid
+				buildMainGridPane();
+				
+				// Build random stage
+				//this.controller.buildRandomStage(ROWMAX, COLMAX);
+			}
 		});
 		
 		// Create Surprise Stage on action
 		surpriseMode.setOnAction((e) -> {
-			// Reset the model and controller
-			TDModel model = new TDModel(ROWMAX, COLMAX);
-			model.addObserver(this);
-			this.controller = new TDController(model);
-			
-			// Reset the grid
-			buildMainGridPane();
-			
-			// Set surprise mode
-			//this.controller.setSurpriseMode();
+			if (newRound != null && newRound.isAlive()) {
+				// Wait for rounds to finish
+				newRoundPrevention();
+			} else {
+				// Reset the model and controller
+				TDModel model = new TDModel(ROWMAX, COLMAX);
+				model.addObserver(this);
+				this.controller = new TDController(model);
+				
+				// Reset the grid
+				buildMainGridPane();
+				
+				// Set surprise mode
+				//this.controller.setSurpriseMode();
+			}
 		});
 		
 		// Add the MenuItem's to the Menu passed in
 		stageMenu.getItems().addAll(stage1, stage2, randomStage, surpriseMode);
+	}
+	
+	/**
+	 * Purpose: Displays an alert to the user about starting a new round.
+	 */
+	private void newRoundPrevention() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("Hold up");
+		alert.setContentText("Wait for the round to end before choosing a new stage");
+		alert.showAndWait();
 	}
 	
 }

@@ -89,7 +89,7 @@ public class TDController {
 	public boolean removeEntity(String name, int row, int col) {
 
 		Entity entity = new Entity(name, this.model);
-		//model.removeEntity(entity, row, col);
+		model.removeEntity(entity, row, col, true);
 
 		//Entity entity = new Entity(name);
 		//model.removeEntity(entity, row, col, true);
