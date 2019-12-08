@@ -265,7 +265,7 @@ public class TDView extends Application implements Observer {
 				*/
 				
 				SandboxFX slot3 = new SandboxFX();
-				
+				 
 				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		            @Override
