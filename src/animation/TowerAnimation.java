@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.entity.Entity;
 
 public class TowerAnimation extends Node{
 	private String action = "zombie1";
@@ -35,8 +36,10 @@ public class TowerAnimation extends Node{
     private Animation animation;
     private int attack = 1;
     private int x;
+    private int y;
     private int dif;
     private Projectile projectile;
+
     
     
     private static final int COLUMNS  =   9;
@@ -48,13 +51,15 @@ public class TowerAnimation extends Node{
 
     public TowerAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int x) {
     	this.root1 = stage;
-    	this.y_cor = y;
+    	this.y_cor = 60 + (150 * y);
     	this.speed = speed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
     	this.x = x;
+    	this.y = y;
     	this.dif = 600;
+
     }
 
     public void start() {
@@ -98,6 +103,7 @@ public class TowerAnimation extends Node{
     	projectile.translate();
     	*/
         
+
         this.towerPane = new BorderPane();
        
         this.towerPane.setCenter(imageView);
@@ -108,6 +114,14 @@ public class TowerAnimation extends Node{
         	
     }
     
+
+    public void spawnProjectile(Entity target) {
+    	String action = "weapon4";
+       	Projectile projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
+   		projectile.start();
+   		projectile.translate();
+    }
+
     /**
      * Purpose: Adjusts the difference used for animation calculation.
      * 
@@ -121,18 +135,19 @@ public class TowerAnimation extends Node{
     	this.projectile.setDifference(dif);
     }
     
-    /**
-     * 
-     */
-    public void makeProjectile(EntityAnimation enemyAni) {
-    	String action = "weapon4";
-        //int dif = 600;
-    	projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode, action, 8, 1, 300 +(150 * this.x) + 60, dif, enemyAni);
-    	projectile.start();
-    	projectile.translate();
-    }
+//    /**
+//     * 
+//     */
+//    public void makeProjectile(EntityAnimation enemyAni) {
+//    	String action = "weapon4";
+//        //int dif = 600;
+//    	projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode, action, 8, 1, 300 +(150 * this.x) + 60, dif, enemyAni);
+//    	projectile.start();
+//    	projectile.translate();
+//    }
     
     /************************ Getters and Setters Block ************************/
+
     
     public BorderPane getPane() {
     	

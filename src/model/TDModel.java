@@ -26,6 +26,7 @@ public class TDModel extends Observable {
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
+	
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -168,7 +169,7 @@ public class TDModel extends Observable {
 						}
 						
 						// perform the actions
-						//towerAction(row, col, position, range, hits, gridCopy);
+						towerAction(row, col, position, range, hits, gridCopy);
 					}
 				}
 			}
@@ -204,7 +205,7 @@ public class TDModel extends Observable {
 				// Non-tower means movement
 				if (check == null || !check.getBase().contentEquals("tower")) {
 					// Move current enemy to the left
-					tryMoveLeft(row, col, position, gridCopy);
+					//tryMoveLeft(row, col, position, gridCopy);
 				}
 				// Previous checks failed so this is a tower
 				else {
@@ -215,18 +216,43 @@ public class TDModel extends Observable {
 			// Left entry didnt have elements to grab, thus open space
 			else {
 				// Move current enemy to the left
-				tryMoveLeft(row, col, position, gridCopy);
+				//tryMoveLeft(row, col, position, gridCopy);
+				
+				resume(row, col, gridCopy);
 			}
 		}
 		
 		// No spaces left implies end of row
 		else {
 			// End of row actions
-			System.out.println("End of row action");
-			Entity removed = gridCopy.get(row).get(col).get(position);
-			removed.getEnemyAnimation().getTranslation().pause();
-			removed.getEnemyAnimation().Death();
-			grid.get(row).get(col).remove(removed);
+//			System.out.println("End of row action");
+//			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
+//				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+//					Entity removed = gridCopy.get(row).get(col).get(i);
+//					removed.getEnemyAnimation().getTranslation().pause();
+//					removed.getEnemyAnimation().Death();
+//					grid.get(row).get(col).remove(removed);
+//				}
+//				
+//			}
+			
+		}
+	}
+	
+	public void updateSpot(int col, int row, Entity moved) {
+		grid.get(row).get(col-1).add(moved);
+		grid.get(row).get(col).remove(moved);
+
+	}
+	
+	public void resume(int col, int row, List<List<List<Entity>>> gridCopy) {
+		for(int i = 0; i<gridCopy.get(row).get(col).size()-1; i++ ) {
+			if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
+				gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
+			}
+			
 		}
 	}
 	
@@ -308,7 +334,20 @@ public class TDModel extends Observable {
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
 			System.out.println("Tower defeated");
+
+			grid.get(row).get(col).remove(tower);
+			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
+				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+					System.out.println(gridCopy.get(row).get(col).get(i).getBase());
+					gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
+					gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
+					gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
+				}
+				
+			}
+
 			removeEntity(tower, row, col, false);
+
 			attacker.getEnemyAnimation().getTranslation().play();
 
 			attacker.getEnemyAnimation().setMode("_walk");
@@ -381,8 +420,19 @@ public class TDModel extends Observable {
 	private void damageEnemy(int row, int col, int hitsLeft, Entity tower, Entity enemy) {
 		System.out.println("Attacking zombie");
 		// Apply damage
+		//tower.beAttacked(attacker.getAttack());
 		enemy.beAttacked(tower.getAttack());
+
+		// Visual
+		tower.getAnimation().spawnProjectile(enemy);
 		
+		// Check if tower is defeated
+		if (tower.isDead()) {
+			// Tower is defeated, remove from state grid
+			System.out.println("Tower defeated");
+			grid.get(row).get(col-1).remove(tower);
+			tower.getAnimation().Delete();
+
 		// Visual - Projectile spawned when final enemy hit is found
 		if (hitsLeft == 0) {
 			// Final enemy that the projectile will hit
@@ -406,6 +456,7 @@ public class TDModel extends Observable {
 			
 			// Reward money
 			this.money += 50;
+		}
 		}
 	}
 	
