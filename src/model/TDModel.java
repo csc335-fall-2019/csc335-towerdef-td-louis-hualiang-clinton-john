@@ -147,6 +147,9 @@ public class TDModel extends Observable {
 	 * @return int indicating round continuation, loss, or win.
 	 */
 	public int nextStep() {
+		// Boolean for checking if round is loss
+		boolean isLoss = false;
+		
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
 		
@@ -165,10 +168,9 @@ public class TDModel extends Observable {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
-						// Return -1 if round was lost
+						// Update round loss
 						if (!roundContinue) {
-							this.roundStatus = -1;
-							return -1;
+							isLoss = true;
 						}
 					} else if (entity.getBase().equals("tower")) {
 						// entity is a tower
@@ -193,7 +195,12 @@ public class TDModel extends Observable {
 		}
 		
 		// Check if the round will continue or is won
-		if (this.enemyCount == 0) {
+		if (isLoss) {
+			// Round is lost
+			this.roundStatus = -1;
+			return -1;
+		}
+		else if (this.enemyCount == 0) {
 			// No more enemies and the round wasn't previously lost
 			this.roundStatus = 1;
 			return 1;
@@ -520,25 +527,40 @@ public class TDModel extends Observable {
 		// Visual
 		tower.getAnimation().spawnProjectile(enemy);
 		
-		// Visual - Projectile spawned when final enemy hit is found
-		if (hitsLeft == 0) {
-			// Final enemy that the projectile will hit
-			tower.fireProjectile(enemy);
-		}
-		
-		// Check if enemy is defeated
-		if (enemy.isDead()) {
-			// Enemy is defeated, remove from state grid and set death in animation
-			System.out.println("Zombie defeated");
-			enemy.getEnemyAnimation().setDeath();
-			grid.get(row).get(col).remove(enemy);
-			// Visual death will be called in the projectile
+		// Check if tower is defeated
+		if (tower.isDead()) {
+			// Tower is defeated, remove from state grid
+			System.out.println("Tower defeated");
+			grid.get(row).get(col-1).remove(tower);
+			tower.getAnimation().Delete();
+
+			// Visual - Projectile spawned when final enemy hit is found
+			if (hitsLeft == 0) {
+				// Final enemy that the projectile will hit
+				tower.fireProjectile(enemy);
+				/*
+				enemy.getEnemyAnimation();
+				enemy.getEnemyAnimation().getTranslation();
+				enemy.getEnemyAnimation().getTranslation().pause();
+				enemy.getEnemyAnimation().setMode("_attack");
+				enemy.getEnemyAnimation().start();
+				*/
+			}
 			
-			// Reward money
-			this.money += 50;
-			
-			// Update enemyCount
-			this.enemyCount--;
+			// Check if enemy is defeated
+			if (enemy.isDead()) {
+				// Tower is defeated, remove from state grid and set death in animation
+				System.out.println("Zombie defeated");
+				enemy.getEnemyAnimation().setDeath();
+				grid.get(row).get(col).remove(enemy);
+				// Visual death will be called in the projectile
+				
+				// Reward money
+				this.money += 50;
+				
+				// Decrement enemy count
+				this.enemyCount--;
+			}
 		}
 	}
 	

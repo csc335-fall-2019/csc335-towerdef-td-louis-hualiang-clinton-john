@@ -256,11 +256,18 @@ public class TDController {
 				// 
 			});
 			
-			// Check if round over
-			if (model.getRoundStatus() != 0) {
-				System.out.println("Round over");
+			// Check if round was lost
+			if (model.getRoundStatus() == -1) {
+				System.out.println("Round over, zombies won");
 				roundOver = true;
 			}
+			
+			// Check if round was won
+			else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
+				System.out.println("Round over, player won");
+				roundOver = true;
+			}
+			
 			
 			// Sleep the thread, interrupts return false
 			try {
@@ -336,6 +343,26 @@ public class TDController {
 	 */
 	private boolean canAfford(Entity entity) {
 		return ((model.getMoney() - entity.getPrice()) >= 0);
+	}
+	
+	/**
+	 * Purpose: Determines if there are still enemeies in the queue.
+	 * 
+	 * @param queue A List&ltList&ltEntity&gt&gt holding the enemies to queue.
+	 * 
+	 * @return boolean indicating if enemeies are still in queue.
+	 */
+	private boolean enemiesInQueue(List<List<Entity>> queue) {
+		// Iterate over the Lists in the queue
+		for (List<Entity> lineUp : queue) {
+			// If even one line contains items, then the queue is not empty
+			if (!lineUp.isEmpty()) {
+				return false;
+			}
+		}
+		
+		// Reached if all lists in queue were empty
+		return true;
 	}
 	
 	/************************ Getters and Setters Block ************************/
