@@ -423,11 +423,11 @@ public class TDModel extends Observable {
 	 */
 	private void towerAction(int row, int col, int position, int range, int hits, List<List<List<Entity>>> gridCopy) {	
 		// Perform checks based on range and hits penetration
-		int shift = 1;
+		int shift = 0;
 		int hitsLeft = hits;
 
 		//System.out.printf("row %d, col %d, position %d\n", row, col, position);
-		while (shift <= range && hitsLeft > 0) {
+		while (shift < range && hitsLeft > 0) {
 			System.out.printf("Column checking %d\n", col+shift);
 			// Check the spaces to the right
 			if (col+shift < this.cols) {

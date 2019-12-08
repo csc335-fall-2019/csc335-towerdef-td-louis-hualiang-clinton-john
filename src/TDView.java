@@ -156,7 +156,7 @@ public class TDView extends Application implements Observer {
 		//Testing out animation
 		
 		// Run the game test
-		runGame(root1);
+		//runGame(root1);
 	}
 	
 	/**
@@ -647,6 +647,9 @@ public class TDView extends Application implements Observer {
 			} else {
 				// Reset the model
 				this.controller.reset();
+				
+				// Fill in column 0 with the randomized town
+				controller.randomizeTownCol0(ROWMAX);
 				
 				// Build stage 3
 				System.out.println("Stage 3");

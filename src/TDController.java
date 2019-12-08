@@ -169,19 +169,11 @@ public class TDController {
 	 * @return boolean indicating successful stage creation.
 	 */
 	public boolean buildStage3(int row) {
-		// Layout path
-		/*
-		model.addEntity(new Entity("object10", this.model), 2, 0);
-		model.addEntity(new Entity("object8", this.model), 2, 1);
-		model.addEntity(new Entity("object7", this.model), 2, 1);
-		model.addEntity(new Entity("object9", this.model), 1, 1);
-		model.addEntity(new Entity("object9", this.model), 3, 1);*/
-		/*
+		// Layout broken barricades and path
 		for (int i = 0; i < row; i++) {
-			model.addEntity(new Entity("object11", this.model), i, 0);
-			model.addEntity(new Entity("object11", this.model), i, 1);
-			model.addEntity(new Entity("object11", this.model), i, 2);
-		}*/
+			model.addEntity(new Entity("object9", this.model), i, 3);
+			model.addEntity(new Entity("object2", this.model), i, 3);
+		}
 		
 		// Layout buildings
 		model.addEntity(new Entity("object5", this.model), 4, 1);
