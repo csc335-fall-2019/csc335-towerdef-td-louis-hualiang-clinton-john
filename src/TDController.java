@@ -28,7 +28,7 @@ import model.entity.*;
 public class TDController {
 	private int turn;
 	private TDModel model;
-	private int gameSpeed;
+	private int gameSpeed = 2;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -41,7 +41,7 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
-		this.gameSpeed = 1;
+		this.gameSpeed = 2;
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class TDController {
 			model.addEntity(zom3, 0, 8);
 			
 			
-			Entity zom4 = new Entity("zombie0", this.model);
+			Entity zom4 = new Entity("zombie2", this.model);
 			EntityAnimation entityAnimation3 = zom4.enemyAnimation(root, 0, 8, zom4);
 			entityAnimation3.translate();
 			
@@ -194,7 +194,7 @@ public class TDController {
 				model.nextStep();
 			});
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1000/this.gameSpeed);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -250,5 +250,9 @@ public class TDController {
 	 */
 	public int getMoney() {
 		return model.getMoney();
+	}
+	
+	public void setSpeed(int x) {
+		this.gameSpeed = x;
 	}
 }

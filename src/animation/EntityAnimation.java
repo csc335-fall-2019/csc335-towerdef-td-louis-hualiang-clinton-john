@@ -55,6 +55,7 @@ public class EntityAnimation extends Node{
     public int col;
     public Entity zom;
     public int row;
+    private int gameSpeed = 2;
     
     private double move;
 
@@ -69,14 +70,14 @@ public class EntityAnimation extends Node{
     public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack, TDModel model, int col, Entity zom, int row) {
     	this.root1 = stage;
     	this.y_cor = y;
-    	this.speed = speed;
+    	this.speed = speed * this.gameSpeed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
-    	this.rate = 1/this.speed;
+    	this.rate = (1/this.speed)/this.gameSpeed;
     	this.move = 0;
     	this.pane = new GridPane();
         
@@ -86,7 +87,7 @@ public class EntityAnimation extends Node{
         this.zom = zom;
         this.row = row;
         
-        // A Group object has no layout of children easier to use here
+        
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
     }
@@ -114,13 +115,10 @@ public class EntityAnimation extends Node{
                     	
                     	//TranslateTransition transition = getTranslation();
                     	TDModel model = getModel();
-                    	int start = getStart();
+                    	
                     	int y_cor = getY();
                     	double x = check1();
                     	double y = getSpeed();
-                    	
-                    	
-                    	
                     	
                     	pane.setTranslateX(pane.getTranslateX() - 1);
                     	pane.setTranslateY(y_cor);
@@ -129,38 +127,17 @@ public class EntityAnimation extends Node{
                     		incrMove();
                     		minusStart();
                     		if(getMove() % 150 == 0) {
-                        		model.updateSpot(col, row, zom);
-                        		col -= 1;
+                    			
+                    			if(col == 0) {
+                    				Death();
+                    			}else {
+                    				model.updateSpot(col, row, zom);
+                            		col -= 1;
+                    			}
+                        		
                         	}
                     	}
                     	inc2();
-                    	
-                    	// move the zombie from right to left
-                    	//transition = new TranslateTransition();
-					    //this.walking.setDuration(Duration.millis(2000));
-                    	//transition.setNode(pane);
-					
-                    	//transition.setFromX(start);
-                    	//transition.setToX(start - 1200);
-					
-                    	//transition.setFromY(y_cor);
-					   
-                    	//transition.setDuration(Duration.seconds(25));
-                    	//transition.setRate((this.difference/50) * (this.speed));
-                    	
-                    	//transition.play();
-					    //minusStart();
-					    //incrMove();
-					
-					   
-//                    	transition.setOnFinished(new EventHandler<ActionEvent>() {
-//						   @Override
-//					       public void handle(ActionEvent event) {
-//					            attack();
-//					
-//					       }
-//					   });
-					   
                     }
                     
         		});
@@ -197,6 +174,7 @@ public class EntityAnimation extends Node{
     
     
     public void Death() {
+    	this.translation.pause();
     	this.mode = "_death";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
@@ -355,6 +333,10 @@ public class EntityAnimation extends Node{
    
    public TDModel getModel() {
 	   return this.model;
+   }
+   
+   public void setSpeed(int speed) {
+	   this.gameSpeed = speed;
    }
 
 	@Override

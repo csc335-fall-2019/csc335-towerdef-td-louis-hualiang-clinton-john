@@ -135,11 +135,11 @@ public class TDView extends Application implements Observer {
 		
 		
 		
-		String a = "weapon4";
-		int dif = 600;
-    	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
-    	projectile.start();
-    	projectile.translate();
+//		String a = "weapon4";
+//		int dif = 600;
+//    	Projectile projectile = new Projectile(this.root1, 1, 2, "_attack",a, 8, 1, 500, dif);
+//    	projectile.start();
+//    	projectile.translate();
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();

@@ -7,6 +7,8 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import model.TDModel;
+import model.entity.Entity;
 
 public class Projectile {
 	private String action = "weapon4";
@@ -27,12 +31,16 @@ public class Projectile {
     private String mode;
     private int attack;
     private Animation animation;
-    private TranslateTransition translation;
+    private Timeline translation;
     private int x;
     private double difference = 150;
     private int rate;
-    private EntityAnimation target;
+    private Entity target;
     private double duration = 5;
+    public int row;
+    public int col;
+    private int gameSpeed;
+    public boolean lethal = false;
     
     private int COLUMNS  =   9;
     private int COUNT    =  6;
@@ -41,22 +49,23 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
-    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, int dif) {
+    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, int dif, Entity target) {
     	this.root1 = stage;
-    	this.y_cor = y + 10;
+    	this.y_cor = 60 + (60 * y);
+    	this.row = y;
     	this.speed = speed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
-    	this.x = x + 10;
+    	this.x = 300 + (x * 150);
+    	this.col = x;
     	this.attack = attack;
-    	this.rate = 150;
+    	this.rate = (1/150)/this.gameSpeed;
     	this.difference = dif;
     	this.pane = new GridPane();
-        this.pane.setVgap(10);
-        this.pane.setHgap(10);
-        //this.target = target;
-        //this.duration = (target.getStart() - this.x)/(target.getRate() + this.rate);
+        this.target = target;
+        pane.setTranslateX(this.x);
+        
     	
     	
     }
@@ -74,32 +83,36 @@ public class Projectile {
     }
     
     public void translate() {
-    	// move the zombie from right to left
-        this.walking = new TranslateTransition();
-        //this.walking.setDuration(Duration.millis(2000));
-        this.walking.setNode(pane);
-        this.walking.setFromX(this.x);
-        this.walking.setToX(this.x + (this.rate * this.duration));
-        this.walking.setFromY(this.y_cor);
-       
-        this.walking.setDuration(Duration.seconds(this.duration));
-        this.walking.setRate(this.rate/150);
-        this.walking.play();
+    	
+    	this.translation = new Timeline();
         
-        // A Group object has no layout of children easier to use here
-        this.pane.setMouseTransparent(true);
-        this.root1.getChildren().add(pane);
-        this.mode = "_attack";
-        this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-                Delete();
-                
-            }
-        });
-    }
+        this.translation.setCycleCount(Timeline.INDEFINITE);
+        
+        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
+                new EventHandler<ActionEvent>() {
+
+                    public void handle(ActionEvent event) {
+                    	
+                    	Timeline transition = getTranslation();
+                    	
+                    	pane.setTranslateX(pane.getTranslateX() + 1);
+                    	pane.setTranslateY(y_cor);
+                    	
+                    	if(pane.getTranslateX() == target.getEnemyAnimation().getTranslateX()) {
+                    		transition.pause();
+                    		Delete();
+                    		if(lethal == true) {
+                    			target.getEnemyAnimation().Death();
+                    		}
+                    	}
+  
+                    }
+                    
+        		});
+        this.translation.getKeyFrames().add(moveBall);
+        this.translation.play();
+        
+        }
     
     public void Delete() {
         	this.pane.getChildren().remove(0);
@@ -147,7 +160,7 @@ public class Projectile {
     	return this.animation;
     }
     
-    public TranslateTransition getTranslation() {
+    public Timeline getTranslation() {
     	return this.translation;
     }
     
@@ -166,7 +179,9 @@ public class Projectile {
    public double getDif() {
 	   return this.difference;
    }
-    
-
-	
+   
+   public void setSpeed(int speed) {
+	   this.gameSpeed = speed;
+   }
+ 
 }

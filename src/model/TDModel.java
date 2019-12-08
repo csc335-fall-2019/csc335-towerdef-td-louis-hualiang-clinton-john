@@ -26,6 +26,7 @@ public class TDModel extends Observable {
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
+	
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -204,11 +205,17 @@ public class TDModel extends Observable {
 		// No spaces left implies end of row
 		else {
 			// End of row actions
-			System.out.println("End of row action");
-			Entity removed = gridCopy.get(row).get(col).get(position);
-			removed.getEnemyAnimation().getTranslation().pause();
-			removed.getEnemyAnimation().Death();
-			grid.get(row).get(col).remove(removed);
+//			System.out.println("End of row action");
+//			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
+//				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+//					Entity removed = gridCopy.get(row).get(col).get(i);
+//					removed.getEnemyAnimation().getTranslation().pause();
+//					removed.getEnemyAnimation().Death();
+//					grid.get(row).get(col).remove(removed);
+//				}
+//				
+//			}
+			
 		}
 	}
 	
