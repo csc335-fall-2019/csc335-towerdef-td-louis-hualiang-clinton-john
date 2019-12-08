@@ -62,6 +62,7 @@ public class Projectile {
     	this.col = x;
     	this.attack = attack;
     	this.rate = (1/150)/this.gameSpeed;
+    	System.out.println(this.rate);
     	this.pane = new GridPane();
 
         this.target = target;
@@ -106,7 +107,7 @@ public class Projectile {
                     	pane.setTranslateX(pane.getTranslateX() + 1);
                     	pane.setTranslateY(y_cor);
                     	
-                    	if(pane.getTranslateX() == target.getEnemyAnimation().getTranslateX()) {
+                    	if(pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) {
                     		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), enemy.getEnemyAnimation().getXCollision());
                     		transition.pause();
                     		Delete();

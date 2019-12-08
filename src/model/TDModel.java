@@ -295,17 +295,15 @@ public class TDModel extends Observable {
 		// No spaces left implies end of row
 		else {
 			// End of row actions
-//			System.out.println("End of row action");
-//			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
-//				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
-//					Entity removed = gridCopy.get(row).get(col).get(i);
-//					removed.getEnemyAnimation().getTranslation().pause();
-//					removed.getEnemyAnimation().Death();
-//					grid.get(row).get(col).remove(removed);
-//				}
-//				
-//			}
-			
+			System.out.println("End of row action");
+			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
+				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
+					Entity removed = gridCopy.get(row).get(col).get(i);
+					removed.getEnemyAnimation().getTranslation().pause();
+					removed.getEnemyAnimation().Death();
+					grid.get(row).get(col).remove(removed);
+				}
+			}
 		}
 	}
 	
