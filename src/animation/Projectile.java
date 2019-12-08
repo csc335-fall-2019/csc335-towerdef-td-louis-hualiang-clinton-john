@@ -63,7 +63,6 @@ public class Projectile {
     	this.attack = attack;
 
     	this.myrate = (1.0/150.0)/this.gameSpeed;
-    	System.out.println(this.myrate);
 
     	this.pane = new GridPane();
     	pane.setMouseTransparent(true);

@@ -177,8 +177,8 @@ public class TDView extends Application implements Observer {
 		// Add a tower
 		if (entity.getBase().equals("tower")) {
 			if (((PlacementInfo) target).getDel() == 0) {
-				System.out.println("Making image view for entity");
-				System.out.println(entity.getType());
+				//System.out.println("Making image view for entity");
+				//System.out.println(entity.getType());
 					
 				// Create a new Node with the Image and place it into the appropriate grid point
 				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
@@ -304,12 +304,12 @@ public class TDView extends Application implements Observer {
 		            public void handle(MouseEvent Event) {
 		            	// Valid placement check
 		            	if (stack.getChildren().size() < 3) {
-		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
+		            		//System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
 		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
 		            		// if this is not an object, remove the tower.
 		            		if (!(gridBoard.get(row).get(col).getChildren().get(2) instanceof ImageView)) {
-		            			System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", gridBoard.get(row).get(col).getChildren().get(2), row, col);
+		            			//System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", gridBoard.get(row).get(col).getChildren().get(2), row, col);
 		            			controller.removeEntity(towerChoice, row, col);
 		            		}
 		            	}

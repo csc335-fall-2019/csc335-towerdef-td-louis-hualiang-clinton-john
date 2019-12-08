@@ -435,7 +435,7 @@ public class TDModel extends Observable {
 			grid.get(row).get(col).remove(tower);
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
 				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
-					System.out.println(gridCopy.get(row).get(col).get(i).getBase());
+					//System.out.println(gridCopy.get(row).get(col).get(i).getBase());
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
@@ -474,7 +474,6 @@ public class TDModel extends Observable {
 
 		// Loop over the row based on range
 		while (shift < range && hitsLeft > 0) {
-			System.out.printf("Column checking %d\n", col+shift);
 			// Check the spaces to the right
 			if (col+shift < this.cols) {
 				// Check that right entry has elements to grab
@@ -489,7 +488,6 @@ public class TDModel extends Observable {
 							
 							// Apply tower's damage to the enemy
 							Entity tower = gridCopy.get(row).get(col).get(position);
-							System.out.printf("Tower at: row %d, col %d\n", row, col);
 							damageEnemy(row, col+shift, hitsLeft, tower, check);
 						}
 					}
@@ -515,20 +513,13 @@ public class TDModel extends Observable {
 	 * @param enemy An Entity of the enemy being attacked.
 	 */
 	private void damageEnemy(int row, int col, int hitsLeft, Entity tower, Entity enemy) {
-		System.out.println("Attacking zombie");
+		//System.out.println("Attacking zombie");
 		// Apply damage
 		enemy.beAttacked(tower.getAttack());
 
 		// Visual
 		tower.getAnimation().spawnProjectile(enemy);
 		
-		// Check if tower is defeated
-		if (tower.isDead()) {
-			// Tower is defeated, remove from state grid
-			System.out.println("Tower defeated");
-			grid.get(row).get(col-1).remove(tower);
-			tower.getAnimation().Delete();
-
 		// Visual - Projectile spawned when final enemy hit is found
 		if (hitsLeft == 0) {
 			// Final enemy that the projectile will hit
@@ -537,7 +528,7 @@ public class TDModel extends Observable {
 		
 		// Check if enemy is defeated
 		if (enemy.isDead()) {
-			// Tower is defeated, remove from state grid and set death in animation
+			// Enemy is defeated, remove from state grid and set death in animation
 			System.out.println("Zombie defeated");
 			enemy.getEnemyAnimation().setDeath();
 			grid.get(row).get(col).remove(enemy);
@@ -548,7 +539,6 @@ public class TDModel extends Observable {
 			
 			// Update enemyCount
 			this.enemyCount--;
-		}
 		}
 	}
 	
