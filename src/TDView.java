@@ -650,7 +650,7 @@ public class TDView extends Application implements Observer {
 				
 				// Build stage 3
 				System.out.println("Stage 3");
-				this.controller.buildStage3();
+				this.controller.buildStage3(ROWMAX);
 			}
 		});
 		

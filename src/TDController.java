@@ -164,21 +164,30 @@ public class TDController {
 	/**
 	 * Purpose: Builds a preset stage 3 object layout.
 	 * 
+	 * @param row An int of the number of rows.
+	 * 
 	 * @return boolean indicating successful stage creation.
 	 */
-	public boolean buildStage3() {
+	public boolean buildStage3(int row) {
 		// Layout path
+		/*
 		model.addEntity(new Entity("object10", this.model), 2, 0);
 		model.addEntity(new Entity("object8", this.model), 2, 1);
+		model.addEntity(new Entity("object7", this.model), 2, 1);
 		model.addEntity(new Entity("object9", this.model), 1, 1);
-		model.addEntity(new Entity("object9", this.model), 3, 1);
-		model.addEntity(new Entity("object10", this.model), 2, 2);
+		model.addEntity(new Entity("object9", this.model), 3, 1);*/
+		/*
+		for (int i = 0; i < row; i++) {
+			model.addEntity(new Entity("object11", this.model), i, 0);
+			model.addEntity(new Entity("object11", this.model), i, 1);
+			model.addEntity(new Entity("object11", this.model), i, 2);
+		}*/
 		
 		// Layout buildings
 		model.addEntity(new Entity("object5", this.model), 4, 1);
 		model.addEntity(new Entity("object6", this.model), 0, 1);
-		model.addEntity(new Entity("object7", this.model), 0, 1);
-		model.addEntity(new Entity("object7", this.model), 0, 1);
+		model.addEntity(new Entity("object7", this.model), 3, 2);
+		model.addEntity(new Entity("object7", this.model), 1, 2);
 
 		// Reached when successful layout creation.
 		return true;
@@ -186,6 +195,9 @@ public class TDController {
 	
 	/**
 	 * Purpose: Builds a random stage object layout.
+	 * 
+	 * @param row An int of the number of rows.
+	 * @param col An int of the number of cols.
 	 * 
 	 * @return boolean indicating successful stage creation.
 	 */

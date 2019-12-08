@@ -227,6 +227,11 @@ public class Entity {
 				this.base = "object";
 				this.image = new Image("images/object10.png");
 			}
+			else if (this.type.equals("object11")) {
+				// Cobble Ground
+				this.base = "object";
+				this.image = new Image("images/object11.png");
+			}
 		}
 		
 		
