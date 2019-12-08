@@ -399,10 +399,10 @@ public class TDModel extends Observable {
 
 			removeEntity(tower, row, col, false);
 
-			attacker.getEnemyAnimation().getTranslation().play();
-
-			attacker.getEnemyAnimation().setMode("_walk");
-			attacker.getEnemyAnimation().start();
+//			attacker.getEnemyAnimation().getTranslation().play();
+//
+//			attacker.getEnemyAnimation().setMode("_walk");
+//			attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();
 		}
 	}
