@@ -108,6 +108,7 @@ public class TDView extends Application implements Observer {
 		
 		
 		// This code is very simple setup of testing zombie walk animation
+
 //		int y = 60;
 //		double speed = 1;
 //		String mode = "_walk";
@@ -132,15 +133,15 @@ public class TDView extends Application implements Observer {
 //			
 //			anime.add(tower);
 //		}
-		
-		
-		
+
+
 //		String a = "weapon4";
 //		int dif = 600;
 //    	Projectile projectile = new Projectile(this.root1, 1, 2, "_attack",a, 8, 1, 500, dif);
 //    	projectile.start();
 //    	projectile.translate();
 		
+
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
 		
@@ -163,8 +164,7 @@ public class TDView extends Application implements Observer {
 		int row = ((PlacementInfo) target).getRow();
 		int col = ((PlacementInfo) target).getCol();
 		
-		ImageView imgView = new ImageView(entity.getImage());
-		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
+		//ImageView imgView = new ImageView(entity.getImage());
 		
 		// Add a tower
 		if (entity.getBase().equals("tower")) {
@@ -173,6 +173,7 @@ public class TDView extends Application implements Observer {
 				System.out.println(entity.getType());
 					
 				// Create a new Node with the Image and place it into the appropriate grid point
+				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
 			}
 			

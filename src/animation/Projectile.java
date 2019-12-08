@@ -49,6 +49,7 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
+
     public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target) {
     	this.root1 = stage;
     	this.y_cor = 60 + (150 * y);
@@ -62,14 +63,21 @@ public class Projectile {
     	this.attack = attack;
     	this.rate = (1/150)/this.gameSpeed;
     	this.pane = new GridPane();
+
         this.target = target;
         pane.setTranslateX(this.x);
         this.root1.getChildren().add(pane);
-        
+        this.target = target;
+        //System.out.printf("Projectile info\nthis.x = %d\ntarget.getStart() = %d\nthis.rate = %d\ntarget.getRate() = %f\n", this.x, target.getStart(), this.rate, target.getRate());
+
     	
     	
     }
-
+    
+    public void setNew() {
+    	
+    }
+    
     public void start() {
         
     	if(mode.equals("_attack")) {
@@ -83,9 +91,7 @@ public class Projectile {
     }
     
     public void translate() {
-    	
-    	this.translation = new Timeline();
-        
+
         this.translation.setCycleCount(Timeline.INDEFINITE);
         
         KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
@@ -112,15 +118,16 @@ public class Projectile {
         this.translation.getKeyFrames().add(moveBall);
         this.translation.play();
         
-        }
+    }
+  
+    
+
     
     public void Delete() {
         	this.pane.getChildren().remove(0);
     }
     
     public void attack() {
-    	
-
     	
     	this.COLUMNS = this.COUNT;
     	Image IMAGE = new Image("images/" + this.action +".png");
@@ -172,11 +179,11 @@ public class Projectile {
 	   return this.rate;
    }
    
-   public void setDifference(int dif) {
+   public void setDifference(double dif) {
 	   this.difference = dif;
    }
    
-   public double getDif() {
+   public double getDifference() {
 	   return this.difference;
    }
    

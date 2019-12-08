@@ -80,8 +80,13 @@ public class TDController {
 	}
 	
 	public boolean removeEntity(String name, int row, int col) {
+
 		Entity entity = new Entity(name, this.model);
-		model.removeEntity(entity, row, col);
+		//model.removeEntity(entity, row, col);
+
+		//Entity entity = new Entity(name);
+		//model.removeEntity(entity, row, col, true);
+
 		
 		return true;
 	}
@@ -150,12 +155,26 @@ public class TDController {
 		// Will need to randomly build zombie queue, for now just 1 zombie.
 		Platform.runLater(() -> {
 			System.out.println("Testing round");
+
 			Entity tower = new Entity("tower0", this.model);
 			Entity tower1 = new Entity("tower0", this.model);
 			Entity tower2 = new Entity("tower0", this.model);
 			model.addEntity(tower1, 0, 3);
+
+//			Entity tower = new Entity("tower0");
+//			Entity tower1 = new Entity("tower0");
+//			Entity tower2 = new Entity("tower0");
+//			Entity tower3 = new Entity("tower0");
+//			Entity tower4 = new Entity("tower0");
+//			Entity tower5 = new Entity("tower0");
+			//model.addEntity(tower2, 0, 2);
+			//model.addEntity(tower1, 0, 3);
+			//model.addEntity(tower4, 0, 4);
+
 			model.addEntity(tower, 0, 5);
-			model.addEntity(tower2, 3, 5);
+			//model.addEntity(tower2, 3, 7);
+			//model.addEntity(tower3, 3, 3);
+			//model.addEntity(tower5, 0, 1);
 			
 			Entity zom1 = new Entity("zombie0", this.model);
 			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0, 8, zom1);

@@ -57,6 +57,7 @@ public class EntityAnimation extends Node{
     public int row;
     private int gameSpeed = 1;
     
+
     private double move;
 
     
@@ -103,7 +104,6 @@ public class EntityAnimation extends Node{
     }
     
     public void translate() {
-    	
     	this.translation = new Timeline();
         
         this.translation.setCycleCount(Timeline.INDEFINITE);

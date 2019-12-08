@@ -261,6 +261,31 @@ public class Entity {
 		return this.animation;
 	}
 	
+	/**
+	 * Purpose: Builds the Projectile to fire at an enemy and runs it.
+	 * 
+	 * @param enemy An Entity referencing the enemy to fire at.
+	 */
+	public void fireProjectile(Entity enemy) {
+		/*
+		String a = "weapon4";
+		int dif = 600;
+		Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
+		projectile.start();
+		projectile.translate();
+		*/
+		
+		// Get the tower and enemy x locations to calculate difference
+		//this.animation.makeProjectile(enemy.getEnemyAnimation());
+		
+		/*
+		int towerX = this.animation.getProjectile().getStart();
+		int enemyX = enemy.getEnemyAnimation().getStart();
+		this.animation.setDif(towerX - enemyX);
+		this.animation.start();
+		*/
+	}
+	
 	/************************ Getters and Setters Block ************************/
 	
 	/**
@@ -358,10 +383,16 @@ public class Entity {
 	 */
 	public EntityAnimation getEnemyAnimation() {
 		return enemyAnimation;
-
 	}
 	
+	/**
+	 * Getter for animation.
+	 * 
+	 * @return TowerAnimation, the animations for a tower.
+	 */
 	public TowerAnimation getAnimation() {
-		return this.animation;
+		return animation;
 	}
+	
+	
 }
