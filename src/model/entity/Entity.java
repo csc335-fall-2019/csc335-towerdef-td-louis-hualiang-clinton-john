@@ -1,7 +1,7 @@
 package model.entity;
 import java.util.Observable;
 import animation.*;
-
+import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import model.TDModel;
@@ -286,6 +286,16 @@ public class Entity {
 		*/
 	}
 	
+	//test pause method
+	public void pause(String theBase) {
+		if (theBase.equals("zombie")) {
+			getEnemyAnimation().getAnimation().pause();
+			getEnemyAnimation().getTranslation().pause();
+		}else if (theBase.equals("tower")) {
+			getAnimation().getAnimation().pause();
+		}
+	}
+	
 	/************************ Getters and Setters Block ************************/
 	
 	/**
@@ -385,6 +395,7 @@ public class Entity {
 		return enemyAnimation;
 	}
 	
+	
 	/**
 	 * Getter for animation.
 	 * 
@@ -393,6 +404,6 @@ public class Entity {
 	public TowerAnimation getAnimation() {
 		return animation;
 	}
-	
+
 	
 }

@@ -557,7 +557,7 @@ public class TDView extends Application implements Observer {
 					Node tower = towers.get(i);
 					tower.setDisable(false);
 				}
-//				controller.pause()   //assume there is pause() method takes in an multiplier
+				controller.pause();   //assume there is pause() method takes in an multiplier
 			}else {     // pause now
 				tag.setText("Resume");
 				pauseBackground.setFill(Color.LIMEGREEN);
@@ -566,7 +566,7 @@ public class TDView extends Application implements Observer {
 					Node tower = towers.get(i);
 					tower.setDisable(true);
 				}
-//				controller.resume()   //assume there is resume() method takes in an multiplier
+//				controller.resume();   //assume there is resume() method takes in an multiplier
 			}
 			pause = !pause;
 			
