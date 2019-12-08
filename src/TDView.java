@@ -187,9 +187,7 @@ public class TDView extends Application implements Observer {
 			
 			//deletion
 			else {
-				System.out.println(gridBoard.get(row).get(col).getChildren());
 				gridBoard.get(row).get(col).getChildren().remove(2);
-				System.out.println(gridBoard.get(row).get(col).getChildren());
 			}
 			
 			// refresh the menu showing how much money is left
@@ -309,8 +307,11 @@ public class TDView extends Application implements Observer {
 		            		System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
 		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
-		            		System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", towerChoice, row, col);
-		            		controller.removeEntity(towerChoice, row, col);
+		            		// if this is not an object, remove the tower.
+		            		if (!(gridBoard.get(row).get(col).getChildren().get(2) instanceof ImageView)) {
+		            			System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", gridBoard.get(row).get(col).getChildren().get(2), row, col);
+		            			controller.removeEntity(towerChoice, row, col);
+		            		}
 		            	}
 		                //slot2.setOpacity(1);
 		                
