@@ -67,9 +67,7 @@ public class TDController {
 		boolean cost = canAfford(entity);
 		
 		// Successful creations are added to the model
-		System.out.println("Checking entity");
 		if (status && cost) {
-			System.out.println("Adding entity");
 			model.addEntity(entity, row, col);
 		} else {
 			System.out.println("Can't afford that!");
@@ -79,15 +77,20 @@ public class TDController {
 		return status;
 	}
 	
+	/**
+	 * Purpose: Remove an Entity from the model at a given row column.
+	 * 
+	 * @param name A String of the entity to remove.
+	 * @param row An int of the row to remove it from.
+	 * @param col An int of the column to remove it from.
+	 * 
+	 * @return boolean indicating the success status of removing said entity.
+	 */
 	public boolean removeEntity(String name, int row, int col) {
 		Entity entity = new Entity(name);
 		model.removeEntity(entity, row, col, true);
 		
 		return true;
-	}
-	
-	public boolean canAfford(Entity entity) {
-		return ((model.getMoney() - entity.getPrice()) >= 0);
 	}
 	
 	/**
@@ -188,17 +191,53 @@ public class TDController {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// Interrupt indicates stop thread
+				return false;
 			}
 		}
 		
 		return true;
 	}
 	
+	/**
+	 * Purpose: Places town objects on column 0 randomly.
+	 * 
+	 * <pre>
+	 * Column 0 defines losing the game, so the visual incentive is a 
+	 * town which is being defended by the knights during the rounds.
+	 * Thus when a zombie reaches the town, the game is lost.
+	 * </pre>
+	 * 
+	 * @param rows An int of the number of rows.
+	 * 
+	 * @return boolean indicating the successful placement of the objects.
+	 */
+	public boolean randomizeTownCol0(int rows) {
+		// Random generator
+		Random rand = new Random();
+		
+		// Loop over the rows at column 0
+		for (int i = 0; i < rows; i++) {
+			model.addEntity(new Entity("object"+(rand.nextInt(4)+4)), i, 0);
+		}
+		
+		// Returns true if all objects were successfully placed.
+		return true;
+	}
+	
 	
 	/************************** Private Fields Block ***************************/
 	
+	/**
+	 * Purpose: Checks if there's enough money to buy a specific tower.
+	 * 
+	 * @param entity An Entity of the tower attempting to be bought.
+	 * 
+	 * @return boolean indicating if the state can afford the tower.
+	 */
+	private boolean canAfford(Entity entity) {
+		return ((model.getMoney() - entity.getPrice()) >= 0);
+	}
 	
 	/************************ Getters and Setters Block ************************/
 	/**

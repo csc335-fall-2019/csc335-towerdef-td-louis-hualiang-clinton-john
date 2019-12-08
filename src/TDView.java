@@ -54,6 +54,9 @@ public class TDView extends Application implements Observer {
 	private GridPane menu;
 	private boolean occupied = false;
 	private String towerChoice;
+	private Thread newRound;
+	
+	
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
 	public static int gridSize = 150;
@@ -76,19 +79,17 @@ public class TDView extends Application implements Observer {
 		this.controller = new TDController(model);
 		
 		MenuBar toolbar = new MenuBar();
-		Menu fileMenu = new Menu("File");
-		MenuItem newGame = new MenuItem("New Game");
-		MenuItem supriseMode = new MenuItem("Suprised Mode");
+		Menu stageMenu = new Menu("Stages");
 		
+		// Add items to each other
+		toolbar.getMenus().add(stageMenu);
+		
+		// Build visuals
 		buildMainGridPane();
 		buildMenu();
 		
-		// Add items to each other
-		fileMenu.getItems().addAll(newGame, supriseMode);
-		toolbar.getMenus().add(fileMenu);
-		
-		// Add event to newGame
-		//newGameEvent(newGame);
+		// Add events to stageMenu
+		//newStageEvents(stageMenu);
 		
 		// VBox to hold the toolbar and mainGrid
 		//HBox root = new HBox(3);
@@ -179,6 +180,9 @@ public class TDView extends Application implements Observer {
 			else {
 				gridBoard.get(row).get(col).getChildren().remove(2);
 			}
+			
+			// refresh the menu showing how much money is left
+			addMenuInfo();
 		}
 		
 		// Add an obstable
@@ -187,9 +191,6 @@ public class TDView extends Application implements Observer {
 			ImageView objView = new ImageView(entity.getImage());
 			gridBoard.get(row).get(col).getChildren().add(objView);
 		}
-		
-		// refresh the menu showing how much money is left
-		addMenuInfo();
 	}
 
 	
@@ -204,7 +205,7 @@ public class TDView extends Application implements Observer {
 	 * @param root A StackPane for placing enemy visuals onto
 	 */
 	private void runGame(StackPane root) {
-		Thread newRound = new Thread(() -> {
+		newRound = new Thread(() -> {
 			controller.runRound(root, ROWMAX);
 		});
 		newRound.start();
@@ -333,6 +334,9 @@ public class TDView extends Application implements Observer {
 		
 		// Disable the grid for initial launches
 		mainGrid.setDisable(true);
+		
+		// Fill in column 0 with the randomized town
+		controller.randomizeTownCol0(ROWMAX);
 	}
 	
 	/**
@@ -492,6 +496,80 @@ public class TDView extends Application implements Observer {
 		
 		// Add the box to the menu
 		menu.add(currencyBox, 0, 3);
+	}
+	
+	/**
+	 * Purpose: Add stage creation events to a Stage selector.
+	 * 
+	 * @param stageMenu A Menu to hold the stage selections.
+	 */
+	private void newStageEvents(Menu stageMenu) {
+		// Create MenuItems for the different stages
+		MenuItem stage1 = new MenuItem("Stage 1");
+		MenuItem stage2 = new MenuItem("Stage 2");
+		MenuItem randomStage = new MenuItem("Randomized Obstacles");
+		MenuItem surpriseMode = new MenuItem("Surprise Mode");
+		
+		// Create Stage 1 on action
+		stage1.setOnAction((e) -> {
+			// Wrap up any threads
+			if (newRound != null && newRound.isAlive()) {
+				newRound.interrupt();
+			}
+			
+			// Reset the model and controller
+			TDModel model = new TDModel(ROWMAX, COLMAX);
+			model.addObserver(this);
+			this.controller = new TDController(model);
+			
+			// Reset the grid
+			buildMainGridPane();
+		});
+		
+		// Create Stage 2 on action
+		stage2.setOnAction((e) -> {
+			// Reset the model and controller
+			TDModel model = new TDModel(ROWMAX, COLMAX);
+			model.addObserver(this);
+			this.controller = new TDController(model);
+			
+			// Reset the grid
+			buildMainGridPane();
+			
+			// Build stage 2
+			//this.controller.buildStage2();
+		});
+		
+		// Create Random Stage on action
+		randomStage.setOnAction((e) -> {
+			// Reset the model and controller
+			TDModel model = new TDModel(ROWMAX, COLMAX);
+			model.addObserver(this);
+			this.controller = new TDController(model);
+			
+			// Reset the grid
+			buildMainGridPane();
+			
+			// Build random stage
+			//this.controller.buildRandomStage(ROWMAX, COLMAX);
+		});
+		
+		// Create Surprise Stage on action
+		surpriseMode.setOnAction((e) -> {
+			// Reset the model and controller
+			TDModel model = new TDModel(ROWMAX, COLMAX);
+			model.addObserver(this);
+			this.controller = new TDController(model);
+			
+			// Reset the grid
+			buildMainGridPane();
+			
+			// Set surprise mode
+			//this.controller.setSurpriseMode();
+		});
+		
+		// Add the MenuItem's to the Menu passed in
+		stageMenu.getItems().addAll(stage1, stage2, randomStage, surpriseMode);
 	}
 	
 }
