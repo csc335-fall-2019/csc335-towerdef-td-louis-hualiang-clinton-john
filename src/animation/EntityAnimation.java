@@ -1,5 +1,7 @@
 package animation;
 
+import java.util.ArrayList;
+
 import com.sun.javafx.geom.BaseBounds;
 import com.sun.javafx.geom.transform.BaseTransform;
 import com.sun.javafx.jmx.MXNodeAlgorithm;
@@ -7,6 +9,8 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -23,6 +27,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.TDModel;
+import model.entity.Entity;
 
 public class EntityAnimation extends Node{
 	private String action = "zombie1";
@@ -37,13 +43,23 @@ public class EntityAnimation extends Node{
     private int walk;
     private int attack;
     private Animation animation;
-    private TranslateTransition translation;
+    private Timeline translation;
     private int start = 1570;
     private int difference = 50;
     private boolean isTranslating;
     private boolean isDead = false;
     private double rate;
+    public double tic = 0;
+    public double duration = 1;
+    private TDModel model;
+    public int col;
+    public Entity zom;
+    public int row;
+    private int gameSpeed = 1;
+    
+
     private double move;
+
     
     private int COLUMNS  =   9;
     private int COUNT    =  6;
@@ -52,24 +68,27 @@ public class EntityAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack) {
+    public EntityAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int death, int walk, int attack, TDModel model, int col, Entity zom, int row) {
     	this.root1 = stage;
     	this.y_cor = y;
-    	this.speed = speed;
+    	this.speed = speed * this.gameSpeed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
     	this.death = death;
     	this.walk = walk;
     	this.attack = attack;
-    	this.rate = 50 * this.speed;
+    	this.rate = (1/this.speed)/this.gameSpeed;
     	this.move = 0;
     	this.pane = new GridPane();
-        this.pane.setVgap(0);
-        this.pane.setHgap(0);
+        
+        pane.setTranslateX(this.start);
+        this.model = model;
+        this.col = col;
+        this.zom = zom;
+        this.row = row;
         
         
-        // A Group object has no layout of children easier to use here
         this.pane.setMouseTransparent(true);
         this.root1.getChildren().add(pane);
     }
@@ -85,47 +104,47 @@ public class EntityAnimation extends Node{
     }
     
     public void translate() {
-    	// move the zombie from right to left
-        this.walking = new TranslateTransition();
-        //this.walking.setDuration(Duration.millis(2000));
-        this.walking.setNode(pane);
+    	this.translation = new Timeline();
+        
+        this.translation.setCycleCount(Timeline.INDEFINITE);
+        
+        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
+                new EventHandler<ActionEvent>() {
 
-        this.walking.setFromX(this.start);
-        this.walking.setToX(this.start - this.difference);
-
-        this.walking.setFromY(this.y_cor);
-       
-        this.walking.setDuration(Duration.seconds(0.5));
-        this.walking.setRate((this.difference/50) * this.speed);
-        this.walking.play();
-        minusStart();
-        incrMove();
-
-       
-        if(this.isDead == true) {
-        	 this.mode = "_death";
-        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-             	
-                 @Override
-                 public void handle(ActionEvent event) {
-                 	
-                     Death();
-                     minusStart();
-                     
-                 }
-             });
-        } else {
-        	 this.walking.setOnFinished(new EventHandler<ActionEvent>() {
-             	
-                 @Override
-                 public void handle(ActionEvent event) {
-                 	
-                     changeTranslate();
-                     
-                 }
-             });
+                    public void handle(ActionEvent event) {
+                    	
+                    	//TranslateTransition transition = getTranslation();
+                    	TDModel model = getModel();
+                    	
+                    	int y_cor = getY();
+                    	double x = check1();
+                    	double y = getSpeed();
+                    	
+                    	pane.setTranslateX(pane.getTranslateX() - 1);
+                    	pane.setTranslateY(y_cor);
+                    	
+                    	if(x % y == 0) {
+                    		incrMove();
+                    		minusStart();
+                    		if(getMove() % 150 == 0) {
+                    			
+                    			if(col == 0) {
+                    				Death();
+                    			}else {
+                    				model.updateSpot(col, row, zom);
+                            		col -= 1;
+                    			}
+                        		
+                        	}
+                    	}
+                    	inc2();
+                    }
+                    
+        		});
+        this.translation.getKeyFrames().add(moveBall);
+        this.translation.play();
+        
         }
-    }
     
     
     public void walk() {
@@ -155,6 +174,8 @@ public class EntityAnimation extends Node{
     
     
     public void Death() {
+    	this.translation.pause();
+    	this.mode = "_death";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.death;
@@ -188,11 +209,12 @@ public class EntityAnimation extends Node{
     
     
     public void Delete() {
-        	this.pane.getChildren().remove(0);
+        	this.root1.getChildren().remove(this.pane);
     }
     
     
     public void attack() {
+    	this.mode = "_attack";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
     	this.COUNT = this.attack;
@@ -226,6 +248,13 @@ public class EntityAnimation extends Node{
     	this.move = 0;
     }
     
+    public void minusStart() {
+    	this.start -= this.speed;
+    }
+    
+    public void incrMove() {
+    	this.move += this.speed;
+    }
     
 	/************************** Private Fields Block ***************************/
 	
@@ -233,18 +262,17 @@ public class EntityAnimation extends Node{
     	this.isTranslating = false;
     }
     
-    private void minusStart() {
-    	this.start -= this.difference;
-    }
     
-    private void incrMove() {
-    	this.move += this.rate;
-    }
+    
     
 	/************************ Getters and Setters Block ************************/
     
     public GridPane getPane() {
     	return this.pane;
+    }
+    
+    public double getSpeed() {
+    	return this.speed;
     }
     
     public void setMode(String mode) {
@@ -259,8 +287,8 @@ public class EntityAnimation extends Node{
     	return this.animation;
     }
     
-    public TranslateTransition getTranslation() {
-    	return this.walking;
+    public Timeline getTranslation() {
+    	return this.translation;
     }
     
     public void setDeath() {
@@ -285,6 +313,30 @@ public class EntityAnimation extends Node{
    
    public int getDif() {
 	   return this.difference;
+   }
+   
+   public int getY() {
+	   return this.y_cor;
+   }
+
+   public double check() {
+   	return this.duration;
+   }
+   
+   public double check1() {
+   	return this.tic;
+   }
+   
+   public void inc2() {
+   	this.tic += 1;
+   }
+   
+   public TDModel getModel() {
+	   return this.model;
+   }
+   
+   public void setSpeed(int speed) {
+	   this.gameSpeed = speed;
    }
 
 	@Override

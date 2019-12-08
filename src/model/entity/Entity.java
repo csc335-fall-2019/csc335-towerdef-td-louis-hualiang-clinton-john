@@ -4,6 +4,7 @@ import animation.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import model.TDModel;
 
 /**
  * Purpose: Entity for shared features between Tower and Enemy classes.
@@ -29,7 +30,7 @@ public class Entity {
 	// More variables for entity specific elementsprivate int health;
 	private int health;
 	private int attack;
-	private int speed;
+	private double speed;
 	private int price;
 	private TowerAnimation animation;
 	private EntityAnimation enemyAnimation;
@@ -37,6 +38,8 @@ public class Entity {
 	private int deathFrames;
 	private int attackFrames;
 	private int walkFrames;
+	private int rate;
+	private TDModel model;
 	// More variables for entity specific elements
 	
 	/**
@@ -48,9 +51,10 @@ public class Entity {
 	 * 
 	 * @param type A String of the entity type.
 	 */
-	public Entity(String type) {
+	public Entity(String type, TDModel model) {
 		this.type = type;
 		this.isValid = buildEntity();
+		this.model = model;
 	}
 	
 	
@@ -67,7 +71,7 @@ public class Entity {
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
 				this.speed = 2;
-				this.health = 100;
+				this.health = 10;
 				this.attack = 10;
 				this.price = 110;
 				this.frames = 1;
@@ -114,7 +118,8 @@ public class Entity {
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
-				this.health = 352;
+
+				this.health = 100;
 				this.attack = 0;
 				this.price = 90;
 				this.speed = 2;
@@ -130,7 +135,7 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 1;
+				this.speed = 75;
 				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
@@ -139,8 +144,9 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
-				this.attack = 50;
-				this.speed = 80;
+				this.attack = 5;
+				
+				this.speed = 50;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
@@ -149,8 +155,9 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
-				this.attack = 50;
-				this.speed = 20;
+				this.attack = 5;
+				
+				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
@@ -159,8 +166,8 @@ public class Entity {
 				this.base = "zombie";
 				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
-				this.attack = 10;
-				this.speed = 110;
+				this.attack = 5;
+				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
@@ -227,10 +234,10 @@ public class Entity {
 	 * 
 	 * @return EntityAnimation the animation class for the enemy visual.
 	 */
-	public EntityAnimation enemyAnimation(StackPane root, int row) {
+	public EntityAnimation enemyAnimation(StackPane root, int row, int col, Entity zom) {
 		int y = 60 + (150 * row);
 		String mode = "_walk";
-		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames, this.model, col, zom, row);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
 	}
@@ -249,9 +256,34 @@ public class Entity {
 		int y = 60 + (150 * row);
 		String mode = "_attack";
 		int x = col;
-		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
+		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col);
 		this.animation.start();
 		return this.animation;
+	}
+	
+	/**
+	 * Purpose: Builds the Projectile to fire at an enemy and runs it.
+	 * 
+	 * @param enemy An Entity referencing the enemy to fire at.
+	 */
+	public void fireProjectile(Entity enemy) {
+		/*
+		String a = "weapon4";
+		int dif = 600;
+		Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
+		projectile.start();
+		projectile.translate();
+		*/
+		
+		// Get the tower and enemy x locations to calculate difference
+		//this.animation.makeProjectile(enemy.getEnemyAnimation());
+		
+		/*
+		int towerX = this.animation.getProjectile().getStart();
+		int enemyX = enemy.getEnemyAnimation().getStart();
+		this.animation.setDif(towerX - enemyX);
+		this.animation.start();
+		*/
 	}
 	
 	/************************ Getters and Setters Block ************************/
@@ -327,7 +359,7 @@ public class Entity {
 	 * 
 	 * @return int indicating enemy speed.
 	 */
-	public int getSpeed() {
+	public double getSpeed() {
 		if (this.base.equals("enemy")) {
 			return speed;
 		}
@@ -351,6 +383,16 @@ public class Entity {
 	 */
 	public EntityAnimation getEnemyAnimation() {
 		return enemyAnimation;
-
 	}
+	
+	/**
+	 * Getter for animation.
+	 * 
+	 * @return TowerAnimation, the animations for a tower.
+	 */
+	public TowerAnimation getAnimation() {
+		return animation;
+	}
+	
+	
 }

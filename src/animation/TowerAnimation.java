@@ -23,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.entity.Entity;
 
 public class TowerAnimation extends Node{
 	private String action = "zombie1";
@@ -30,11 +31,15 @@ public class TowerAnimation extends Node{
     private StackPane root1;
     private int y_cor;
     private BorderPane towerPane;
-    private int speed;
+    private double speed;
     private String mode;
     private Animation animation;
     private int attack = 1;
     private int x;
+    private int y;
+    private int dif;
+    private Projectile projectile;
+
     
     
     private static final int COLUMNS  =   9;
@@ -44,14 +49,17 @@ public class TowerAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public TowerAnimation(StackPane stage, int y, int speed, String mode, String action, int count, int x) {
+    public TowerAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int x) {
     	this.root1 = stage;
-    	this.y_cor = y;
+    	this.y_cor = 60 + (150 * y);
     	this.speed = speed;
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
     	this.x = x;
+    	this.y = y;
+    	this.dif = 600;
+
     }
 
     public void start() {
@@ -87,12 +95,15 @@ public class TowerAnimation extends Node{
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
+        /*
         String action = "weapon4";
-        int dif = 600;
-    	Projectile projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode,action, 8, 1, 300 +(150 * this.x) + 60, dif);
+        //int dif = 600;
+    	projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode,action, 8, 1, 300 +(150 * this.x) + 60, dif);
     	projectile.start();
     	projectile.translate();
-    	
+    	*/
+        
+
         this.towerPane = new BorderPane();
        
         this.towerPane.setCenter(imageView);
@@ -103,9 +114,48 @@ public class TowerAnimation extends Node{
         	
     }
     
+
+    public void spawnProjectile(Entity target) {
+    	String action = "weapon4";
+       	Projectile projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
+   		projectile.start();
+   		projectile.translate();
+    }
+
+    /**
+     * Purpose: Adjusts the difference used for animation calculation.
+     * 
+     * @param dif An int of the difference to translate.
+     */
+    public void setDif(int dif) {
+    	// Set this state's dif
+    	this.dif = dif;
+    	
+    	// Set the Projectile's difference
+    	this.projectile.setDifference(dif);
+    }
+    
+//    /**
+//     * 
+//     */
+//    public void makeProjectile(EntityAnimation enemyAni) {
+//    	String action = "weapon4";
+//        //int dif = 600;
+//    	projectile = new Projectile(this.root1, this.y_cor+10, this.speed, this.mode, action, 8, 1, 300 +(150 * this.x) + 60, dif, enemyAni);
+//    	projectile.start();
+//    	projectile.translate();
+//    }
+    
+    /************************ Getters and Setters Block ************************/
+
+    
     public BorderPane getPane() {
     	
     	return this.towerPane;
+    }
+    
+    public Projectile getProjectile() {
+    	return this.projectile;
     }
 
 	@Override
