@@ -2,51 +2,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
-import animation.EntityAnimation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import sandboxfx.SandboxFX;
 import model.entity.*;
 import model.*;
@@ -134,31 +111,41 @@ public class TDView extends Application implements Observer {
 		int y = 60;
 		int speed = 60;
 		String mode = "_walk";
-		String action = "zombie3";
+		String action = "zombie0";
 		int frames = 6;
-		int death = 5;
+		int death = 6;
 		int walk = 8;
 		int attack =7;
 		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
 		for(int i = 0; i<10; i++) {
 			if(i%2!=0) {
-				speed = 10;
+				speed = 1;
 				y+=150;
 			}else {
-				speed = 5;
+				speed = 1;
 			}
 			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
 			tower.start();
 			tower.translate();
+			
 			anime.add(tower);
 		}
+		
+		
+		
+		String a = "weapon4";
+		int dif = 600;
+    	Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
+    	projectile.start();
+    	projectile.translate();
 		
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
 		
 		//Testing out animation
 		
-
+		// Run the game test
+		runGame(root1);
 	}
 	
 	/**
@@ -175,30 +162,63 @@ public class TDView extends Application implements Observer {
 		int col = ((PlacementInfo) target).getCol();
 		
 		ImageView imgView = new ImageView(entity.getImage());
-		TowerAnimation animation = entity.buildAnimation(this.root1, row);
+		TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 		
-		//adding a tower
-		if (((PlacementInfo) target).getDel() == 0) {
-			System.out.println("Making image view for entity");
-			System.out.println(entity.getType());
-				
+		// Add a tower
+		if (entity.getBase().equals("tower")) {
+			if (((PlacementInfo) target).getDel() == 0) {
+				System.out.println("Making image view for entity");
+				System.out.println(entity.getType());
+					
 				// Create a new Node with the Image and place it into the appropriate grid point
-			gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+			}
+			
+			//deletion
+			else {
+				gridBoard.get(row).get(col).getChildren().remove(2);
+			}
 		}
 		
-		//deletion
-		else {
-			gridBoard.get(row).get(col).getChildren().remove(2);
+		// Add an obstable
+		else if (entity.getBase().equals("object")) {
+			// Create a new Node with the Image and place it into the appropriate grid point
+			ImageView objView = new ImageView(entity.getImage());
+			gridBoard.get(row).get(col).getChildren().add(objView);
 		}
 		
-		//refresh the menu showing how much money is left
+		// refresh the menu showing how much money is left
 		addMenuInfo();
 	}
 
 	
 	/************************** Private Fields Block ***************************/
+	/**
+	 * Purpose: Runs the current game of tower defense.
+	 * 
+	 * <pre>
+	 * 
+	 * </pre>
+	 * 
+	 * @param root A StackPane for placing enemy visuals onto
+	 */
+	private void runGame(StackPane root) {
+		Thread newRound = new Thread(() -> {
+			controller.runRound(root, ROWMAX);
+		});
+		newRound.start();
+	}
 	
-	// TODO
+	/**
+	 * Purpose: Builds the main grid visual display.
+	 * 
+	 * <pre>
+	 * Creates the List of Lists of StackPanes which hold the ground visual, a 
+	 * highlightable tile, and the Entity visual. Events added to the StackPane 
+	 * determine tower placeability and define the action for tower placement and 
+	 * selling.
+	 * </pre>
+	 */
 	private void buildMainGridPane() {
 		int alternate = 0;
 		mainGrid = new GridPane();
@@ -370,6 +390,44 @@ public class TDView extends Application implements Observer {
 				cover.setWidth(gridSize);
 				coverList.add(cover);
 				
+				Rectangle hover = new Rectangle();
+				hover.setFill(Color.GREENYELLOW);
+				hover.setOpacity(0);
+				hover.setHeight(gridSize);
+				hover.setWidth(gridSize);
+				
+				stack.setOnMouseEntered(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						if (mainGrid.isDisable()) {
+							hover.setOpacity(0.1);
+							Tooltip t = new Tooltip();
+							if (towerName.equals("tower0")) {
+								t.setText("Meow!\n Cost: 110");
+							} else if (towerName.equals("tower1")) {
+								t.setText("Sharpshooter!\n Cost: 120");
+							} else if (towerName.equals("tower2")) {
+								t.setText("Sneaky, Deadly, no Escaping!\n Cost: 210");
+							} else if (towerName.equals("tower3")) {
+								t.setText("Noble Knight!\n Cost: 245");
+							} else if (towerName.equals("tower4")) {
+								t.setText("Barbarian!\n Cost: 335");
+							} else if (towerName.equals("tower5")) {
+								t.setText("YOU SHALL NOT PASS!\n Cost: 90");
+							}
+							Tooltip.install(hover, t);
+						}
+						
+					}
+				});
+				
+				stack.setOnMouseExited(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent Event) {
+						hover.setOpacity(0);
+					}
+				});
+				
 				// Menu Choice Event
 				stack.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		            @Override
@@ -379,6 +437,7 @@ public class TDView extends Application implements Observer {
 		            		towerChoice = towerName;
 		            		
 		            		// Show which is selected and allow for placement checks
+		            		cover.setFill(Color.DIMGREY);
 		            		cover.setOpacity(0.5);
 		            		mainGrid.setDisable(false);
 		            		
@@ -395,7 +454,7 @@ public class TDView extends Application implements Observer {
 				});
 				
 				// Add the rectangles to the stack
-				stack.getChildren().addAll(choice, cover);
+				stack.getChildren().addAll(choice, cover, hover);
 				
 				// Add the slot to the menu
 				menu.add(stack, colIndex, rowIndex);
@@ -414,8 +473,8 @@ public class TDView extends Application implements Observer {
 		Rectangle infoBackground = new Rectangle();
 		infoBackground.setFill(Color.LIGHTBLUE);
 		infoBackground.setStroke(Color.BLACK);
-		infoBackground.setHeight(155);
-		infoBackground.setWidth(160);
+		infoBackground.setHeight(gridSize);
+		infoBackground.setWidth(gridSize);
 		
 		// Box for currency info
 		StackPane currencyBox = new StackPane();
@@ -431,7 +490,8 @@ public class TDView extends Application implements Observer {
 		currencyBox.getChildren().addAll(infoBackground, currencyInfo);
 		
 		// Add the box to the menu
-		menu.add(currencyBox, 0, 3, 2, 1);
+		menu.add(currencyBox, 0, 3);
 	}
 	
 }
+

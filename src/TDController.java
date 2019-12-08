@@ -2,7 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+import java.util.TimerTask;
 
+import animation.EntityAnimation;
+import javafx.application.Platform;
+import javafx.scene.layout.StackPane;
 import model.*;
 import model.entity.*;
 /**
@@ -21,9 +25,10 @@ import model.entity.*;
  * @author Clinton Kral
  * @author John Stockey 
  */
-public class TDController { 
+public class TDController {
 	private int turn;
-	private TDModel model;                    
+	private TDModel model;
+	private int gameSpeed;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -36,6 +41,7 @@ public class TDController {
 	 */
 	public TDController(TDModel model) {
 		this.model = model;
+		this.gameSpeed = 1;
 	}
 	
 	/**
@@ -84,16 +90,21 @@ public class TDController {
 		return ((model.getMoney() - entity.getPrice()) >= 0);
 	}
 	
-	
 	/**
-	 * Purpose: add enemies to the five queues and each queue represents one row in
+	 * Purpose: Builds the enemies to send down each row over a round.
+	 * 
+	 * <pre>
+	 * Add enemies to the five queues and each queue represents one row in
 	 * the map. It take the turn as parameter and each queue generate enemies from 
 	 * 3 to 5 for first turn, 6 to 8 for second turn, 9 to 11 for third turn
 	 * The enemy type is also various from turn to turn. For the first turn, only enemy0
 	 * will show up, for second turn, enemy0 and enemy1 are possible. After third turn, all
 	 * types of enemy are possible to show up
-	 * @param turn indicate the different turn (form 1 to infinite)
-	 * @return
+	 * </pre>
+	 * 
+	 * @param turn An int indicating the different turn (from 1 to infinite).
+	 * 
+	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
 	 */
 	public List<List<Entity>> queueUpEnemy(int turn){
 		List<List<Entity>> troops = new ArrayList<List<Entity>>();
@@ -126,12 +137,59 @@ public class TDController {
 		return troops;
 	}
 	
+	/**
+	 * Purpose: Runs a round of tower defense.
+	 * 
+	 * @param root A StackPane to place enemy visuals.
+	 * @param rows An int indicating the number of rows.
+	 * 
+	 * @return boolean indicating the success of the round.
+	 */
+	public boolean runRound(StackPane root, int rows) {
+		// List<Queue<Entity>> enemyQueue = buildEnemyQueue(rows);
+		// Will need to randomly build zombie queue, for now just 1 zombie.
+		Platform.runLater(() -> {
+			System.out.println("Testing round");
+			Entity tower = new Entity("tower0");
+			//model.addEntity(tower, 0, 7);
+			model.addEntity(tower, 0, 5);
+			
+			Entity zom1 = new Entity("zombie0");
+			EntityAnimation entityAnimation = zom1.enemyAnimation(root, 0);
+			
+			
+			model.addEntity(zom1, 0, 8);
+			
+			/*
+			Entity zom2 = new Entity("zombie1");
+			EntityAnimation entityAnimation2 = zom2.enemyAnimation(root, 0);
+			entityAnimation2.translate();
+			
+			
+			model.addEntity(zom2, 0, 8);
+			*/
+		});
+		
+		for (int i = 0; i < 50; i++) {
+			Platform.runLater(() -> {
+				model.nextStep();
+			});
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+	}
+	
 	
 	/************************** Private Fields Block ***************************/
 	
 	
 	/************************ Getters and Setters Block ************************/
-	
 	/**
 	 * Getter for model.
 	 * 
@@ -159,11 +217,19 @@ public class TDController {
 	}
 	
 	/**
+	 * Setter for game speed.
+	 * 
+	 * @param gameSpeed An int indicating the speed of the rounds.
+	 */
+	public void setGameSpeed(int gameSpeed) {
+		this.gameSpeed = gameSpeed;
+	}
+
+	/**
 	 * return the amount of money the player currently has
 	 * @return
 	 */
 	public int getMoney() {
 		return model.getMoney();
 	}
-
 }

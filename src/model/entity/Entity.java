@@ -66,24 +66,20 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-
+				this.speed = 2;
 				this.health = 100;
 				this.attack = 10;
 				this.price = 110;
-
 				this.frames = 1;
-
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
-
+				this.speed = 2;
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
-
 				this.frames = 5;
-		
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
@@ -91,24 +87,24 @@ public class Entity {
 				this.health = 160;
 				this.attack = 50;
 				this.price = 210;
+				this.price = 210;
 				this.frames = 6;
-
+				this.speed = 2;
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
-
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
-
+				this.speed = 2;
 				this.frames = 9;
 
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
-
+				this.speed = 2;
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
@@ -121,7 +117,7 @@ public class Entity {
 				this.health = 352;
 				this.attack = 0;
 				this.price = 90;
-
+				this.speed = 2;
 				this.frames = 7;
 
 			}
@@ -134,35 +130,38 @@ public class Entity {
 				//this.image = new Image("images/zombie0.png");
 				this.health = 300;
 				this.attack = 5;
-				this.speed = 50;
-				this.deathFrames =9;
+				this.speed = 1;
+				this.deathFrames = 9;
 				this.walkFrames = 9;
 				this.attackFrames =7;
-			}else if (this.type.equals("zombie1")) {
+			}
+			else if (this.type.equals("zombie1")) {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie1.png");
 				this.health = 200;
 				this.attack = 50;
 				this.speed = 80;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =8;
-			}else if (this.type.equals("zombie2")) {
+			}
+			else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 50;
 				this.speed = 20;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
-			}else if (this.type.equals("zombie3")) {
+			}
+			else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
-				this.image = new Image("images/enemy0.png");
+				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
 				this.attack = 10;
 				this.speed = 110;
-				this.deathFrames =5;
+				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
 			}
@@ -171,8 +170,16 @@ public class Entity {
 		/****************** Object Creation ******************/
 		if (this.type.contains("object")) {
 			if (this.type.equals("object0")) {
-				this.base = "enemy";
+				this.base = "object";
 				this.image = new Image("images/object0.png");
+			}
+			else if (this.type.equals("object1")) {
+				this.base = "object";
+				this.image = new Image("images/object1.png");
+			}
+			else if (this.type.equals("object2")) {
+				this.base = "object";
+				this.image = new Image("images/object2.png");
 			}
 		}
 		
@@ -190,9 +197,9 @@ public class Entity {
 	
 
 	/**
-	 * Purpose: decrease the health of the entity when it is attacked
+	 * Purpose: Decrease the health of the entity.
 	 * 
-	 * @param damage
+	 * @param damage An int of the damage to be applied.
 	 */
 	public void beAttacked(int damage) {
 		if (health > damage) {
@@ -203,31 +210,48 @@ public class Entity {
 	}
 	
 	/**
-	 * return true when the health is zero
+	 * Purpose: Checks if entity health is 0 or less.
 	 * 
-	 * @return
+	 * @return boolean indicating if the entity has died.
 	 */
 	public boolean isDead() {
-		return health == 0;
-	}
-	public TowerAnimation buildAnimation(StackPane root, int row) {
-		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		this.animation = new TowerAnimation(root, y, speed, mode, this.type, this.frames);
-		this.animation.start();
-		return this.animation;
-
+		return health <= 0;
 	}
 	
+	
+	/**
+	 * Purpose: Constructs a new enemy animation for visual display.
+	 * 
+	 * @param root A StackPane of the root to place visuals onto.
+	 * @param row An int of the row to place the Animation onto.
+	 * 
+	 * @return EntityAnimation the animation class for the enemy visual.
+	 */
 	public EntityAnimation enemyAnimation(StackPane root, int row) {
 		int y = 60 + (150 * row);
-		int speed = 25;
-		String mode = "_attack";
-		this.enemyAnimation = new EntityAnimation(root, y, speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
+		String mode = "_walk";
+		this.enemyAnimation = new EntityAnimation(root, y, this.speed, mode, this.type, this.frames, this.deathFrames, this.walkFrames, this.attackFrames);
 		this.enemyAnimation.start();
 		return this.enemyAnimation;
-
+	}
+	
+	
+	/**
+	 * Purpose: Constructs a new tower animation for visual display.
+	 * 
+	 * @param root A StackPane of the root to place visuals onto.
+	 * @param row An int of the row to place the Animation onto.
+	 * @param col An int of the column to place the Animation onto.
+	 * 
+	 * @return TowerAnimation the animation class for the tower visual.
+	 */
+	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
+		int y = 60 + (150 * row);
+		String mode = "_attack";
+		int x = col;
+		this.animation = new TowerAnimation(root, y, this.speed, mode, this.type, this.frames, x);
+		this.animation.start();
+		return this.animation;
 	}
 	
 	/************************ Getters and Setters Block ************************/
@@ -269,24 +293,27 @@ public class Entity {
 	}
 	
 	/**
-	 * getter of the health
-	 * @return
+	 * Getter for health
+	 * 
+	 * @return int representing the Entity's health.
 	 */
 	public int getHealth() {
 		return health;
 	}
 	
 	/**
-	 * getter of the attack
-	 * @return
+	 * Getter for attack
+	 * 
+	 * @return int representing the Entity's attack damage.
 	 */
 	public int getAttack() {
 		return attack;
 	}
 	
 	/**
-	 * getter of the price, only tower have the price
-	 * @return
+	 * Getter for price (0 if non-tower)
+	 * 
+	 * @return int indicating cost of Entity.
 	 */
 	public int getPrice() {
 		if (this.base.equals("tower")) {
@@ -296,8 +323,9 @@ public class Entity {
 	}
 	
 	/**
-	 * getter of the speed, only enemy have the speed
-	 * @return
+	 * Getter of the speed, only enemy have the speed
+	 * 
+	 * @return int indicating enemy speed.
 	 */
 	public int getSpeed() {
 		if (this.base.equals("enemy")) {
@@ -305,8 +333,24 @@ public class Entity {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Getter for frames.
+	 * 
+	 * @return int indicating number of sprites on sprite sheet.
+	 */
 	public int getFrames() {
 		return frames;
+
+	}
+	
+	/**
+	 * Getter for enemyAnimation.
+	 * 
+	 * @return EntityAnimation, the animations for an enemy.
+	 */
+	public EntityAnimation getEnemyAnimation() {
+		return enemyAnimation;
 
 	}
 }
