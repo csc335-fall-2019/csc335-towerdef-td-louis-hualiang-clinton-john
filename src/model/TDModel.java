@@ -29,7 +29,8 @@ public class TDModel extends Observable {
 	private int turn;
 	private int enemyCount;
 	private int roundStatus;
-	
+	private boolean pause = false;
+
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -152,7 +153,7 @@ public class TDModel extends Observable {
 		
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
-		
+		if (!pause) {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
@@ -209,6 +210,10 @@ public class TDModel extends Observable {
 			this.roundStatus = 0;
 			return 0;
 		}
+		
+		}
+		return 2; // when paused
+		
 	}
 	
 	/**
@@ -241,10 +246,24 @@ public class TDModel extends Observable {
 	}
 	
 	// a test pause method
-	public void pause(int col, int row) {
+	public void pause(int col, int row, boolean isPause) {
 		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
 			Entity entity = grid.get(row).get(col).get(i);
-			entity.pause(entity.getBase());
+			if (isPause) {
+				entity.pause(entity.getBase());
+			}else {
+				entity.resume(entity.getBase());
+			}
+			
+		}
+		pause = isPause;
+	}
+	
+	// a test change speed method
+	public void changeSpeed(int col, int row, double t) {
+		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
+			Entity entity = grid.get(row).get(col).get(i);
+			entity.changeSpeed(t, entity.getBase());
 		}
 	}
 	
@@ -358,6 +377,7 @@ public class TDModel extends Observable {
 		
 		// Reached when round was not lost
 		return true;
+
 	}
 	
 	/**
@@ -419,7 +439,7 @@ public class TDModel extends Observable {
 	 */
 	private void damageTower(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		//System.out.println("Attack");
-		
+
 		// Grab the attacker and tower for their state
 		Entity attacker = gridCopy.get(row).get(col).get(position);
 		Entity tower = gridCopy.get(row).get(col).get(0);
@@ -458,6 +478,7 @@ public class TDModel extends Observable {
 //			attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();
 		}
+		
 	}
 	
 	/**
@@ -534,6 +555,7 @@ public class TDModel extends Observable {
 			grid.get(row).get(col-1).remove(tower);
 			tower.getAnimation().Delete();
 
+
 			// Visual - Projectile spawned when final enemy hit is found
 			if (hitsLeft == 0) {
 				// Final enemy that the projectile will hit
@@ -562,6 +584,7 @@ public class TDModel extends Observable {
 				this.enemyCount--;
 			}
 		}
+
 	}
 	
 	

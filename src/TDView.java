@@ -542,12 +542,12 @@ public class TDView extends Application implements Observer {
 				dsTag.setText("Double");
 				dsBackground.setFill(Color.BLUEVIOLET);
 				System.out.println("back to normal speed");
-//				controller.setSpeed(0.5);  //assume there is setSpeed() method takes in an multiplier
+				controller.changeSpeed(1);  //assume there is setSpeed() method takes in an multiplier
 			}else {      // double speed now
 				dsTag.setText("Normal");
 				dsBackground.setFill(Color.CORNFLOWERBLUE);
 				System.out.println("double speed");
-//				controller.setSpeed(2);  //assume there is setSpeed() method takes in an multiplier
+				controller.changeSpeed(2);  //assume there is setSpeed() method takes in an multiplier
 			}
 			doubleSpeed = !doubleSpeed;
 		});
@@ -578,7 +578,7 @@ public class TDView extends Application implements Observer {
 					Node tower = towers.get(i);
 					tower.setDisable(false);
 				}
-//				controller.resume();   //assume there is resume() method takes in an multiplier
+				controller.pause(false);   //assume there is resume() method takes in an multiplier
 			}else {     // pause now
 				tag.setText("Resume");
 				pauseBackground.setFill(Color.LIMEGREEN);
@@ -588,7 +588,7 @@ public class TDView extends Application implements Observer {
 					tower.setDisable(true);
 				}
 				pauseBox.setDisable(false);
-				controller.pause();
+				controller.pause(true);
 			}
 			pause = !pause;
 			

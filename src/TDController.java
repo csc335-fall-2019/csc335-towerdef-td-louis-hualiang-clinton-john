@@ -29,6 +29,7 @@ public class TDController {
 	private int turn;
 	private TDModel model;
 	private int gameSpeed = 1;
+	private boolean pause = false;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -227,7 +228,6 @@ public class TDController {
 		
 		// Set model's round status
 		model.setRoundStatus(0);
-		
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;
 		while (!roundOver) {
@@ -277,20 +277,38 @@ public class TDController {
 				return false;
 			}
 		}
-		
+
 		// Reached when the round finishes
 		model.incrTurn();
 		return true;
 	}
 	
 	//a test pause method
-	public void pause() {
+	public void pause(boolean isPause) {
 		// Iterate over row by row
 		for (int row = 0; row < model.getRows(); row++) {
 			// Iterate over column by column starting from leftmost
 			for (int col = 0; col < model.getCols(); col++) {
 				// Iterate over each Entity
-				model.pause(col, row);
+				if(isPause) {
+					model.pause(col, row, true);
+				}else {
+					model.pause(col, row, false);
+				}
+			}
+		}
+		pause = isPause;
+	}
+	
+	
+	//a test changeSpeed method
+	public void changeSpeed(double t) {
+		// Iterate over row by row
+		for (int row = 0; row < model.getRows(); row++) {
+			// Iterate over column by column starting from leftmost
+			for (int col = 0; col < model.getCols(); col++) {
+				// Iterate over each Entity
+				model.changeSpeed(col, row, t);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 package model.entity;
+import java.util.List;
 import java.util.Observable;
 import animation.*;
 import javafx.animation.Animation;
@@ -337,6 +338,51 @@ public class Entity {
 			getEnemyAnimation().getTranslation().pause();
 		}else if (theBase.equals("tower")) {
 			getAnimation().getAnimation().pause();
+			Projectile pjtile = getAnimation().getProjectile();
+			if (pjtile != null) {
+				List<Projectile> listOfPjtile = getAnimation().getPjList();
+				for (Projectile pjt: listOfPjtile) {
+					pjt.getAnimation().pause();
+					pjt.getTranslation().pause();
+				}
+				
+			}
+		}
+	}
+	
+	//test resume method
+	public void resume(String theBase) {
+		if (theBase.equals("zombie")) {
+			getEnemyAnimation().getAnimation().play();
+			getEnemyAnimation().getTranslation().play();
+		}else if (theBase.equals("tower")) {
+			getAnimation().getAnimation().play();
+			Projectile pjtile = getAnimation().getProjectile();
+			if (pjtile != null) {
+				List<Projectile> listOfPjtile = getAnimation().getPjList();
+				for (Projectile pjt: listOfPjtile) {
+					pjt.getAnimation().play();
+					pjt.getTranslation().play();
+				}
+			}
+			
+		}
+	}
+	
+	public void changeSpeed(double multiplier, String theBase) {
+		if (theBase.equals("zombie")) {
+			getEnemyAnimation().getTranslation().setRate(multiplier);
+			getEnemyAnimation().getAnimation().setRate(multiplier);
+		}else if (theBase.equals("tower")) {
+			getAnimation().getAnimation().setRate(multiplier);
+			Projectile pjtile = getAnimation().getProjectile();
+			if (pjtile != null) {
+				List<Projectile> listOfPjtile = getAnimation().getPjList();
+				for (Projectile pjt: listOfPjtile) {
+					pjt.getAnimation().setRate(multiplier);
+					pjt.getTranslation().setRate(multiplier);
+				}
+			}
 		}
 	}
 	
