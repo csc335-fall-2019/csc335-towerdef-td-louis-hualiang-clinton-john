@@ -56,6 +56,7 @@ public class EntityAnimation extends Node{
     public Entity zom;
     public int row;
     private int gameSpeed = 1;
+    private KeyFrame moveZom;
     
 
     private double move;
@@ -108,7 +109,7 @@ public class EntityAnimation extends Node{
         
         this.translation.setCycleCount(Timeline.INDEFINITE);
         
-        KeyFrame moveBall = new KeyFrame(Duration.seconds(this.rate),
+        this.moveZom = new KeyFrame(Duration.seconds(this.rate),
                 new EventHandler<ActionEvent>() {
 
                     public void handle(ActionEvent event) {
@@ -141,7 +142,7 @@ public class EntityAnimation extends Node{
                     }
                     
         		});
-        this.translation.getKeyFrames().add(moveBall);
+        this.translation.getKeyFrames().add(this.moveZom);
         this.translation.play();
         
         }
@@ -337,6 +338,10 @@ public class EntityAnimation extends Node{
    
    public void setSpeed(int speed) {
 	   this.gameSpeed = speed;
+   }
+   
+   public void slow() {
+	   this.translation.setRate(0.5);
    }
 
 	@Override

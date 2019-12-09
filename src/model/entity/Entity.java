@@ -41,6 +41,7 @@ public class Entity {
 	private int walkFrames;
 	private int rate;
 	private TDModel model;
+	private int weaponFrames;
 	// More variables for entity specific elements
 	
 	/**
@@ -85,6 +86,7 @@ public class Entity {
 				this.attack = 30;
 				this.price = 120;
 				this.frames = 5;
+				this.weaponFrames = 1;
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
@@ -95,6 +97,7 @@ public class Entity {
 				this.price = 210;
 				this.frames = 6;
 				this.speed = 2;
+				this.weaponFrames = 8;
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
@@ -104,6 +107,7 @@ public class Entity {
 				this.price = 245;
 				this.speed = 2;
 				this.frames = 9;
+				
 
 			}
 			else if (this.type.equals("tower4")) {
@@ -114,14 +118,15 @@ public class Entity {
 				this.attack = 135;
 				this.price = 335;
 				this.frames = 9;
+				this.weaponFrames = 8;
 
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
 				this.image = new Image("images/tower5.png");
-
+				this.weaponFrames = 3;
 				this.health = 100;
-				this.attack = 0;
+				this.attack = 25;
 				this.price = 90;
 				this.speed = 2;
 				this.frames = 7;
@@ -134,7 +139,7 @@ public class Entity {
 			if (this.type.equals("zombie0")) {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie0.png");
-				this.health = 300;
+				this.health = 50;
 				this.attack = 5;
 				this.speed = 75;
 				this.deathFrames = 9;
@@ -156,7 +161,6 @@ public class Entity {
 				//this.image = new Image("images/enemy0.png");
 				this.health = 500;
 				this.attack = 5;
-				
 				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
@@ -171,6 +175,7 @@ public class Entity {
 				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
+				
 			}
 		}
 		
@@ -300,7 +305,7 @@ public class Entity {
 		int y = 60 + (150 * row);
 		String mode = "_attack";
 		int x = col;
-		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col);
+		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col, this.weaponFrames);
 		this.animation.start();
 		return this.animation;
 	}

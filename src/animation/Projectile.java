@@ -41,6 +41,7 @@ public class Projectile {
     public int col;
     private int gameSpeed = 1;
     public boolean lethal = false;
+    public int hits;
     
     private int COLUMNS  =   9;
     private int COUNT    =  6;
@@ -50,7 +51,7 @@ public class Projectile {
     private static final int HEIGHT   = 45;
 
 
-    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target) {
+    public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target, int hits) {
     	this.root1 = stage;
     	this.y_cor = 80 + (150 * y);
     	this.row = y;
@@ -61,9 +62,7 @@ public class Projectile {
     	this.x = 360 + (x * 150);
     	this.col = x;
     	this.attack = attack;
-
     	this.myrate = (1.0/150.0)/this.gameSpeed;
-
     	this.pane = new GridPane();
     	pane.setMouseTransparent(true);
         this.target = target;
@@ -71,6 +70,11 @@ public class Projectile {
         pane.setTranslateY(this.y_cor);
         this.root1.getChildren().add(pane);
         this.target = target;
+        if(this.action.equals("weapon5")) {
+        	this.hits = 1;
+        }else {
+        	this.hits = 0;
+        }
         //System.out.printf("Projectile info\nthis.x = %d\ntarget.getStart() = %d\nthis.rate = %d\ntarget.getRate() = %f\n", this.x, target.getStart(), this.rate, target.getRate());
 
     	
@@ -106,14 +110,23 @@ public class Projectile {
                     	
                     	Timeline transition = getTranslation();
                     	int y_cor = getY();
+                    	int hits = getHits();
                     	pane.setTranslateX(pane.getTranslateX() + 1);
                     	pane.setTranslateY(y_cor);
                     	
                     	//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getPane().getTranslateX());
                     	if( ((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 2) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+2)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
                     		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getTranslateX());
-                    		transition.pause();
-                    		Delete();
+                    		if(hits == 0) {
+                    			transition.pause();
+                        		Delete();
+                    		}else {
+                    			System.out.println("slowed");
+                    			transition.pause();
+                        		Delete();
+                    			target.getEnemyAnimation().slow();
+                    		}
+                    		
                     		if(lethal == true) {
                     			target.getEnemyAnimation().Death();
                     		}
@@ -205,6 +218,10 @@ public class Projectile {
    
    public void setLethal() {
 	   this.lethal = true;
+   }
+   
+   public int getHits() {
+	   return this.hits;
    }
  
 }

@@ -546,7 +546,7 @@ public class TDModel extends Observable {
 		enemy.beAttacked(tower.getAttack());
 
 		// Visual
-		tower.getAnimation().spawnProjectile(enemy);
+		tower.getAnimation().spawnProjectile(enemy, hitsLeft);
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid

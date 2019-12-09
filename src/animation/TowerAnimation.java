@@ -43,6 +43,7 @@ public class TowerAnimation extends Node{
     private int dif;
     private Projectile projectile = null;
     private List<Projectile> listOfPjtile = new ArrayList<Projectile>();
+    private int weaponFrames;
 
     
     
@@ -53,7 +54,7 @@ public class TowerAnimation extends Node{
     private static final int WIDTH    = 90;
     private static final int HEIGHT   = 86;
 
-    public TowerAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int x) {
+    public TowerAnimation(StackPane stage, int y, double speed, String mode, String action, int count, int x, int weaponFrames) {
     	this.root1 = stage;
     	this.y_cor = 60 + (150 * y);
     	this.speed = speed;
@@ -63,6 +64,8 @@ public class TowerAnimation extends Node{
     	this.x = x;
     	this.y = y;
     	this.dif = 600;
+    	this.weaponFrames = weaponFrames;
+    	
 
     }
 
@@ -119,10 +122,10 @@ public class TowerAnimation extends Node{
     }
     
 
-    public void spawnProjectile(Entity target) {
-    	String action = "weapon4";
+    public void spawnProjectile(Entity target, int hitsLeft) {
+    	String action = "weapon" + this.action.charAt(this.action.length()-1);
     	//System.out.print(this.y);
-       	projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
+       	projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, this.weaponFrames, 1, this.x, target, hitsLeft);
    		projectile.translate();
    		projectile.start();
    		listOfPjtile.add(projectile);
