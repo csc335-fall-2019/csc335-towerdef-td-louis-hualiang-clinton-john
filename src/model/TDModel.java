@@ -301,7 +301,7 @@ public class TDModel extends Observable {
 					}
 				}
 			}
-		}
+		} 
 		
 		// Reached if removal successful
 		return true;
