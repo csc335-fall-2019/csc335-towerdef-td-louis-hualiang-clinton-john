@@ -2,6 +2,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import animation.Projectile;
 import model.entity.*;
 
 /**
@@ -29,8 +31,6 @@ public class TDModel extends Observable {
 	private int turn;
 	private int enemyCount;
 	private int roundStatus;
-	private boolean pause = false;
-
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -153,7 +153,6 @@ public class TDModel extends Observable {
 		
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
-		if (!pause) {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
@@ -215,9 +214,6 @@ public class TDModel extends Observable {
 			return 0;
 		}
 		
-		}
-		return 2; // when paused
-		
 	}
 	
 	/**
@@ -260,7 +256,6 @@ public class TDModel extends Observable {
 			}
 			
 		}
-		pause = isPause;
 	}
 	
 	// a test change speed method
@@ -269,6 +264,49 @@ public class TDModel extends Observable {
 			Entity entity = grid.get(row).get(col).get(i);
 			entity.changeSpeed(t, entity.getBase());
 		}
+	}
+	
+	/**
+	 * Purpose: clear the last round of grid by removing only enemy and tower entities.
+	 * 
+	 * @return boolean indicating successful reset.
+	 */
+	public boolean clearUp() {
+		this.enemyCount = 0;
+		// Grab a copy of the grid for iteration
+		List<List<List<Entity>>> gridCopy = grid;
+		// Iterate over the rows
+		for (int row = 0; row < gridCopy.size(); row++) {
+			List<List<Entity>> rows = gridCopy.get(row);
+			
+			// Iterate over the columns
+			for (int col = 0; col < rows.size(); col++) {
+				List<Entity> cols = rows.get(col);
+				
+				// Iterate over the entities and remove them
+				int size = cols.size();
+				for (int i = 0; i < size; i++) {
+					Entity entity = cols.get(0);
+					if (entity.getBase().equals("zombie")) {
+						entity.getEnemyAnimation().Delete();
+						grid.get(row).get(col).remove(entity);
+					}else if (entity.getBase().equals("tower")) {
+						Projectile pjtile = entity.getAnimation().getProjectile();
+						if (pjtile != null) {
+							List<Projectile> listOfPjtile = entity.getAnimation().getPjList();
+							for (Projectile pjt: listOfPjtile) {
+								pjt.Delete();
+							}
+						}
+						entity.getAnimation().Delete();
+						removeEntity(entity, row, col, false);
+					}
+				}
+			}
+		} 
+		
+		// Reached if removal successful
+		return true;
 	}
 	
 	
@@ -593,6 +631,11 @@ public class TDModel extends Observable {
 			this.enemyCount--;
 		}
 
+	}
+	
+	public void roundOver(String entity) {
+		setChanged();
+		notifyObservers(entity);
 	}
 	
 	

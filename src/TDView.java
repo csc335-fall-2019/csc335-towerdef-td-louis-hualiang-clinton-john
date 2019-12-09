@@ -121,41 +121,55 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void update(Observable model, Object target) {
-		// Take out the information passed through target
-		Entity entity = ((PlacementInfo) target).getEntity();
-		int row = ((PlacementInfo) target).getRow();
-		int col = ((PlacementInfo) target).getCol();
-		
-		// Add a tower
-		if (entity.getBase().equals("tower")) {
-			if (((PlacementInfo) target).getDel() == 0) {
-				// Create a new Node with the Image and place it into the appropriate grid point
-				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
-				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+
+		if (target instanceof PlacementInfo) {
+			// Take out the information passed through target
+			Entity entity = ((PlacementInfo) target).getEntity();
+			int row = ((PlacementInfo) target).getRow();
+			int col = ((PlacementInfo) target).getCol();
+			
+			//ImageView imgView = new ImageView(entity.getImage());
+			
+			// Add a tower
+			if (entity.getBase().equals("tower")) {
+				if (((PlacementInfo) target).getDel() == 0) {
+					//System.out.println("Making image view for entity");
+					//System.out.println(entity.getType());
+						
+					// Create a new Node with the Image and place it into the appropriate grid point
+					TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
+					gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+				}
+				
+				//deletion
+				else {
+					gridBoard.get(row).get(col).getChildren().remove(2);
+				}
+				
+				// refresh the menu showing how much money is left
+				addMenuInfo();
 			}
 			
-			//deletion
-			else {
-				gridBoard.get(row).get(col).getChildren().remove(2);
+			// Add an obstable
+			else if (entity.getBase().equals("object")) {
+				// Add object
+				if (((PlacementInfo) target).getDel() == 0) {
+					// Create a new Node with the Image and place it into the appropriate grid point
+					ImageView objView = new ImageView(entity.getImage());
+					gridBoard.get(row).get(col).getChildren().add(objView);
+				}
+				
+				// Delete object
+				else {
+					gridBoard.get(row).get(col).getChildren().remove(2);
+				}
 			}
 			
-			// refresh the menu showing how much money is left
-			addMenuInfo();
-		}
-		
-		// Add an obstable
-		else if (entity.getBase().equals("object")) {
-			// Add object
-			if (((PlacementInfo) target).getDel() == 0) {
-				// Create a new Node with the Image and place it into the appropriate grid point
-				ImageView objView = new ImageView(entity.getImage());
-				gridBoard.get(row).get(col).getChildren().add(objView);
-			}
-			
-			// Delete object
-			else {
-				gridBoard.get(row).get(col).getChildren().remove(2);
-			}
+		}else if (target instanceof String) {
+			String entity = (String)target;
+			Alert a = new Alert(AlertType.INFORMATION);
+			a.setContentText("Round over, " + entity + " won!");
+			a.showAndWait();
 		}
 	}
 
@@ -471,11 +485,13 @@ public class TDView extends Application implements Observer {
 				dsBackground.setFill(Color.BLUEVIOLET);
 				System.out.println("back to normal speed");
 				controller.changeSpeed(1);  //assume there is setSpeed() method takes in an multiplier
+				controller.setGameSpeed(1);
 			}else {      // double speed now
 				dsTag.setText("Normal");
 				dsBackground.setFill(Color.CORNFLOWERBLUE);
 				System.out.println("double speed");
 				controller.changeSpeed(2);  //assume there is setSpeed() method takes in an multiplier
+				controller.setGameSpeed(2);
 			}
 			doubleSpeed = !doubleSpeed;
 		});
