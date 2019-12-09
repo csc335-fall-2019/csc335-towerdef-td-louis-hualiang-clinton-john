@@ -58,7 +58,7 @@ public class Projectile {
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
-    	this.x = 400 + (x * 150);
+    	this.x = 360 + (x * 150);
     	this.col = x;
     	this.attack = attack;
 
@@ -110,7 +110,7 @@ public class Projectile {
                     	pane.setTranslateY(y_cor);
                     	
                     	//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getPane().getTranslateX());
-                    	if((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 2) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+2)) {
+                    	if( ((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 2) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+2)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
                     		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getTranslateX());
                     		transition.pause();
                     		Delete();
@@ -131,7 +131,8 @@ public class Projectile {
 
     
     public void Delete() {
-        	this.pane.getChildren().remove(0);
+        	this.root1.getChildren().remove(this.pane);
+        	
     }
     
     public void attack() {
@@ -200,6 +201,10 @@ public class Projectile {
    
    public int getY() {
 	   return this.y_cor;
+   }
+   
+   public void setLethal() {
+	   this.lethal = true;
    }
  
 }

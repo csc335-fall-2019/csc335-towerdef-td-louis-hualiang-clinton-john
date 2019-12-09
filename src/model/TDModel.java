@@ -355,7 +355,7 @@ public class TDModel extends Observable {
 				// Move current enemy to the left
 				//tryMoveLeft(row, col, position, gridCopy);
 				
-				resume(row, col, gridCopy);
+				//resume(row, col, gridCopy);
 			}
 		}
 		
@@ -547,7 +547,6 @@ public class TDModel extends Observable {
 
 		// Visual
 		tower.getAnimation().spawnProjectile(enemy);
-		
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
@@ -569,20 +568,26 @@ public class TDModel extends Observable {
 				*/
 			}
 			
-			// Check if enemy is defeated
-			if (enemy.isDead()) {
-				// Tower is defeated, remove from state grid and set death in animation
-				System.out.println("Zombie defeated");
-				enemy.getEnemyAnimation().setDeath();
-				grid.get(row).get(col).remove(enemy);
-				// Visual death will be called in the projectile
-				
-				// Reward money
-				this.money += 50;
-				
-				// Decrement enemy count
-				this.enemyCount--;
-			}
+			
+		}
+		// Check if enemy is defeated
+		if (enemy.isDead()) {
+			// Tower is defeated, remove from state grid and set death in animation
+			System.out.println("Zombie defeated");
+			//tower.getAnimation().spawnProjectile(enemy);
+			grid.get(row).get(col).remove(enemy);
+			tower.getAnimation().getPjList().get(tower.getAnimation().getPjList().size()-1).setLethal();
+			//enemy.getEnemyAnimation().Delete();
+			
+			
+			// Visual death will be called in the projectile
+			
+			
+			// Reward money
+			this.money += 50;
+			
+			// Decrement enemy count
+			this.enemyCount--;
 		}
 
 	}
