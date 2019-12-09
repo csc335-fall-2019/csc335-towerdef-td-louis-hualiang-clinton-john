@@ -220,7 +220,7 @@ public class TDController {
 									model.addEntity(zom, currRow, 8);
 									
 									// Adjust its speed to match the current speed
-									model.changeSpeed(8, currRow, this.gameSpeed);
+//									model.changeSpeed(8, currRow, this.gameSpeed);
 								}
 							}
 						}
@@ -228,6 +228,7 @@ public class TDController {
 					
 					// Perform the model progression		
 					model.nextStep();
+					changeSpeed(gameSpeed);   // Adjust its speed to match the current speed
 					currentStep++;
 				});
 				
