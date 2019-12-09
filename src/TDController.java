@@ -30,6 +30,8 @@ public class TDController {
 	private TDModel model;
 	private int gameSpeed = 1;
 	private boolean pause = false;
+	private int count;
+	private double speedChanged = 1;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -223,49 +225,69 @@ public class TDController {
 	 * @return boolean indicating the success of the round.
 	 */
 	public boolean runRound(StackPane root, int rows) {
+		pause = false;
 		// Build a randomized queue
 		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
-		
+		count = 0;
 		// Set model's round status
 		model.setRoundStatus(0);
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;
 		while (!roundOver) {
+			if (pause) {
+				System.out.println("paused");
+				continue;
+			}
 			System.out.println("Running round");
 			Platform.runLater(() -> {
 				// Progressing through the queue, place entities when they appear in queue
-				for (int currRow = 0; currRow < rows; currRow++) {
-					// Guard against empty queues
-					if (enemyQueue.get(currRow).size() > 0) {
-						Entity zom = enemyQueue.get(currRow).remove(0);
-						
-						// Check if anything to place
-						if (zom != null) {
-							EntityAnimation entityAnimation = zom.enemyAnimation(root, currRow, 8, zom);
-							entityAnimation.translate();
+				if (count%3 == 0) {
+					for (int currRow = 0; currRow < rows; currRow++) {
+						if (pause) { return; }
+						// Guard against empty queues
+						if (enemyQueue.get(currRow).size() > 0) {
+							Entity zom = enemyQueue.get(currRow).remove(0);
 							
-							// Place zombie at end of current row
-							model.addEntity(zom, currRow, 8);
+							// Check if anything to place
+							if (zom != null && count%3 == 0) {
+								EntityAnimation entityAnimation = zom.enemyAnimation(root, currRow, 8, zom);
+								entityAnimation.translate();
+								
+								// Place zombie at end of current row
+								model.addEntity(zom, currRow, 8);
+							}
+							
+							
 						}
 					}
 				}
-				
-				// Perform the model progression		
+				count++;
+				// Perform the model progression
 				model.nextStep();
+				changeSpeed(speedChanged);
 				
-				// 
 			});
 			
 			// Check if round was lost
 			if (model.getRoundStatus() == -1) {
 				System.out.println("Round over, zombies won");
 				roundOver = true;
+				Platform.runLater(()-> {
+					pause(true);
+					model.roundOver("zombies");
+					model.clearUp();
+				});
 			}
 			
 			// Check if round was won
 			else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
 				System.out.println("Round over, player won");
 				roundOver = true;
+				Platform.runLater(()->{
+					pause(true);
+					model.roundOver("player");
+					model.clearUp();
+				});
 			}
 			
 			
@@ -277,7 +299,6 @@ public class TDController {
 				return false;
 			}
 		}
-
 		// Reached when the round finishes
 		model.incrTurn();
 		return true;
@@ -311,6 +332,7 @@ public class TDController {
 				model.changeSpeed(col, row, t);
 			}
 		}
+		speedChanged = t;
 	}
 
 	/**
@@ -427,7 +449,7 @@ public class TDController {
 		return model.getMoney();
 	}
 	
-	public void setSpeed(int x) {
-		this.gameSpeed = x;
+	public int getGameSpeed() {
+		return gameSpeed;
 	}
 }

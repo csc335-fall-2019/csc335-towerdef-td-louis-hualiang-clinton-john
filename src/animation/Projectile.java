@@ -131,7 +131,7 @@ public class Projectile {
 
     
     public void Delete() {
-        	this.pane.getChildren().remove(0);
+    	this.root1.getChildren().remove(this.pane);
     }
     
     public void attack() {
