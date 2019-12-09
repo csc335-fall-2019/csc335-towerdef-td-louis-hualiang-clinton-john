@@ -233,6 +233,21 @@ public class Entity {
 				this.base = "object";
 				this.image = new Image("images/object11.png");
 			}
+			else if (this.type.equals("object12")) {
+				// Tombstone with dirt
+				this.base = "object";
+				this.image = new Image("images/object12.png");
+			}
+			else if (this.type.equals("object13")) {
+				// Tombstone
+				this.base = "object";
+				this.image = new Image("images/object13.png");
+			}
+			else if (this.type.equals("object14")) {
+				// Wood grave marker
+				this.base = "object";
+				this.image = new Image("images/object14.png");
+			}
 		}
 		
 		

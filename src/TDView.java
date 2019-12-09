@@ -52,15 +52,14 @@ import animation.*;
  * @author John Stockey
  */
 public class TDView extends Application implements Observer {
-	
 	private  TDController controller;
 	private GridPane mainGrid;
 	private List<List<StackPane>> gridBoard; // Index is row column style
 	private GridPane menu;
-	private boolean occupied = false;
 	private String towerChoice;
 	private Thread newRound;
-	
+	private boolean pause = false;
+	private boolean doubleSpeed = false;
 	
 	public static int COLMAX = 9;
 	public static int ROWMAX = 5;
@@ -69,18 +68,16 @@ public class TDView extends Application implements Observer {
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
-	public boolean pause = false;
-	public boolean doubleSpeed = false;
 	 
 	/**
 	 * Purpose: Main window view.
 	 * 
 	 * @param primaryStage Stage of the main window to add scenes to.
-	 *
+	 * 
+	 * @throws Exception of errors with displaying the window.
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		TDModel model = new TDModel(ROWMAX, COLMAX);
 		model.addObserver(this);
 		this.controller = new TDController(model);
@@ -99,7 +96,6 @@ public class TDView extends Application implements Observer {
 		newStageEvents(stageMenu);
 		
 		// VBox to hold the toolbar and mainGrid
-		//HBox root = new HBox(3);
 		this.root1 = new StackPane();
 		this.root = new BorderPane();
 		this.root.setTop(toolbar);
@@ -113,50 +109,8 @@ public class TDView extends Application implements Observer {
 		// Setup and show the window
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Zombies Defense");
-		
-		
-		// This code is very simple setup of testing zombie walk animation
-
-//		int y = 60;
-//		double speed = 1;
-//		String mode = "_walk";
-//		String action = "zombie0";
-//		int frames = 6;
-//		int death = 6;
-//		int walk = 8;
-//		int attack =7;
-//		ArrayList<EntityAnimation> anime = new ArrayList<EntityAnimation>();
-//		for(int i = 0; i<10; i++) {
-//			if(i%2!=0) {
-//				speed = 0.0200;
-//
-//				y+=150;
-//			}else {
-//				speed = 0.0200;
-//
-//			}
-//			EntityAnimation tower = new EntityAnimation(this.root1, y, speed, mode, action, frames, death, walk, attack);
-//			tower.start();
-//			tower.translate();
-//			
-//			anime.add(tower);
-//		}
-
-
-//		String a = "weapon4";
-//		int dif = 600;
-//    	Projectile projectile = new Projectile(this.root1, 1, 2, "_attack",a, 8, 1, 500, dif);
-//    	projectile.start();
-//    	projectile.translate();
-		
-
 		this.primaryStage.setScene(this.scene);
 		this.primaryStage.show();
-		
-		//Testing out animation
-		
-		// Run the game test
-		//runGame(root1);
 	}
 	
 	/**
@@ -172,14 +126,9 @@ public class TDView extends Application implements Observer {
 		int row = ((PlacementInfo) target).getRow();
 		int col = ((PlacementInfo) target).getCol();
 		
-		//ImageView imgView = new ImageView(entity.getImage());
-		
 		// Add a tower
 		if (entity.getBase().equals("tower")) {
 			if (((PlacementInfo) target).getDel() == 0) {
-				//System.out.println("Making image view for entity");
-				//System.out.println(entity.getType());
-					
 				// Create a new Node with the Image and place it into the appropriate grid point
 				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
@@ -215,10 +164,6 @@ public class TDView extends Application implements Observer {
 	/**
 	 * Purpose: Runs the current game of tower defense.
 	 * 
-	 * <pre>
-	 * 
-	 * </pre>
-	 * 
 	 * @param root A StackPane for placing enemy visuals onto
 	 */
 	private void runGame(StackPane root) {
@@ -242,7 +187,6 @@ public class TDView extends Application implements Observer {
 		int alternate = 0;
 		mainGrid = new GridPane();
 		gridBoard = new ArrayList<List<StackPane>>();
-		int occupied = 1;
 		
 		// Set the properties of the grid
 		mainGrid.setHgap(0);
@@ -265,16 +209,6 @@ public class TDView extends Application implements Observer {
 				highlight.setOpacity(0.0);
 				highlight.setHeight(gridSize);
 				highlight.setWidth(gridSize);
-				
-				/*
-				Rectangle slot2 = new Rectangle();
-				slot2.setFill(new ImagePattern(new Image("images/zambie.png")));
-				slot2.setOpacity(0);
-				slot2.setHeight(30);
-				slot2.setWidth(30);
-				*/
-				
-				SandboxFX slot3 = new SandboxFX();
 				 
 				// Stack event to highlight grid placement validity
 				stack.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -304,17 +238,13 @@ public class TDView extends Application implements Observer {
 		            public void handle(MouseEvent Event) {
 		            	// Valid placement check
 		            	if (stack.getChildren().size() < 3) {
-		            		//System.out.printf("tower: %s, row: %d, col: %d\n", towerChoice, row, col);
 		            		controller.placeEntity(towerChoice, row, col);
 		            	} else if (stack.getChildren().size() >= 3 && Event.getButton() == MouseButton.SECONDARY) {
 		            		// if this is not an object, remove the tower.
 		            		if (!(gridBoard.get(row).get(col).getChildren().get(2) instanceof ImageView)) {
-		            			//System.out.printf("tower: %s, row: %d, col: %d has been Removed\n", gridBoard.get(row).get(col).getChildren().get(2), row, col);
 		            			controller.removeEntity(towerChoice, row, col);
 		            		}
 		            	}
-		                //slot2.setOpacity(1);
-		                
 		            }
 				});
 				
@@ -340,9 +270,6 @@ public class TDView extends Application implements Observer {
 		            }
 				});
 				
-				// Add the slot to the grid and to the gridBoard
-			    //stack.getChildren().addAll(ground, highlight, slot2);
-				
 				// Add the ground and highlight to the stack
 				stack.getChildren().addAll(ground, highlight);
 				
@@ -357,6 +284,9 @@ public class TDView extends Application implements Observer {
 		
 		// Fill in column 0 with the randomized town
 		controller.randomizeTownCol0(ROWMAX);
+		
+		// Fill in rightmost column with the randomized graves
+		controller.randomizeGravesColEnd(ROWMAX, COLMAX);
 	}
 	
 	/**
@@ -442,7 +372,6 @@ public class TDView extends Application implements Observer {
 							}
 							Tooltip.install(hover, t);
 						}
-						
 					}
 				});
 				
@@ -521,7 +450,6 @@ public class TDView extends Application implements Observer {
 			}
 		});
 		
-		
 		// Double speed button
 		Circle dsBackground = new Circle();
 		dsBackground.setFill(Color.BLUEVIOLET);
@@ -591,13 +519,10 @@ public class TDView extends Application implements Observer {
 				controller.pause(true);
 			}
 			pause = !pause;
-			
-			
 		});
 		
 		menu.add(pauseBox, 1, 4);
 		
-
 		// Currency info box
 		Rectangle infoBackground = new Rectangle();
 		infoBackground.setFill(Color.LIGHTBLUE);
@@ -646,6 +571,9 @@ public class TDView extends Application implements Observer {
 				
 				// Fill in column 0 with the randomized town
 				controller.randomizeTownCol0(ROWMAX);
+				
+				// Fill in rightmost column with the randomized graves
+				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
 			}
 		});
 		
@@ -660,6 +588,9 @@ public class TDView extends Application implements Observer {
 				
 				// Fill in column 0 with the randomized town
 				controller.randomizeTownCol0(ROWMAX);
+				
+				// Fill in rightmost column with the randomized graves
+				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
 				
 				// Build stage 2
 				System.out.println("Stage 2");
@@ -679,6 +610,9 @@ public class TDView extends Application implements Observer {
 				// Fill in column 0 with the randomized town
 				controller.randomizeTownCol0(ROWMAX);
 				
+				// Fill in rightmost column with the randomized graves
+				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
+				
 				// Build stage 3
 				System.out.println("Stage 3");
 				this.controller.buildStage3(ROWMAX);
@@ -697,6 +631,9 @@ public class TDView extends Application implements Observer {
 				// Fill in column 0 with the randomized town
 				controller.randomizeTownCol0(ROWMAX);
 				
+				// Fill in rightmost column with the randomized graves
+				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
+				
 				// Build random stage
 				this.controller.buildRandomStage(ROWMAX, COLMAX);
 			}
@@ -713,6 +650,9 @@ public class TDView extends Application implements Observer {
 				
 				// Fill in column 0 with the randomized town
 				controller.randomizeTownCol0(ROWMAX);
+				
+				// Fill in rightmost column with the randomized graves
+				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
 				
 				// Set surprise mode
 				//this.controller.setSurpriseMode();
