@@ -514,7 +514,7 @@ public class TDModel extends Observable {
 					for (int i = 0; i < grid.get(row).get(col+shift).size(); i++) {
 						Entity check = grid.get(row).get(col+shift).get(i);
 						// Attack any zombies
-						if (check != null && check.getBase().equals("zombie") && hitsLeft > 0) {
+						if (check != null && check.getBase().equals("zombie") && hitsLeft > 0 && check.isDead() != true) {
 							// Decrement how many hits one projectile makes
 							hitsLeft--;
 							
