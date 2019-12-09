@@ -296,13 +296,30 @@ public class TDController {
 	}
 	
 	//a test pause method
-	public void pause() {
+	public void pause(boolean isPause) {
 		// Iterate over row by row
 		for (int row = 0; row < model.getRows(); row++) {
 			// Iterate over column by column starting from leftmost
 			for (int col = 0; col < model.getCols(); col++) {
 				// Iterate over each Entity
-				model.pause(col, row);
+				if(isPause) {
+					model.pause(col, row);
+				}else {
+					model.resumePause(col, row);
+				}
+			}
+		}
+	}
+	
+	
+	//a test changeSpeed method
+	public void changeSpeed(double t) {
+		// Iterate over row by row
+		for (int row = 0; row < model.getRows(); row++) {
+			// Iterate over column by column starting from leftmost
+			for (int col = 0; col < model.getCols(); col++) {
+				// Iterate over each Entity
+				model.changeSpeed(col, row, t);
 			}
 		}
 	}

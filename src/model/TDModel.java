@@ -26,7 +26,7 @@ public class TDModel extends Observable {
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
-	
+	private boolean pause = false;
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -138,7 +138,7 @@ public class TDModel extends Observable {
 	public boolean nextStep() {
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
-		
+		if (!pause) {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
@@ -175,6 +175,8 @@ public class TDModel extends Observable {
 			}
 		}
 		return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -211,6 +213,24 @@ public class TDModel extends Observable {
 		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
 			Entity entity = grid.get(row).get(col).get(i);
 			entity.pause(entity.getBase());
+		}
+		pause = true;
+	}
+	
+	// a test resume method
+	public void resumePause(int col, int row) {
+		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
+			Entity entity = grid.get(row).get(col).get(i);
+			entity.resume(entity.getBase());
+		}
+		pause = false;
+	}
+	
+	// a test change speed method
+	public void changeSpeed(int col, int row, double t) {
+		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
+			Entity entity = grid.get(row).get(col).get(i);
+			entity.changeSpeed(t, entity.getBase());
 		}
 	}
 	
@@ -305,6 +325,7 @@ public class TDModel extends Observable {
 				}
 			}
 		}
+		
 	}
 	
 	/**
@@ -366,7 +387,7 @@ public class TDModel extends Observable {
 	 */
 	private void damageTower(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		//System.out.println("Attack");
-		
+
 		// Grab the attacker and tower for their state
 		Entity attacker = gridCopy.get(row).get(col).get(position);
 		Entity tower = gridCopy.get(row).get(col).get(0);
@@ -405,6 +426,7 @@ public class TDModel extends Observable {
 //			attacker.getEnemyAnimation().start();
 			//attacker.getEnemyAnimation().getTranslation().play();
 		}
+		
 	}
 	
 	/**
@@ -429,6 +451,7 @@ public class TDModel extends Observable {
 		//System.out.printf("row %d, col %d, position %d\n", row, col, position);
 		while (shift < range && hitsLeft > 0) {
 			System.out.printf("Column checking %d\n", col+shift);
+//			if (!pause) {
 			// Check the spaces to the right
 			if (col+shift < this.cols) {
 				// Check that right entry has elements to grab
@@ -449,6 +472,7 @@ public class TDModel extends Observable {
 					}
 				}
 			}
+//			}
 			
 			// Next right column
 			shift++;
@@ -483,32 +507,33 @@ public class TDModel extends Observable {
 			System.out.println("Tower defeated");
 			grid.get(row).get(col-1).remove(tower);
 			tower.getAnimation().Delete();
-
-		// Visual - Projectile spawned when final enemy hit is found
-		if (hitsLeft == 0) {
-			// Final enemy that the projectile will hit
-			tower.fireProjectile(enemy);
-			/*
-			enemy.getEnemyAnimation();
-			enemy.getEnemyAnimation().getTranslation();
-			enemy.getEnemyAnimation().getTranslation().pause();
-			enemy.getEnemyAnimation().setMode("_attack");
-			enemy.getEnemyAnimation().start();
-			*/
+		
+			// Visual - Projectile spawned when final enemy hit is found
+			if (hitsLeft == 0) {
+				// Final enemy that the projectile will hit
+				tower.fireProjectile(enemy);
+				/*
+				enemy.getEnemyAnimation();
+				enemy.getEnemyAnimation().getTranslation();
+				enemy.getEnemyAnimation().getTranslation().pause();
+				enemy.getEnemyAnimation().setMode("_attack");
+				enemy.getEnemyAnimation().start();
+				*/
+			}
+			
+			// Check if enemy is defeated
+			if (enemy.isDead()) {
+				// Tower is defeated, remove from state grid and set death in animation
+				System.out.println("Zombie defeated");
+				enemy.getEnemyAnimation().setDeath();
+				grid.get(row).get(col).remove(enemy);
+				// Visual death will be called in the projectile
+				
+				// Reward money
+				this.money += 50;
+			}
 		}
 		
-		// Check if enemy is defeated
-		if (enemy.isDead()) {
-			// Tower is defeated, remove from state grid and set death in animation
-			System.out.println("Zombie defeated");
-			enemy.getEnemyAnimation().setDeath();
-			grid.get(row).get(col).remove(enemy);
-			// Visual death will be called in the projectile
-			
-			// Reward money
-			this.money += 50;
-		}
-		}
 	}
 	
 	

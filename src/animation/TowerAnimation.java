@@ -1,5 +1,8 @@
 package animation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sun.javafx.geom.BaseBounds;
 import com.sun.javafx.geom.transform.BaseTransform;
 import com.sun.javafx.jmx.MXNodeAlgorithm;
@@ -38,7 +41,8 @@ public class TowerAnimation extends Node{
     private int x;
     private int y;
     private int dif;
-    private Projectile projectile;
+    private Projectile projectile = null;
+    private List<Projectile> listOfPjtile = new ArrayList<Projectile>();
 
     
     
@@ -118,9 +122,10 @@ public class TowerAnimation extends Node{
     public void spawnProjectile(Entity target) {
     	String action = "weapon4";
     	//System.out.print(this.y);
-       	Projectile projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
+       	projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, 8, 1, this.x, target);
    		projectile.translate();
    		projectile.start();
+   		listOfPjtile.add(projectile);
     }
 
     /**
@@ -161,6 +166,10 @@ public class TowerAnimation extends Node{
     
     public Projectile getProjectile() {
     	return this.projectile;
+    }
+    
+    public List<Projectile> getPjList(){
+    	return listOfPjtile;
     }
 
 	@Override
