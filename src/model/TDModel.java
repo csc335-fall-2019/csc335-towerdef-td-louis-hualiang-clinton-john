@@ -179,8 +179,12 @@ public class TDModel extends Observable {
 						int range = this.cols - col - 1;
 						int hits = 1;
 						
+						if(entity.getType().equals("tower0")) {
+							range = 0;
+						}
+						
 						// tower3 is melee, so limit range to 1
-						if (entity.getType().equals("tower3")) {
+						else if (entity.getType().equals("tower3")) {
 							range = 1;
 						}
 						// tower5 Wizard has two hit penetrations
@@ -547,6 +551,8 @@ public class TDModel extends Observable {
 
 		// Visual
 		tower.getAnimation().spawnProjectile(enemy, hitsLeft);
+		
+		
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
