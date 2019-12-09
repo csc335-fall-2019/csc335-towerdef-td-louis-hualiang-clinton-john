@@ -216,6 +216,9 @@ public class TDController {
 									
 									// Place zombie at end of current row
 									model.addEntity(zom, currRow, 8);
+									
+									// Adjust its speed to match the current speed
+									model.changeSpeed(8, currRow, this.gameSpeed);
 								}
 							}
 						}
@@ -288,6 +291,8 @@ public class TDController {
 				model.changeSpeed(col, row, t);
 			}
 		}
+		
+		this.gameSpeed = (int) t;
 	}
 
 	/**
