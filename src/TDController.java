@@ -206,6 +206,7 @@ public class TDController {
 					if (currentStep % 5 == 0) {
 						// Progressing through the queue, place entities when they appear in queue
 						for (int currRow = 0; currRow < rows; currRow++) {
+							if (pause) { return;}   //pause the loop if it is already in the loop
 							// Guard against empty queues
 							if (enemyQueue.get(currRow).size() > 0) {
 								Entity zom = enemyQueue.get(currRow).remove(0);
@@ -227,7 +228,6 @@ public class TDController {
 					
 					// Perform the model progression		
 					model.nextStep();
-					changeSpeed(gameSpeed);
 					currentStep++;
 				});
 				
@@ -391,12 +391,12 @@ public class TDController {
 		for (List<Entity> lineUp : queue) {
 			// If even one line contains items, then the queue is not empty
 			if (!lineUp.isEmpty()) {
-				return false;
+				return true;
 			}
 		}
 		
 		// Reached if all lists in queue were empty
-		return true;
+		return false;
 	}
 	
 	/**
