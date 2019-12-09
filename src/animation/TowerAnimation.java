@@ -127,6 +127,7 @@ public class TowerAnimation extends Node{
     	//System.out.print(this.y);
        	projectile = new Projectile(this.root1, this.y, this.speed, this.mode,action, this.weaponFrames, 1, this.x, target, hitsLeft);
    		projectile.translate();
+   		projectile.getTranslation().setRate(this.speed);
    		projectile.start();
    		listOfPjtile.add(projectile);
     }
@@ -174,7 +175,16 @@ public class TowerAnimation extends Node{
     public List<Projectile> getPjList(){
     	return listOfPjtile;
     }
-
+    
+    /**
+	 * Purpose: Setter for speed.
+	 * 
+	 * @param speed An int to set animation speed.
+	 */
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
 	@Override
 	protected boolean impl_computeContains(double arg0, double arg1) {
 		// TODO Auto-generated method stub

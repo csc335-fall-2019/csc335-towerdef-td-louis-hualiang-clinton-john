@@ -132,6 +132,11 @@ public class TDView extends Application implements Observer {
 				// Create a new Node with the Image and place it into the appropriate grid point
 				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
 				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+				
+				// Set speed
+				if (this.doubleSpeed) {
+					entity.setSpeed(1);
+				}
 			}
 			
 			//deletion

@@ -72,7 +72,7 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-				this.speed = 2;
+				this.speed = 1;
 				this.health = 10;
 				this.attack = 10;
 				this.price = 110;
@@ -81,7 +81,7 @@ public class Entity {
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
 				this.image = new Image("images/tower1.png");
-				this.speed = 2;
+				this.speed = 1;
 				this.health = 90;
 				this.attack = 30;
 				this.price = 120;
@@ -96,7 +96,7 @@ public class Entity {
 				this.price = 210;
 				this.price = 210;
 				this.frames = 6;
-				this.speed = 2;
+				this.speed = 1;
 				this.weaponFrames = 8;
 			}
 			else if (this.type.equals("tower3")) {
@@ -105,7 +105,7 @@ public class Entity {
 				this.health = 180;
 				this.attack = 65;
 				this.price = 245;
-				this.speed = 2;
+				this.speed = 1;
 				this.frames = 9;
 				this.weaponFrames =1;
 				
@@ -114,7 +114,7 @@ public class Entity {
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
 				this.image = new Image("images/tower4.png");
-				this.speed = 2;
+				this.speed = 1;
 				this.health = 200;
 				this.attack = 135;
 				this.price = 335;
@@ -129,7 +129,7 @@ public class Entity {
 				this.health = 100;
 				this.attack = 25;
 				this.price = 90;
-				this.speed = 2;
+				this.speed = 1;
 				this.frames = 7;
 
 			}
@@ -323,6 +323,7 @@ public class Entity {
 		int x = col;
 		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col, this.weaponFrames);
 		this.animation.start();
+		this.animation.getAnimation().setRate(this.speed);
 		return this.animation;
 	}
 	
@@ -484,6 +485,20 @@ public class Entity {
 			return speed;
 		}
 		return 0;
+	}
+	
+	/**
+	 * Purpose: Setter for speed.
+	 * 
+	 * @param speed An int to set animation speed.
+	 */
+	public void setSpeed(int speed) {
+		this.speed = speed;
+		
+		// If tower, set TowerAnimation's speed
+		if (this.base.equals("tower")) {
+			this.animation.setSpeed(speed);
+		}
 	}
 	
 	/**
