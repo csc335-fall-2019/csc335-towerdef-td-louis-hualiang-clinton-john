@@ -17,6 +17,17 @@ import model.entity.*;
  * 
  * Public Methods:
  *   TDController(TDModel model) - New controller for updating a model of TD.
+ *   placeEntity(String name, int row, int col) - Place a new Entity into the model at a given row column.
+ *   removeEntity(String name, int row, int col) - Remove an Entity from the model at a given row column.
+ *   buildStage2 - Builds a preset stage 2 object layout.
+ *   buildStage3(int row) - Builds a preset stage 3 object layout.
+ *   buildRandomStage(int row, int col) - Builds a random stage object layout.
+ *   runRound(StackPane root, int rows) - Runs a round of tower defense.
+ *   pause(boolean isPause) - Pauses and resumes round progression.
+ *   changeSpeed(double t) - Adjusts game speed.
+ *   randomizeTownCol0(int rows) - Places town objects on column 0 randomly.
+ *   randomizeGravesColEnd(int rows, int cols) - Places grave objects at the ending column.
+ *   reset() - Resets the model's state.
  *   Getters and Setters
  * </pre>
  * 
@@ -26,10 +37,10 @@ import model.entity.*;
  * @author John Stockey 
  */
 public class TDController {
-	private int turn;
 	private TDModel model;
-	private int gameSpeed = 1;
-	private boolean pause = false;
+	private int gameSpeed;
+	private int currentStep;
+	private boolean pause;
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -43,6 +54,7 @@ public class TDController {
 	public TDController(TDModel model) {
 		this.model = model;
 		this.gameSpeed = 1;
+		this.pause = false;
 	}
 	
 	/**
@@ -96,53 +108,6 @@ public class TDController {
 	}
 	
 	/**
-	 * Purpose: Builds the enemies to send down each row over a round.
-	 * 
-	 * <pre>
-	 * Add enemies to the five queues and each queue represents one row in
-	 * the map. It take the turn as parameter and each queue generate enemies from 
-	 * 3 to 5 for first turn, 6 to 8 for second turn, 9 to 11 for third turn
-	 * The enemy type is also various from turn to turn. For the first turn, only enemy0
-	 * will show up, for second turn, enemy0 and enemy1 are possible. After third turn, all
-	 * types of enemy are possible to show up
-	 * </pre>
-	 * 
-	 * @param turn An int indicating the different turn (from 1 to infinite).
-	 * 
-	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
-	 */
-	public List<List<Entity>> queueUpEnemy(int turn){
-		List<List<Entity>> troops = new ArrayList<List<Entity>>();
-		
-		for (int i=0; i<5; i++) {
-			List<Entity> queue = new ArrayList<Entity>();
-			Random rand = new Random();
-			int rand_num = (int)Math.round(rand.nextDouble()*2 + 3*turn); 
-			
-			while(rand_num>0) {
-				int coin_flip = (int)Math.round(rand.nextDouble());
-				if (coin_flip == 1) {
-					int enemy_turn;
-					if (turn < 4) {
-						enemy_turn = turn -1;
-					}else {
-						enemy_turn = 3;
-					}
-					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
-					queue.add(new Entity("zombie"+rand_enemy, this.model));
-					rand_num--;
-				}else {
-					queue.add(null);
-				}
-			}
-			
-			troops.add(queue);
-		}
-		
-		return troops;
-	}
-	
-	/**
 	 * Purpose: Builds a preset stage 2 object layout.
 	 * 
 	 * @return boolean indicating successful stage creation.
@@ -154,7 +119,7 @@ public class TDController {
 		model.addEntity(new Entity("object2", this.model), 2, 3);
 		model.addEntity(new Entity("object2", this.model), 1, 3);
 		model.addEntity(new Entity("object2", this.model), 4, 3);
-		model.addEntity(new Entity("object1", this.model), 3, 8);
+		model.addEntity(new Entity("object1", this.model), 3, 7);
 		model.addEntity(new Entity("object1", this.model), 2, 7);
 		model.addEntity(new Entity("object3", this.model), 2, 4);
 
@@ -199,7 +164,7 @@ public class TDController {
 		
 		//15% chance of spawning an object in between (0,1) - (8,8)
 		for (int i = 0; i < row; i++) {
-			for (int j = 1; j < col; j++) {
+			for (int j = 1; j < col-1; j++) {
 				if (rand.nextInt(100) <= 15) {
 					//selects random object
 					model.addEntity(new Entity("object"+rand.nextInt(2), this.model), i, j);
@@ -228,46 +193,51 @@ public class TDController {
 		
 		// Set model's round status
 		model.setRoundStatus(0);
+		this.currentStep = 0;
+		
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;
 		while (!roundOver) {
-			System.out.println("Running round");
-			Platform.runLater(() -> {
-				// Progressing through the queue, place entities when they appear in queue
-				for (int currRow = 0; currRow < rows; currRow++) {
-					// Guard against empty queues
-					if (enemyQueue.get(currRow).size() > 0) {
-						Entity zom = enemyQueue.get(currRow).remove(0);
-						
-						// Check if anything to place
-						if (zom != null) {
-							EntityAnimation entityAnimation = zom.enemyAnimation(root, currRow, 8, zom);
-							entityAnimation.translate();
-							
-							// Place zombie at end of current row
-							model.addEntity(zom, currRow, 8);
+			if (!this.pause) {
+				System.out.println("Running round");
+				Platform.runLater(() -> {
+					// Progress through the queue every n steps
+					if (currentStep % 5 == 0) {
+						// Progressing through the queue, place entities when they appear in queue
+						for (int currRow = 0; currRow < rows; currRow++) {
+							// Guard against empty queues
+							if (enemyQueue.get(currRow).size() > 0) {
+								Entity zom = enemyQueue.get(currRow).remove(0);
+								
+								// Check if anything to place
+								if (zom != null) {
+									EntityAnimation entityAnimation = zom.enemyAnimation(root, currRow, 8, zom);
+									entityAnimation.translate();
+									
+									// Place zombie at end of current row
+									model.addEntity(zom, currRow, 8);
+								}
+							}
 						}
 					}
+					
+					// Perform the model progression		
+					model.nextStep();
+					currentStep++;
+				});
+				
+				// Check if round was lost
+				if (model.getRoundStatus() == -1) {
+					System.out.println("Round over, zombies won");
+					roundOver = true;
 				}
 				
-				// Perform the model progression		
-				model.nextStep();
-				
-				// 
-			});
-			
-			// Check if round was lost
-			if (model.getRoundStatus() == -1) {
-				System.out.println("Round over, zombies won");
-				roundOver = true;
+				// Check if round was won
+				else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
+					System.out.println("Round over, player won");
+					roundOver = true;
+				}
 			}
-			
-			// Check if round was won
-			else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
-				System.out.println("Round over, player won");
-				roundOver = true;
-			}
-			
 			
 			// Sleep the thread, interrupts return false
 			try {
@@ -283,7 +253,11 @@ public class TDController {
 		return true;
 	}
 	
-	//a test pause method
+	/**
+	 * Purpose: Pauses and resumes round progression.
+	 * 
+	 * @param isPause A boolean indicating if pausing.
+	 */
 	public void pause(boolean isPause) {
 		// Iterate over row by row
 		for (int row = 0; row < model.getRows(); row++) {
@@ -300,8 +274,11 @@ public class TDController {
 		pause = isPause;
 	}
 	
-	
-	//a test changeSpeed method
+	/**
+	 * Purpose: Adjusts game speed.
+	 * 
+	 * @param t A double indicating the speed to set to.
+	 */
 	public void changeSpeed(double t) {
 		// Iterate over row by row
 		for (int row = 0; row < model.getRows(); row++) {
@@ -333,6 +310,31 @@ public class TDController {
 		// Loop over the rows at column 0
 		for (int i = 0; i < rows; i++) {
 			model.addEntity(new Entity("object"+(rand.nextInt(4)+4), this.model), i, 0);
+		}
+		
+		// Returns true if all objects were successfully placed.
+		return true;
+	}
+	
+	/**
+	 * Purpose: Places grave objects at the ending column.
+	 * 
+	 * <pre>
+	 * Rightmost column is for spawning enemies, so place grave markers 
+	 * to indicate their spawn point visually.
+	 * </pre>
+	 * 
+	 * @param rows An int of the number of rows.
+	 * 
+	 * @return boolean indicating the successful placement of the objects.
+	 */
+	public boolean randomizeGravesColEnd(int rows, int cols) {
+		// Random generator
+		Random rand = new Random();
+		
+		// Loop over the rows at rightmost column
+		for (int i = 0; i < rows; i++) {
+			model.addEntity(new Entity("object"+(rand.nextInt(3)+12), this.model), i, cols-1);
 		}
 		
 		// Returns true if all objects were successfully placed.
@@ -383,11 +385,58 @@ public class TDController {
 		return true;
 	}
 	
+	/**
+	 * Purpose: Builds the enemies to send down each row over a round.
+	 * 
+	 * <pre>
+	 * Add enemies to the five queues and each queue represents one row in
+	 * the map. It take the turn as parameter and each queue generate enemies from 
+	 * 3 to 5 for first turn, 6 to 8 for second turn, 9 to 11 for third turn
+	 * The enemy type is also various from turn to turn. For the first turn, only enemy0
+	 * will show up, for second turn, enemy0 and enemy1 are possible. After third turn, all
+	 * types of enemy are possible to show up
+	 * </pre>
+	 * 
+	 * @param turn An int indicating the different turn (from 1 to infinite).
+	 * 
+	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
+	 */
+	private List<List<Entity>> queueUpEnemy(int turn) {
+		List<List<Entity>> troops = new ArrayList<List<Entity>>();
+		
+		for (int i=0; i<5; i++) {
+			List<Entity> queue = new ArrayList<Entity>();
+			Random rand = new Random();
+			int rand_num = (int)Math.round(rand.nextDouble()*2 + 3*turn); 
+			
+			while(rand_num>0) {
+				int coin_flip = (int)Math.round(rand.nextDouble());
+				if (coin_flip == 1) {
+					int enemy_turn;
+					if (turn < 4) {
+						enemy_turn = turn -1;
+					}else {
+						enemy_turn = 3;
+					}
+					int rand_enemy = (int)Math.round(rand.nextDouble()*enemy_turn);
+					queue.add(new Entity("zombie"+rand_enemy, this.model));
+					rand_num--;
+				}else {
+					queue.add(null);
+				}
+			}
+			
+			troops.add(queue);
+		}
+		
+		return troops;
+	}
+	
 	/************************ Getters and Setters Block ************************/
 	/**
 	 * Getter for model.
 	 * 
-	 * @return TDModel
+	 * @return TDModel of the paired model.
 	 */
 	public TDModel getModel() {
 		return this.model;
@@ -403,14 +452,6 @@ public class TDController {
 	}
 	
 	/**
-	 * return the current turn
-	 * @return
-	 */
-	public int getTurn() {
-		return turn;
-	}
-	
-	/**
 	 * Setter for game speed.
 	 * 
 	 * @param gameSpeed An int indicating the speed of the rounds.
@@ -420,14 +461,11 @@ public class TDController {
 	}
 
 	/**
-	 * return the amount of money the player currently has
-	 * @return
+	 * Getter for money.
+	 * 
+	 * @return int indicating the amount of money the player has.
 	 */
 	public int getMoney() {
 		return model.getMoney();
-	}
-	
-	public void setSpeed(int x) {
-		this.gameSpeed = x;
 	}
 }
