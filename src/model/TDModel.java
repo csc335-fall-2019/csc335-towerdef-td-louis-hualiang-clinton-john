@@ -165,7 +165,7 @@ public class TDModel extends Observable {
 					Entity entity = column.get(position);
 					
 					// Check entity base type
-					if (entity.getBase().equals("zombie")) {
+					if (entity.getBase().equals("zombie") && !entity.isDead()) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -344,12 +344,7 @@ public class TDModel extends Observable {
 				Entity check = grid.get(row).get(col).get(0);
 				
 				// Non-tower means movement
-				if (check == null || !check.getBase().contentEquals("tower")) {
-					// Move current enemy to the left
-					//tryMoveLeft(row, col, position, gridCopy);
-				}
-				// Previous checks failed so this is a tower
-				else {
+				if (check != null && check.getBase().contentEquals("tower")) {
 					// Do damage to tower
 					damageTower(row, col, position, gridCopy);
 				}
@@ -513,9 +508,11 @@ public class TDModel extends Observable {
 					// Get check from state grid
 					for (int i = 0; i < grid.get(row).get(col+shift).size(); i++) {
 						Entity check = grid.get(row).get(col+shift).get(i);
+						System.out.println(row+" "+ (col+shift));
 						// Attack any zombies
 						if (check != null && check.getBase().equals("zombie") && hitsLeft > 0 && check.isDead() != true) {
 							// Decrement how many hits one projectile makes
+							
 							hitsLeft--;
 							
 							// Apply tower's damage to the enemy

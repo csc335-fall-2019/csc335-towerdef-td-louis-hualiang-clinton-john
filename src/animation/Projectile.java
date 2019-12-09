@@ -59,7 +59,7 @@ public class Projectile {
     	this.mode = mode;
     	this.action = action;
     	this.COUNT = count;
-    	this.x = 360 + (x * 150);
+    	this.x = 350 + (x * 150);
     	this.col = x;
     	this.attack = attack;
     	this.myrate = (1.0/150.0)/this.gameSpeed;
