@@ -160,9 +160,6 @@ public class TDModel extends Observable {
 			}
 		}
 		else {
-			if(entity.getBase().equals("zombie")) {
-				this.enemyCount--;
-			}
 			// Remove the entity
 			grid.get(row).get(col).remove(entity);
 			
@@ -245,7 +242,7 @@ public class TDModel extends Observable {
 			this.roundStatus = -1;
 			return -1;
 		}
-		else if (this.enemyCount == 0) {
+		else if (this.enemyCount <= 0) {
 			// No more enemies and the round wasn't previously lost
 			this.roundStatus = 1;
 			return 1;

@@ -200,6 +200,7 @@ public class TDController {
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;
 		while (!roundOver) {
+			System.out.println("Enemy count: " + model.enemyCount);
 			if (!this.pause) {
 				Platform.runLater(() -> {
 					// Progress through the queue every n steps
@@ -391,6 +392,7 @@ public class TDController {
 		}
 		
 		// Reached if all lists in queue were empty
+		System.out.println("Still in queue");
 		return false;
 	}
 	

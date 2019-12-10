@@ -486,13 +486,11 @@ public class TDView extends Application implements Observer {
 			if (doubleSpeed) {   // normal speed now
 				dsTag.setText("Double");
 				dsBackground.setFill(Color.BLUEVIOLET);
-				System.out.println("back to normal speed");
 				controller.changeSpeed(1);  //assume there is setSpeed() method takes in an multiplier
 				controller.setGameSpeed(1);
 			}else {      // double speed now
 				dsTag.setText("Normal");
 				dsBackground.setFill(Color.CORNFLOWERBLUE);
-				System.out.println("double speed");
 				controller.changeSpeed(2);  //assume there is setSpeed() method takes in an multiplier
 				controller.setGameSpeed(2);
 			}
