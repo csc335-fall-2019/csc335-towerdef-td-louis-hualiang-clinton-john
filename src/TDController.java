@@ -38,9 +38,10 @@ import model.entity.*;
  */
 public class TDController {
 	private TDModel model;
-	private int gameSpeed;
+	private int gameSpeed = 1;
+	private boolean pause = false;
 	private int currentStep;
-	private boolean pause;
+
 	                            
 	/**
 	 * Purpose: New controller for updating a model of TD.
@@ -188,9 +189,10 @@ public class TDController {
 	 * @return boolean indicating the success of the round.
 	 */
 	public boolean runRound(StackPane root, int rows) {
+		pause = false;
+		pause(pause);
 		// Build a randomized queue
 		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
-		
 		// Set model's round status
 		model.setRoundStatus(0);
 		this.currentStep = 0;
@@ -205,6 +207,7 @@ public class TDController {
 					if (currentStep % 5 == 0) {
 						// Progressing through the queue, place entities when they appear in queue
 						for (int currRow = 0; currRow < rows; currRow++) {
+							if (pause) { return;}   //pause the loop if it is already in the loop
 							// Guard against empty queues
 							if (enemyQueue.get(currRow).size() > 0) {
 								Entity zom = enemyQueue.get(currRow).remove(0);
@@ -218,7 +221,7 @@ public class TDController {
 									model.addEntity(zom, currRow, 8);
 									
 									// Adjust its speed to match the current speed
-									model.changeSpeed(8, currRow, this.gameSpeed);
+//									model.changeSpeed(8, currRow, this.gameSpeed);
 								}
 							}
 						}
@@ -226,6 +229,7 @@ public class TDController {
 					
 					// Perform the model progression		
 					model.nextStep();
+					changeSpeed(gameSpeed);   // Adjust its speed to match the current speed
 					currentStep++;
 				});
 				
@@ -233,15 +237,24 @@ public class TDController {
 				if (model.getRoundStatus() == -1) {
 					System.out.println("Round over, zombies won");
 					roundOver = true;
+					Platform.runLater(()-> {
+						pause(true);
+						model.roundOver("zombies");
+						model.clearUp();
+					});
 				}
 				
 				// Check if round was won
 				else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
 					System.out.println("Round over, player won");
 					roundOver = true;
+					Platform.runLater(()->{
+						pause(true);
+						model.roundOver("player");
+						//model.clearUp();
+					});
 				}
-			}
-			
+			}	
 			// Sleep the thread, interrupts return false
 			try {
 				Thread.sleep(1000/this.gameSpeed);
@@ -250,7 +263,6 @@ public class TDController {
 				return false;
 			}
 		}
-
 		// Reached when the round finishes
 		model.incrTurn();
 		return true;
@@ -291,7 +303,6 @@ public class TDController {
 				model.changeSpeed(col, row, t);
 			}
 		}
-		
 		this.gameSpeed = (int) t;
 	}
 
@@ -382,12 +393,12 @@ public class TDController {
 		for (List<Entity> lineUp : queue) {
 			// If even one line contains items, then the queue is not empty
 			if (!lineUp.isEmpty()) {
-				return false;
+				return true;
 			}
 		}
 		
 		// Reached if all lists in queue were empty
-		return true;
+		return false;
 	}
 	
 	/**
@@ -473,4 +484,5 @@ public class TDController {
 	public int getMoney() {
 		return model.getMoney();
 	}
+
 }

@@ -29,7 +29,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sandboxfx.SandboxFX;
 import model.entity.*;
 import model.*;
 import animation.*;
@@ -68,6 +67,7 @@ public class TDView extends Application implements Observer {
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
+	private Label amount;
 	 
 	/**
 	 * Purpose: Main window view.
@@ -121,47 +121,54 @@ public class TDView extends Application implements Observer {
 	 */
 	@Override
 	public void update(Observable model, Object target) {
-		// Take out the information passed through target
-		Entity entity = ((PlacementInfo) target).getEntity();
-		int row = ((PlacementInfo) target).getRow();
-		int col = ((PlacementInfo) target).getCol();
-		
-		// Add a tower
-		if (entity.getBase().equals("tower")) {
-			if (((PlacementInfo) target).getDel() == 0) {
-				// Create a new Node with the Image and place it into the appropriate grid point
-				TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
-				gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+		if (target instanceof PlacementInfo) {
+			// Take out the information passed through target
+			Entity entity = ((PlacementInfo) target).getEntity();
+			int row = ((PlacementInfo) target).getRow();
+			int col = ((PlacementInfo) target).getCol();
+			
+			// Add a tower
+			if (entity.getBase().equals("tower")) {
+				if (((PlacementInfo) target).getDel() == 0) {
+					// Create a new Node with the Image and place it into the appropriate grid point
+					TowerAnimation animation = entity.buildAnimation(this.root1, row, col);
+					gridBoard.get(row).get(col).getChildren().add(animation.getPane());
+				}
 				
-				// Set speed
-				if (this.doubleSpeed) {
-					entity.setSpeed(1);
+				//deletion
+				else {
+					gridBoard.get(row).get(col).getChildren().remove(2);
+				}
+				
+				// refresh the menu showing how much money is left
+				this.amount.setText("" + controller.getMoney());
+			}
+			else if(entity.getBase().equals("zombie")) {
+				this.amount.setText("" + controller.getMoney());
+			}
+			
+			// Add an obstable
+			else if (entity.getBase().equals("object")) {
+				// Add object
+				if (((PlacementInfo) target).getDel() == 0) {
+					// Create a new Node with the Image and place it into the appropriate grid point
+					ImageView objView = new ImageView(entity.getImage());
+					gridBoard.get(row).get(col).getChildren().add(objView);
+				}
+				
+				// Delete object
+				else {
+					gridBoard.get(row).get(col).getChildren().remove(2);
 				}
 			}
 			
-			//deletion
-			else {
-				gridBoard.get(row).get(col).getChildren().remove(2);
-			}
-			
-			// refresh the menu showing how much money is left
-			addMenuInfo();
+		} else if (target instanceof String) {
+			String entity = (String)target;
+			Alert a = new Alert(AlertType.INFORMATION);
+			a.setContentText("Round over, " + entity + " won!");
+			a.showAndWait();
 		}
 		
-		// Add an obstable
-		else if (entity.getBase().equals("object")) {
-			// Add object
-			if (((PlacementInfo) target).getDel() == 0) {
-				// Create a new Node with the Image and place it into the appropriate grid point
-				ImageView objView = new ImageView(entity.getImage());
-				gridBoard.get(row).get(col).getChildren().add(objView);
-			}
-			
-			// Delete object
-			else {
-				gridBoard.get(row).get(col).getChildren().remove(2);
-			}
-		}
 	}
 
 	
@@ -228,7 +235,6 @@ public class TDView extends Application implements Observer {
 		                	// Invalid placement
 		                	highlight.setFill(Color.RED);
 		                	highlight.setOpacity(0.3);
-
 		                }
 		            }
 				});
@@ -476,11 +482,13 @@ public class TDView extends Application implements Observer {
 				dsBackground.setFill(Color.BLUEVIOLET);
 				System.out.println("back to normal speed");
 				controller.changeSpeed(1);  //assume there is setSpeed() method takes in an multiplier
+				controller.setGameSpeed(1);
 			}else {      // double speed now
 				dsTag.setText("Normal");
 				dsBackground.setFill(Color.CORNFLOWERBLUE);
 				System.out.println("double speed");
 				controller.changeSpeed(2);  //assume there is setSpeed() method takes in an multiplier
+				controller.setGameSpeed(2);
 			}
 			doubleSpeed = !doubleSpeed;
 		});
@@ -539,11 +547,11 @@ public class TDView extends Application implements Observer {
 		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
-		Label amount = new Label("" + controller.getMoney());
+		this.amount = new Label("" + controller.getMoney());
 		currencyInfo.setAlignment(Pos.TOP_CENTER);
 		
 		// Add the currency info together
-		currencyInfo.getChildren().addAll(currency, amount);
+		currencyInfo.getChildren().addAll(currency, this.amount);
 		
 		// Add the Stacks to have backgrounds and then auxiliary information
 		currencyBox.getChildren().addAll(infoBackground, currencyInfo);

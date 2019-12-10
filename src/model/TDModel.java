@@ -2,6 +2,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import animation.Projectile;
 import model.entity.*;
 
 /**
@@ -12,6 +14,13 @@ import model.entity.*;
  * 
  * Public Methods:
  *   TDModel(int rows, int cols, int maxOnOne) - New model for a tower defense game state.
+ *   addEntity(Entity entity, int row, int col) - Add a given Entity into the model at a given row column.
+ *   removeEntity(Entity entity, int row, int col, boolean isSelling) - Removes a given Entity from the model at a given row column.
+ *   nextStep() - Checks each Entity for their round actions and notifies observers.
+ *   updateSpot(int col, int row, Entity moved) - Moves an Entity from one column to the column left of it.
+ *   resume(int col, int row, List<List<List<Entity>>> gridCopy) - Iterates over zombie entities and has them resume walking.
+ *   pause(int col, int row, boolean isPause) - Iterates over entities and pauses or resume them.
+ *   changeSpeed(int col, int row, double t) - 
  *   Getters and Setters
  * </pre>
  * 
@@ -22,6 +31,7 @@ import model.entity.*;
  */
 
 public class TDModel extends Observable {
+	public static int START_MONEY = 1000;
 	private int rows;
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
@@ -29,8 +39,6 @@ public class TDModel extends Observable {
 	private int turn;
 	private int enemyCount;
 	private int roundStatus;
-	private boolean pause = false;
-
 
 	/**
 	 * Purpose: New model for a tower defense game state.
@@ -49,7 +57,7 @@ public class TDModel extends Observable {
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
 
-		this.money = 10000;
+		this.money = START_MONEY;
 		this.turn = 1;
 		this.enemyCount = 0;
 		this.roundStatus = 0;
@@ -127,17 +135,43 @@ public class TDModel extends Observable {
 			return false;
 		}
 		
-		// Remove the entity
-		grid.get(row).get(col).remove(entity);
-		
 		// Give money for selling
 		if (isSelling) {
 			this.money += (entity.getPrice() - 75);
+			Entity tower = null;
+			
+			//find the tower
+			for (Entity check : grid.get(row).get(col)) {
+				if (check.getBase().equals("tower")) {
+					tower = check;
+				}
+			}
+			//remove the tower 
+			if (tower != null) {
+				grid.get(row).get(col).remove(tower);
+				
+				// Notify observers and return successful
+				setChanged();
+				notifyObservers(new PlacementInfo(tower, row, col, 1));
+			}
+		}
+		else {
+			// Remove the entity
+			grid.get(row).get(col).remove(entity);
+			
+			if (entity.getBase().equals("zombie")) {
+				this.enemyCount--;
+				
+				// Reward money
+				this.money += 50;
+			}
+			
+			// Notify observers and return successful
+			setChanged();
+			notifyObservers(new PlacementInfo(entity, row, col, 1));
 		}
 		
-		// Notify observers and return successful
-		setChanged();
-		notifyObservers(new PlacementInfo(entity, row, col, 1));
+		// Reached when there were no issues removing.
 		return true;
 	}
 	
@@ -153,19 +187,18 @@ public class TDModel extends Observable {
 		
 		// Get a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
-		if (!pause) {
 		// Iterate over row by row
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
 			// Iterate over column by column starting from leftmost
-			for (int col = 0; col < rows.size(); col++) {
+			for (int col = rows.size()-1; col >= 0; col--) {
 				List<Entity> column = rows.get(col);
 				// Iterate over each Entity
 				for (int position = 0; position < column.size(); position++) {
 					Entity entity = column.get(position);
 					
 					// Check entity base type
-					if (entity.getBase().equals("zombie") && !entity.isDead()) {
+					if (entity.getBase().equals("zombie")) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -215,9 +248,6 @@ public class TDModel extends Observable {
 			return 0;
 		}
 		
-		}
-		return 2; // when paused
-		
 	}
 	
 	/**
@@ -237,7 +267,13 @@ public class TDModel extends Observable {
 		grid.get(row).get(col).remove(moved);
 	}
 	
-	
+	/**
+	 * Purpose: Iterates over zombie entities and has them resume walking.
+	 * 
+	 * @param col An int of the column the Entity is on.
+	 * @param row An int of the row the Entity is on.
+	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for iterating over.
+	 */
 	public void resume(int col, int row, List<List<List<Entity>>> gridCopy) {
 		for(int i = 0; i<gridCopy.get(row).get(col).size()-1; i++ ) {
 			if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
@@ -245,11 +281,16 @@ public class TDModel extends Observable {
 				gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
 				gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
 			}
-			
 		}
 	}
 	
-	// a test pause method
+	/**
+	 * Purpose: Iterates over entities and pauses or resume them.
+	 * 
+	 * @param col An int of the column the Entity is on.
+	 * @param row An int of the row the Entity is on.
+	 * @param isPause A boolean indicating if pausing or resuming.
+	 */
 	public void pause(int col, int row, boolean isPause) {
 		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
 			Entity entity = grid.get(row).get(col).get(i);
@@ -258,17 +299,66 @@ public class TDModel extends Observable {
 			}else {
 				entity.resume(entity.getBase());
 			}
-			
 		}
-		pause = isPause;
 	}
 	
-	// a test change speed method
+	/**
+	 * Purpose: Iterates over entities and changes their speed.
+	 * 
+	 * @param col An int of the column the Entity is on.
+	 * @param row An int of the row the Entity is on.
+	 * @param t A double of the speed to change to.
+	 */
 	public void changeSpeed(int col, int row, double t) {
 		for(int i = 0; i<grid.get(row).get(col).size(); i++ ) {
 			Entity entity = grid.get(row).get(col).get(i);
 			entity.changeSpeed(t, entity.getBase());
 		}
+	}
+	
+	/**
+	 * Purpose: clear the last round of grid by removing only enemy and tower entities.
+	 * 
+	 * @return boolean indicating successful clearing.
+	 */
+	public boolean clearUp() {
+		this.enemyCount = 0;
+		this.money = START_MONEY;
+		this.turn = 1;
+		// Grab a copy of the grid for iteration
+		List<List<List<Entity>>> gridCopy = grid;
+		// Iterate over the rows
+		for (int row = 0; row < gridCopy.size(); row++) {
+			List<List<Entity>> rows = gridCopy.get(row);
+			
+			// Iterate over the columns
+			for (int col = 0; col < rows.size(); col++) {
+				List<Entity> cols = rows.get(col);
+				
+				// Iterate over the entities and remove them
+				int size = cols.size();
+				for (int i = 0; i < size; i++) {
+					Entity entity = cols.get(0);
+					if (entity.getBase().equals("zombie")) {
+						entity.getEnemyAnimation().Delete();
+						grid.get(row).get(col).remove(entity);
+					}else if (entity.getBase().equals("tower")) {
+						Projectile pjtile = entity.getAnimation().getProjectile();
+						if (pjtile != null) {
+							List<Projectile> listOfPjtile = entity.getAnimation().getPjList();
+							for (Projectile pjt: listOfPjtile) {
+								pjt.Delete();
+							}
+						}
+						entity.getAnimation().Delete();
+						removeEntity(entity, row, col, false);
+					}
+				}
+			}
+		} 
+		
+		// Reached if removal successful
+		return true;
 	}
 	
 	
@@ -279,7 +369,7 @@ public class TDModel extends Observable {
 	 */
 	public boolean reset() {
 		// Reset status variables
-		this.money = 10000;
+		this.money = START_MONEY;
 		this.turn = 1;
 		this.enemyCount = 0;
 		
@@ -314,6 +404,16 @@ public class TDModel extends Observable {
 	public int incrTurn() {
 		this.turn++;
 		return this.turn;
+	}
+	
+	/**
+	 * Purpose: Signifies that the round is over.
+	 * 
+	 * @param entitiy String of the entity winning the round.
+	 */
+	public void roundOver(String entity) {
+		setChanged();
+		notifyObservers(entity);
 	}
 	
 	/************************** Private Fields Block ***************************/
@@ -361,7 +461,6 @@ public class TDModel extends Observable {
 		// No spaces left implies end of row
 		else {
 			// End of row actions
-			System.out.println("End of row action");
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
 				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
 					Entity removed = gridCopy.get(row).get(col).get(i);
@@ -380,48 +479,6 @@ public class TDModel extends Observable {
 	}
 	
 	/**
-	 * Purpose: Visually moves entities at a specified location left.
-	 * 
-	 * <pre>
-	 * row, col, and position specify the original Entity to move.
-	 * The copy of the state grid is required to prevent iteration from being 
-	 * performed correctly due to removing and adding elements.
-	 * </pre>
-	 * 
-	 * @param row An int of the row to move on.
-	 * @param col An int of the column to move from.
-	 * @param position An int of the Entity's position.
-	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for moving entries.
-	 */
-	private void tryMoveLeft(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
-		// Find the enemy in the copy
-		Entity moved = gridCopy.get(row).get(col).get(position);
-		
-		if (!moved.getEnemyAnimation().getMode().equals("_walk")) {
-			moved.getEnemyAnimation().setMode("_walk");
-			moved.getEnemyAnimation().getTranslation().play();
-			moved.getEnemyAnimation().start();
-		}
-		
-		// Check if the entity is visually moved
-		if (moved.getEnemyAnimation().getMove() < 150) {
-			//System.out.println("Translate");
-			// Still need to visually move
-			//moved.getEnemyAnimation().translate();
-		} else {
-			// Can now physically move
-			//System.out.println("Moved left");
-			moved.getEnemyAnimation().minusStart();
-			moved.getEnemyAnimation().resetMove();
-			//moved.getEnemyAnimation().incrMove();
-			//moved.getEnemyAnimation().translate();
-			// Add to the state grid and then remove by object
-			grid.get(row).get(col-1).add(moved);
-			grid.get(row).get(col).remove(moved);
-		}
-	}
-	
-	/**
 	 * Purpose: Attacks towers to the left of the row, col, position position.
 	 * 
 	 * <pre>
@@ -437,8 +494,6 @@ public class TDModel extends Observable {
 	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for getting and moving entries.
 	 */
 	private void damageTower(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
-		//System.out.println("Attack");
-
 		// Grab the attacker and tower for their state
 		Entity attacker = gridCopy.get(row).get(col).get(position);
 		Entity tower = gridCopy.get(row).get(col).get(0);
@@ -456,12 +511,11 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			//System.out.println("Tower defeated");
-
 			grid.get(row).get(col).remove(tower);
+			
+			// Resume zombie movement
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
 				if(gridCopy.get(row).get(col).get(i).getBase().equals("zombie") ) {
-					//System.out.println(gridCopy.get(row).get(col).get(i).getBase());
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().getTranslation().play();
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().setMode("_walk");
 					gridCopy.get(row).get(col).get(i).getEnemyAnimation().start();
@@ -470,12 +524,6 @@ public class TDModel extends Observable {
 			}
 
 			removeEntity(tower, row, col, false);
-
-//			attacker.getEnemyAnimation().getTranslation().play();
-//
-//			attacker.getEnemyAnimation().setMode("_walk");
-//			attacker.getEnemyAnimation().start();
-			//attacker.getEnemyAnimation().getTranslation().play();
 		}
 		
 	}
@@ -508,11 +556,10 @@ public class TDModel extends Observable {
 					// Get check from state grid
 					for (int i = 0; i < grid.get(row).get(col+shift).size(); i++) {
 						Entity check = grid.get(row).get(col+shift).get(i);
-						System.out.println(row+" "+ (col+shift));
+						
 						// Attack any zombies
 						if (check != null && check.getBase().equals("zombie") && hitsLeft > 0 && check.isDead() != true) {
 							// Decrement how many hits one projectile makes
-							
 							hitsLeft--;
 							
 							// Apply tower's damage to the enemy
@@ -542,57 +589,31 @@ public class TDModel extends Observable {
 	 * @param enemy An Entity of the enemy being attacked.
 	 */
 	private void damageEnemy(int row, int col, int hitsLeft, Entity tower, Entity enemy) {
-		//System.out.println("Attacking zombie");
 		// Apply damage
+		
+		if(tower.getType().equals("tower2")) {
+			if(enemy.getHealth() <=50) {
+				enemy.beAttacked(50);
+				System.out.println("assasinated");
+			}
+		}
 		enemy.beAttacked(tower.getAttack());
 
 		// Visual
-		tower.getAnimation().spawnProjectile(enemy, hitsLeft);
-		
+		Projectile projectile = tower.getAnimation().spawnProjectile(enemy, hitsLeft);
 		
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			System.out.println("Tower defeated");
 			grid.get(row).get(col-1).remove(tower);
 			tower.getAnimation().Delete();
-
-
-			// Visual - Projectile spawned when final enemy hit is found
-			if (hitsLeft == 0) {
-				// Final enemy that the projectile will hit
-				tower.fireProjectile(enemy);
-				/*
-				enemy.getEnemyAnimation();
-				enemy.getEnemyAnimation().getTranslation();
-				enemy.getEnemyAnimation().getTranslation().pause();
-				enemy.getEnemyAnimation().setMode("_attack");
-				enemy.getEnemyAnimation().start();
-				*/
-			}
-			
-			
 		}
 		// Check if enemy is defeated
 		if (enemy.isDead()) {
 			// Tower is defeated, remove from state grid and set death in animation
-			System.out.println("Zombie defeated");
-			//tower.getAnimation().spawnProjectile(enemy);
-			grid.get(row).get(col).remove(enemy);
-			tower.getAnimation().getPjList().get(tower.getAnimation().getPjList().size()-1).setLethal();
-			//enemy.getEnemyAnimation().Delete();
-			
-			
+			projectile.setLethal();
 			// Visual death will be called in the projectile
-			
-			
-			// Reward money
-			this.money += 50;
-			
-			// Decrement enemy count
-			this.enemyCount--;
 		}
-
 	}
 	
 	
@@ -651,5 +672,4 @@ public class TDModel extends Observable {
 	public void setRoundStatus(int roundStatus) {
 		this.roundStatus = roundStatus;
 	}
-	
 }

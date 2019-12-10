@@ -129,6 +129,7 @@ public class Projectile {
                     		
                     		if(lethal == true) {
                     			target.getEnemyAnimation().Death();
+                    			target.getEnemyAnimation().setDeath();
                     		}
                     	}
   
@@ -144,8 +145,8 @@ public class Projectile {
 
     
     public void Delete() {
-        	this.root1.getChildren().remove(this.pane);
-        	
+    	this.root1.getChildren().remove(this.pane);
+    	
     }
     
     public void attack() {

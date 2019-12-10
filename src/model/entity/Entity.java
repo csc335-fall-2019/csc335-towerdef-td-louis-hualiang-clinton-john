@@ -72,9 +72,9 @@ public class Entity {
 				// Basic starting tower
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
-				this.speed = 1;
-				this.health = 10;
-				this.attack = 10;
+				this.speed = 2;
+				this.health = 500;
+				this.attack = 0;
 				this.price = 110;
 				this.frames = 1;
 			}
@@ -84,7 +84,7 @@ public class Entity {
 				this.speed = 1;
 				this.health = 90;
 				this.attack = 30;
-				this.price = 120;
+				this.price = 50;
 				this.frames = 5;
 				this.weaponFrames = 1;
 			}
@@ -92,8 +92,7 @@ public class Entity {
 				this.base = "tower";
 				this.image = new Image("images/tower2.png");
 				this.health = 160;
-				this.attack = 50;
-				this.price = 210;
+				this.attack = 25;
 				this.price = 210;
 				this.frames = 6;
 				this.speed = 1;
@@ -102,8 +101,8 @@ public class Entity {
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
 				this.image = new Image("images/tower3.png");
-				this.health = 180;
-				this.attack = 65;
+				this.health = 245;
+				this.attack = 25;
 				this.price = 245;
 				this.speed = 1;
 				this.frames = 9;
@@ -116,8 +115,8 @@ public class Entity {
 				this.image = new Image("images/tower4.png");
 				this.speed = 1;
 				this.health = 200;
-				this.attack = 135;
-				this.price = 335;
+				this.attack = 3000;
+				this.price = 500;
 				this.frames = 9;
 				this.weaponFrames = 8;
 
@@ -139,8 +138,7 @@ public class Entity {
 		if (this.type.contains("zombie")) {
 			if (this.type.equals("zombie0")) {
 				this.base = "zombie";
-				//this.image = new Image("images/zombie0.png");
-				this.health = 50;
+				this.health = 150;
 				this.attack = 5;
 				this.speed = 75;
 				this.deathFrames = 9;
@@ -149,8 +147,7 @@ public class Entity {
 			}
 			else if (this.type.equals("zombie1")) {
 				this.base = "zombie";
-				//this.image = new Image("images/zombie1.png");
-				this.health = 200;
+				this.health = 500;
 				this.attack = 5;
 				this.speed = 50;
 				this.deathFrames = 5;
@@ -159,19 +156,17 @@ public class Entity {
 			}
 			else if (this.type.equals("zombie2")) {
 				this.base = "zombie";
-				//this.image = new Image("images/enemy0.png");
-				this.health = 500;
+				this.health = 250;
 				this.attack = 5;
-				this.speed = 25;
+				this.speed = 50;
 				this.deathFrames = 5;
 				this.walkFrames = 6;
 				this.attackFrames =7;
 			}
 			else if (this.type.equals("zombie3")) {
 				this.base = "zombie";
-				//this.image = new Image("images/enemy0.png");
 				this.health = 100;
-				this.attack = 5;
+				this.attack = 25;
 				this.speed = 25;
 				this.deathFrames = 5;
 				this.walkFrames = 8;
@@ -327,32 +322,11 @@ public class Entity {
 		return this.animation;
 	}
 	
-	/**
-	 * Purpose: Builds the Projectile to fire at an enemy and runs it.
+	/*
+	 * Purpose: Pauses the animations tied to the entity.
 	 * 
-	 * @param enemy An Entity referencing the enemy to fire at.
+	 * @param theBase String of the entity base type.
 	 */
-	public void fireProjectile(Entity enemy) {
-		/*
-		String a = "weapon4";
-		int dif = 600;
-		Projectile projectile = new Projectile(this.root1, 60, 2, "_attack",a, 8, 1, 500, dif);
-		projectile.start();
-		projectile.translate();
-		*/
-		
-		// Get the tower and enemy x locations to calculate difference
-		//this.animation.makeProjectile(enemy.getEnemyAnimation());
-		
-		/*
-		int towerX = this.animation.getProjectile().getStart();
-		int enemyX = enemy.getEnemyAnimation().getStart();
-		this.animation.setDif(towerX - enemyX);
-		this.animation.start();
-		*/
-	}
-	
-	//test pause method
 	public void pause(String theBase) {
 		if (theBase.equals("zombie")) {
 			getEnemyAnimation().getAnimation().pause();
@@ -371,7 +345,11 @@ public class Entity {
 		}
 	}
 	
-	//test resume method
+	/*
+	 * Purpose: Resumes the animations tied to the entity.
+	 * 
+	 * @param theBase String of the entity base type.
+	 */
 	public void resume(String theBase) {
 		if (theBase.equals("zombie")) {
 			getEnemyAnimation().getAnimation().play();
@@ -390,6 +368,12 @@ public class Entity {
 		}
 	}
 	
+	/*
+	 * Purpose: Changes the speed of the animations.
+	 * 
+	 * @param multiplier
+	 * @param theBase String of the entity base type.
+	 */
 	public void changeSpeed(double multiplier, String theBase) {
 		if (theBase.equals("zombie")) {
 			getEnemyAnimation().getTranslation().setRate(multiplier);

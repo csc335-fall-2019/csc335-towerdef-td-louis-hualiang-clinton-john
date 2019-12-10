@@ -211,10 +211,15 @@ public class EntityAnimation extends Node{
     
     public void Delete() {
         	this.root1.getChildren().remove(this.pane);
+        	this.model.removeEntity(this.zom, this.row, this.col, false);
     }
     
     
     public void attack() {
+    	
+    	if(this.isDead == true) {
+    		Delete();
+    	}
     	this.mode = "_attack";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
