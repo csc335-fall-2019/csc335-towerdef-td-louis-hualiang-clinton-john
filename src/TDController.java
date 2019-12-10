@@ -190,6 +190,7 @@ public class TDController {
 	 */
 	public boolean runRound(StackPane root, int rows) {
 		pause = false;
+		pause(pause);
 		// Build a randomized queue
 		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
 		// Set model's round status
@@ -250,7 +251,7 @@ public class TDController {
 					Platform.runLater(()->{
 						pause(true);
 						model.roundOver("player");
-						model.clearUp();
+						//model.clearUp();
 					});
 				}
 			}	

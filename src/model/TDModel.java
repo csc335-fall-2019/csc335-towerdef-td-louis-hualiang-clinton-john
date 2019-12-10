@@ -24,6 +24,7 @@ import model.entity.*;
  */
 
 public class TDModel extends Observable {
+	public static int START_MONEY = 10000;
 	private int rows;
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style
@@ -49,7 +50,7 @@ public class TDModel extends Observable {
 		this.cols = cols;
 		this.grid = new ArrayList<List<List<Entity>>>();
 
-		this.money = 10000;
+		this.money = START_MONEY;
 		this.turn = 1;
 		this.enemyCount = 0;
 		this.roundStatus = 0;
@@ -127,17 +128,35 @@ public class TDModel extends Observable {
 			return false;
 		}
 		
-		// Remove the entity
-		grid.get(row).get(col).remove(entity);
-		
 		// Give money for selling
 		if (isSelling) {
 			this.money += (entity.getPrice() - 75);
+			Entity tower = null;
+			
+			//find the tower
+			for (Entity check : grid.get(row).get(col)) {
+				if (check.getBase().equals("tower")) {
+					tower = check;
+				}
+			}
+			//remove the tower 
+			if (tower != null) {
+				grid.get(row).get(col).remove(tower);
+				
+				// Notify observers and return successful
+				setChanged();
+				notifyObservers(new PlacementInfo(tower, row, col, 1));
+			}
+		}
+		else {
+			// Remove the entity
+			grid.get(row).get(col).remove(entity);
+			
+			// Notify observers and return successful
+			setChanged();
+			notifyObservers(new PlacementInfo(entity, row, col, 1));
 		}
 		
-		// Notify observers and return successful
-		setChanged();
-		notifyObservers(new PlacementInfo(entity, row, col, 1));
 		return true;
 	}
 	
@@ -273,6 +292,8 @@ public class TDModel extends Observable {
 	 */
 	public boolean clearUp() {
 		this.enemyCount = 0;
+		this.money = START_MONEY;
+		this.turn = 1;
 		// Grab a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
 		// Iterate over the rows
@@ -317,7 +338,7 @@ public class TDModel extends Observable {
 	 */
 	public boolean reset() {
 		// Reset status variables
-		this.money = 10000;
+		this.money = START_MONEY;
 		this.turn = 1;
 		this.enemyCount = 0;
 		
@@ -699,5 +720,4 @@ public class TDModel extends Observable {
 	public void setRoundStatus(int roundStatus) {
 		this.roundStatus = roundStatus;
 	}
-	
 }
