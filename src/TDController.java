@@ -13,7 +13,7 @@ import model.entity.*;
  * Purpose: Controller for tower defense TD.
  * 
  * <pre>
- * Provides simple methods for communicating with TDModel.
+ * Provides methods for communicating with TDModel.
  * 
  * Public Methods:
  *   TDController(TDModel model) - New controller for updating a model of TD.
@@ -101,7 +101,6 @@ public class TDController {
 	 * @return boolean indicating the success status of removing said entity.
 	 */
 	public boolean removeEntity(String name, int row, int col) {
-
 		Entity entity = new Entity(name, this.model);
 		model.removeEntity(entity, row, col, true);
 		
@@ -201,7 +200,6 @@ public class TDController {
 		boolean roundOver = false;
 		while (!roundOver) {
 			if (!this.pause) {
-				System.out.println("Running round");
 				Platform.runLater(() -> {
 					// Progress through the queue every n steps
 					if (currentStep % 5 == 0) {
@@ -219,9 +217,6 @@ public class TDController {
 									
 									// Place zombie at end of current row
 									model.addEntity(zom, currRow, 8);
-									
-									// Adjust its speed to match the current speed
-//									model.changeSpeed(8, currRow, this.gameSpeed);
 								}
 							}
 						}
@@ -235,7 +230,6 @@ public class TDController {
 				
 				// Check if round was lost
 				if (model.getRoundStatus() == -1) {
-					System.out.println("Round over, zombies won");
 					roundOver = true;
 					Platform.runLater(()-> {
 						pause(true);
@@ -246,12 +240,10 @@ public class TDController {
 				
 				// Check if round was won
 				else if (model.getRoundStatus() == 1 && !enemiesInQueue(enemyQueue)) {
-					System.out.println("Round over, player won");
 					roundOver = true;
 					Platform.runLater(()->{
 						pause(true);
 						model.roundOver("player");
-						//model.clearUp();
 					});
 				}
 			}	

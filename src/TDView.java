@@ -116,6 +116,12 @@ public class TDView extends Application implements Observer {
 	/**
 	 * Purpose: Part of the MVC setup to update according to model.
 	 * 
+	 * <pre>
+	 * Places Entity objects and calls their methods depending on if they are 
+	 * objects, towers, or zombies.
+	 * End of round information displayed via a String being passed in.
+	 * </pre>
+	 * 
 	 * @param model Observable being observed.
 	 * @param target Object depicting the change to update in response to.
 	 */
@@ -571,7 +577,6 @@ public class TDView extends Application implements Observer {
 		MenuItem stage2 = new MenuItem("Stage 2");
 		MenuItem stage3 = new MenuItem("Stage 3");
 		MenuItem randomStage = new MenuItem("Randomized Obstacles");
-		MenuItem surpriseMode = new MenuItem("Surprise Mode");
 		
 		// Create Stage 1 on action
 		stage1.setOnAction((e) -> {
@@ -652,28 +657,8 @@ public class TDView extends Application implements Observer {
 			}
 		});
 		
-		// Create Surprise Stage on action
-		surpriseMode.setOnAction((e) -> {
-			if (newRound != null && newRound.isAlive()) {
-				// Wait for rounds to finish
-				newRoundPrevention();
-			} else {
-				// Reset the model
-				this.controller.reset();
-				
-				// Fill in column 0 with the randomized town
-				controller.randomizeTownCol0(ROWMAX);
-				
-				// Fill in rightmost column with the randomized graves
-				controller.randomizeGravesColEnd(ROWMAX, COLMAX);
-				
-				// Set surprise mode
-				//this.controller.setSurpriseMode();
-			}
-		});
-		
 		// Add the MenuItem's to the Menu passed in
-		stageMenu.getItems().addAll(stage1, stage2, stage3, randomStage, surpriseMode);
+		stageMenu.getItems().addAll(stage1, stage2, stage3, randomStage);
 	}
 	
 	/**
