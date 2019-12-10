@@ -157,14 +157,14 @@ public class TDModel extends Observable {
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
 			// Iterate over column by column starting from leftmost
-			for (int col = 0; col < rows.size(); col++) {
+			for (int col = rows.size()-1; col >= 0; col--) {
 				List<Entity> column = rows.get(col);
 				// Iterate over each Entity
 				for (int position = 0; position < column.size(); position++) {
 					Entity entity = column.get(position);
 					
 					// Check entity base type
-					if (entity.getBase().equals("zombie") && !entity.isDead()) {
+					if (entity.getBase().equals("zombie")) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -616,7 +616,7 @@ public class TDModel extends Observable {
 			// Tower is defeated, remove from state grid and set death in animation
 			System.out.println("Zombie defeated");
 			//tower.getAnimation().spawnProjectile(enemy);
-			grid.get(row).get(col).remove(enemy);
+			//grid.get(row).get(col).remove(enemy);
 			tower.getAnimation().getPjList().get(tower.getAnimation().getPjList().size()-1).setLethal();
 			//enemy.getEnemyAnimation().Delete();
 			
@@ -628,7 +628,7 @@ public class TDModel extends Observable {
 			this.money += 50;
 			
 			// Decrement enemy count
-			this.enemyCount--;
+			
 		}
 
 	}
@@ -636,6 +636,11 @@ public class TDModel extends Observable {
 	public void roundOver(String entity) {
 		setChanged();
 		notifyObservers(entity);
+	}
+	
+	public void kill(Entity enemy, int row,int col) {
+		grid.get(row).get(col).remove(enemy);
+		this.enemyCount--;
 	}
 	
 	

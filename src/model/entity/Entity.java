@@ -116,7 +116,7 @@ public class Entity {
 				this.image = new Image("images/tower4.png");
 				this.speed = 2;
 				this.health = 200;
-				this.attack = 135;
+				this.attack = 30;
 				this.price = 335;
 				this.frames = 9;
 				this.weaponFrames = 8;
@@ -140,7 +140,7 @@ public class Entity {
 			if (this.type.equals("zombie0")) {
 				this.base = "zombie";
 				//this.image = new Image("images/zombie0.png");
-				this.health = 50;
+				this.health = 300;
 				this.attack = 5;
 				this.speed = 75;
 				this.deathFrames = 9;

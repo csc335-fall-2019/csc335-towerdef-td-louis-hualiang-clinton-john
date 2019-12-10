@@ -129,6 +129,7 @@ public class Projectile {
                     		
                     		if(lethal == true) {
                     			target.getEnemyAnimation().Death();
+                    			target.getEnemyAnimation().setDeath();
                     		}
                     	}
   
