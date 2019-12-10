@@ -200,6 +200,7 @@ public class EntityAnimation extends Node{
         this.animation.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	System.out.println("Death delete");
                 Delete();
             }
         });
@@ -217,9 +218,7 @@ public class EntityAnimation extends Node{
     
     public void attack() {
     	
-    	if(this.isDead == true) {
-    		Delete();
-    	}
+    	
     	this.mode = "_attack";
     	this.animation.stop();
     	this.pane.getChildren().remove(0);
@@ -299,6 +298,10 @@ public class EntityAnimation extends Node{
     
     public void setDeath() {
     	this.isDead = true;
+    }
+    
+    public boolean isDead() {
+    	return this.isDead;
     }
     
    public int getStart() {

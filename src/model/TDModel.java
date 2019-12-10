@@ -161,13 +161,15 @@ public class TDModel extends Observable {
 		}
 		else {
 			// Remove the entity
-			grid.get(row).get(col).remove(entity);
 			
-			if (entity.getBase().equals("zombie")) {
+			
+			if (entity.getBase().equals("zombie") && this.grid.get(row).get(col).contains(entity)) {
 				this.enemyCount--;
-				
+				grid.get(row).get(col).remove(entity);
 				// Reward money
 				this.money += 50;
+			}else {
+				grid.get(row).get(col).remove(entity);
 			}
 			
 			// Notify observers and return successful
@@ -202,7 +204,7 @@ public class TDModel extends Observable {
 					Entity entity = column.get(position);
 					
 					// Check entity base type
-					if (entity.getBase().equals("zombie")) {
+					if (entity.getBase().equals("zombie") && !entity.getEnemyAnimation().isDead()) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -514,7 +516,7 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			grid.get(row).get(col).remove(tower);
+			//grid.get(row).get(col).remove(tower);
 			
 			// Resume zombie movement
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
