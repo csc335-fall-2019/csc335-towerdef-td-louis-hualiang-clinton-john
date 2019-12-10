@@ -195,6 +195,7 @@ public class TDController {
 		// Set model's round status
 		model.setRoundStatus(0);
 		this.currentStep = 0;
+		model.enemyCount=0;
 		
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;

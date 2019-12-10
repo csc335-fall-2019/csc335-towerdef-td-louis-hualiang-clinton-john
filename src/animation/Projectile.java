@@ -111,22 +111,27 @@ public class Projectile {
                     	pane.setTranslateY(y_cor);
                     	
                     	//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getPane().getTranslateX());
-                    	if( ((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 2) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+2)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
+                    	if( ((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 10) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+100)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
                     		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getTranslateX());
                     		if(hits == 0) {
                     			transition.pause();
                         		Delete();
+                        		if(lethal == true) {
+                        			target.getEnemyAnimation().Death();
+                        			target.getEnemyAnimation().setDeath();
+                        		}
                     		}else {
                     			System.out.println("slowed");
                     			transition.pause();
                         		Delete();
                     			target.getEnemyAnimation().slow();
+                    			if(lethal == true) {
+                        			target.getEnemyAnimation().Death();
+                        			target.getEnemyAnimation().setDeath();
+                        		}
                     		}
                     		
-                    		if(lethal == true) {
-                    			target.getEnemyAnimation().Death();
-                    			target.getEnemyAnimation().setDeath();
-                    		}
+                    		
                     	}
   
                     }

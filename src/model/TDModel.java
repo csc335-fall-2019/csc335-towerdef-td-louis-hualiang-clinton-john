@@ -41,7 +41,7 @@ public class TDModel extends Observable {
 	private List<List<List<Entity>>> grid; // Index is row column style
 	private int money;
 	private int turn;
-	private int enemyCount;
+	public int enemyCount;
 	private int roundStatus;
 
 	/**
@@ -160,6 +160,9 @@ public class TDModel extends Observable {
 			}
 		}
 		else {
+			if(entity.getBase().equals("zombie")) {
+				this.enemyCount--;
+			}
 			// Remove the entity
 			grid.get(row).get(col).remove(entity);
 			
@@ -342,7 +345,7 @@ public class TDModel extends Observable {
 				// Iterate over the entities and remove them
 				int size = cols.size();
 				for (int i = 0; i < size; i++) {
-					Entity entity = cols.get(0);
+					Entity entity = cols.get(i);
 					if (entity.getBase().equals("zombie")) {
 						entity.getEnemyAnimation().Delete();
 						grid.get(row).get(col).remove(entity);
