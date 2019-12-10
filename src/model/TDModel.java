@@ -20,7 +20,11 @@ import model.entity.*;
  *   updateSpot(int col, int row, Entity moved) - Moves an Entity from one column to the column left of it.
  *   resume(int col, int row, List<List<List<Entity>>> gridCopy) - Iterates over zombie entities and has them resume walking.
  *   pause(int col, int row, boolean isPause) - Iterates over entities and pauses or resume them.
- *   changeSpeed(int col, int row, double t) - 
+ *   changeSpeed(int col, int row, double t) - Iterates over entities and changes their speed.
+ *   clearUp() - Clear the last round of grid by removing only enemy and tower entities.
+ *   reset() - Resets the state of grid by removing entities.
+ *   incrTurn() - Increment turn.
+ *   roundOver(String entity) - Signifies that the round is over.
  *   Getters and Setters
  * </pre>
  * 
@@ -317,7 +321,7 @@ public class TDModel extends Observable {
 	}
 	
 	/**
-	 * Purpose: clear the last round of grid by removing only enemy and tower entities.
+	 * Purpose: Clear the last round of grid by removing only enemy and tower entities.
 	 * 
 	 * @return boolean indicating successful clearing.
 	 */
