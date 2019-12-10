@@ -73,8 +73,8 @@ public class Entity {
 				this.base = "tower";
 				this.image = new Image("images/tower0.png");
 				this.speed = 2;
-				this.health = 10;
-				this.attack = 10;
+				this.health = 500;
+				this.attack = 0;
 				this.price = 110;
 				this.frames = 1;
 			}
@@ -116,7 +116,7 @@ public class Entity {
 				this.image = new Image("images/tower4.png");
 				this.speed = 2;
 				this.health = 200;
-				this.attack = 30;
+				this.attack = 3000;
 				this.price = 335;
 				this.frames = 9;
 				this.weaponFrames = 8;

@@ -603,6 +603,13 @@ public class TDModel extends Observable {
 	private void damageEnemy(int row, int col, int hitsLeft, Entity tower, Entity enemy) {
 		//System.out.println("Attacking zombie");
 		// Apply damage
+		
+		if(tower.getType().equals("tower2")) {
+			if(enemy.getHealth() <=50) {
+				enemy.beAttacked(50);
+				System.out.println("assasinated");
+			}
+		}
 		enemy.beAttacked(tower.getAttack());
 
 		// Visual
