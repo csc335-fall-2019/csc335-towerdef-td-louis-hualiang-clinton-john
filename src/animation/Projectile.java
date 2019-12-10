@@ -75,10 +75,6 @@ public class Projectile {
         }else {
         	this.hits = 0;
         }
-        //System.out.printf("Projectile info\nthis.x = %d\ntarget.getStart() = %d\nthis.rate = %d\ntarget.getRate() = %f\n", this.x, target.getStart(), this.rate, target.getRate());
-
-    	
-    	
     }
     
     public void setNew() {

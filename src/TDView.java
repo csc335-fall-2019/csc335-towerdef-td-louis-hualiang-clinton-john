@@ -377,13 +377,13 @@ public class TDView extends Application implements Observer {
 							if (towerName.equals("tower0")) {
 								t.setText("Meow!\n Cost: 110");
 							} else if (towerName.equals("tower1")) {
-								t.setText("Sharpshooter!\n Cost: 120");
+								t.setText("Sharpshooter!\n Cost: 50");
 							} else if (towerName.equals("tower2")) {
 								t.setText("Sneaky, Deadly, no Escaping!\n Cost: 210");
 							} else if (towerName.equals("tower3")) {
 								t.setText("Noble Knight!\n Cost: 245");
 							} else if (towerName.equals("tower4")) {
-								t.setText("Barbarian!\n Cost: 335");
+								t.setText("Barbarian!\n Cost: 500");
 							} else if (towerName.equals("tower5")) {
 								t.setText("YOU SHALL NOT PASS!\n Cost: 90");
 							}

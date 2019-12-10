@@ -441,7 +441,6 @@ public class TDModel extends Observable {
 	private boolean enemyAction(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		// Check the space to the left
 		if (col > 0) {
-			//System.out.printf("row %d, col %d, position %d\n", row, col, position);
 			// Left entry has elements to grab
 			if (!grid.get(row).get(col).isEmpty()) {
 				// Get check from real grid
@@ -598,10 +597,11 @@ public class TDModel extends Observable {
 		if(tower.getType().equals("tower2")) {
 			if(enemy.getHealth() <=50) {
 				enemy.beAttacked(50);
-				System.out.println("assasinated");
 			}
 		}
-		enemy.beAttacked(tower.getAttack());
+		else {
+			enemy.beAttacked(tower.getAttack());
+		}
 
 		// Visual
 		Projectile projectile = tower.getAnimation().spawnProjectile(enemy, hitsLeft);
