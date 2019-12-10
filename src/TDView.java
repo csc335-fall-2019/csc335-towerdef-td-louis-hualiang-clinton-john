@@ -68,6 +68,7 @@ public class TDView extends Application implements Observer {
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
+	private Label amount;
 	 
 	/**
 	 * Purpose: Main window view.
@@ -147,7 +148,10 @@ public class TDView extends Application implements Observer {
 				}
 				
 				// refresh the menu showing how much money is left
-				addMenuInfo();
+				this.amount.setText("" + controller.getMoney());
+			}
+			else if(entity.getBase().equals("zombie")) {
+				this.amount.setText("" + controller.getMoney());
 			}
 			
 			// Add an obstable
@@ -171,6 +175,7 @@ public class TDView extends Application implements Observer {
 			a.setContentText("Round over, " + entity + " won!");
 			a.showAndWait();
 		}
+		
 	}
 
 	
@@ -550,11 +555,11 @@ public class TDView extends Application implements Observer {
 		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
-		Label amount = new Label("" + controller.getMoney());
+		this.amount = new Label("" + controller.getMoney());
 		currencyInfo.setAlignment(Pos.TOP_CENTER);
 		
 		// Add the currency info together
-		currencyInfo.getChildren().addAll(currency, amount);
+		currencyInfo.getChildren().addAll(currency, this.amount);
 		
 		// Add the Stacks to have backgrounds and then auxiliary information
 		currencyBox.getChildren().addAll(infoBackground, currencyInfo);

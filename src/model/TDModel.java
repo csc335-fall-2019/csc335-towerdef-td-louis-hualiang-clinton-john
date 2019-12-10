@@ -24,7 +24,7 @@ import model.entity.*;
  */
 
 public class TDModel extends Observable {
-	public static int START_MONEY = 10000;
+	public static int START_MONEY = 1000;
 	private int rows;
 	private int cols;
 	private List<List<List<Entity>>> grid; // Index is row column style

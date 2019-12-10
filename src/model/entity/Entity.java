@@ -117,7 +117,7 @@ public class Entity {
 				this.speed = 2;
 				this.health = 200;
 				this.attack = 3000;
-				this.price = 335;
+				this.price = 275;
 				this.frames = 9;
 				this.weaponFrames = 8;
 

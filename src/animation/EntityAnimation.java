@@ -211,7 +211,7 @@ public class EntityAnimation extends Node{
     
     public void Delete() {
         	this.root1.getChildren().remove(this.pane);
-        	this.model.kill(this.zom, this.row, this.col);
+        	this.model.removeEntity(this.zom, this.row, this.col, false);
     }
     
     
