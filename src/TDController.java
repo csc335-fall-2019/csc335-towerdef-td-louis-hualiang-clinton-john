@@ -202,7 +202,7 @@ public class TDController {
 			if (!this.pause) {
 				Platform.runLater(() -> {
 					// Progress through the queue every n steps
-					if (currentStep % 5 == 0) {
+					if (currentStep % 3 == 0) {
 						// Progressing through the queue, place entities when they appear in queue
 						for (int currRow = 0; currRow < rows; currRow++) {
 							if (pause) { return;}   //pause the loop if it is already in the loop

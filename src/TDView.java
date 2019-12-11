@@ -551,8 +551,10 @@ public class TDView extends Application implements Observer {
 		StackPane currencyBox = new StackPane();
 		VBox currencyInfo = new VBox(2);
 		Label currency = new Label("Money");
+		currency.setFont(Font.font(32));
 		this.amount = new Label("" + controller.getMoney());
-		currencyInfo.setAlignment(Pos.TOP_CENTER);
+		this.amount.setFont(Font.font(32));
+		currencyInfo.setAlignment(Pos.CENTER);
 		
 		// Add the currency info together
 		currencyInfo.getChildren().addAll(currency, this.amount);
