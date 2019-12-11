@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.Random;
-import java.util.TimerTask;
 
 import animation.EntityAnimation;
 import javafx.application.Platform;
@@ -387,12 +385,13 @@ public class TDController {
 		for (List<Entity> lineUp : queue) {
 			// If even one line contains items, then the queue is not empty
 			if (!lineUp.isEmpty()) {
+
+				System.out.println("Still queue");
 				return true;
 			}
 		}
 		
 		// Reached if all lists in queue were empty
-		System.out.println("Still in queue");
 		return false;
 	}
 	

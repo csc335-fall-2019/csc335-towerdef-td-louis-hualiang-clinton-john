@@ -452,13 +452,6 @@ public class TDModel extends Observable {
 					damageTower(row, col, position, gridCopy);
 				}
 			}
-			// Left entry didnt have elements to grab, thus open space
-			else {
-				// Move current enemy to the left
-				//tryMoveLeft(row, col, position, gridCopy);
-				
-				//resume(row, col, gridCopy);
-			}
 		}
 		
 		// No spaces left implies end of row
