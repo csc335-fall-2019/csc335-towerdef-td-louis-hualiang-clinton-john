@@ -71,7 +71,6 @@ public class Entity {
 			if (this.type.equals("tower0")) {
 				// Basic starting tower
 				this.base = "tower";
-				this.image = new Image("images/tower0.png");
 				this.speed = 2;
 				this.health = 500;
 				this.attack = 0;
@@ -80,7 +79,6 @@ public class Entity {
 			}
 			else if (this.type.equals("tower1")) {
 				this.base = "tower";
-				this.image = new Image("images/tower1.png");
 				this.speed = 1;
 				this.health = 90;
 				this.attack = 30;
@@ -90,7 +88,6 @@ public class Entity {
 			}
 			else if (this.type.equals("tower2")) {
 				this.base = "tower";
-				this.image = new Image("images/tower2.png");
 				this.health = 160;
 				this.attack = 25;
 				this.price = 210;
@@ -100,7 +97,6 @@ public class Entity {
 			}
 			else if (this.type.equals("tower3")) {
 				this.base = "tower";
-				this.image = new Image("images/tower3.png");
 				this.health = 245;
 				this.attack = 25;
 				this.price = 245;
@@ -112,7 +108,6 @@ public class Entity {
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
-				this.image = new Image("images/tower4.png");
 				this.speed = 1;
 				this.health = 200;
 				this.attack = 3000;
@@ -123,7 +118,6 @@ public class Entity {
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
-				this.image = new Image("images/tower5.png");
 				this.weaponFrames = 3;
 				this.health = 100;
 				this.attack = 25;
@@ -179,74 +173,59 @@ public class Entity {
 		if (this.type.contains("object")) {
 			if (this.type.equals("object0")) {
 				this.base = "object";
-				this.image = new Image("images/object0.png");
 			}
 			else if (this.type.equals("object1")) {
 				this.base = "object";
-				this.image = new Image("images/object1.png");
 			}
 			else if (this.type.equals("object2")) {
 				this.base = "object";
-				this.image = new Image("images/object2.png");
 			}
 			else if (this.type.equals("object3")) {
 				this.base = "object";
-				this.image = new Image("images/object3.png");
 			}
 			else if (this.type.equals("object4")) {
 				// Jail building
 				this.base = "object";
-				this.image = new Image("images/object4.png");
 			}
 			else if (this.type.equals("object5")) {
 				// Inn building
 				this.base = "object";
-				this.image = new Image("images/object5.png");
 			}
 			else if (this.type.equals("object6")) {
 				// Bar building
 				this.base = "object";
-				this.image = new Image("images/object6.png");
 			}
 			else if (this.type.equals("object7")) {
 				// Watchtower building
 				this.base = "object";
-				this.image = new Image("images/object7.png");
 			}
 			else if (this.type.equals("object8")) {
 				// Plus path
 				this.base = "object";
-				this.image = new Image("images/object8.png");
 			}
 			else if (this.type.equals("object9")) {
 				// NS Path
 				this.base = "object";
-				this.image = new Image("images/object9.png");
 			}
 			else if (this.type.equals("object10")) {
 				// EW Path
 				this.base = "object";
-				this.image = new Image("images/object10.png");
 			}
 			else if (this.type.equals("object11")) {
 				// Cobble Ground
 				this.base = "object";
-				this.image = new Image("images/object11.png");
 			}
 			else if (this.type.equals("object12")) {
 				// Tombstone with dirt
 				this.base = "object";
-				this.image = new Image("images/object12.png");
 			}
 			else if (this.type.equals("object13")) {
 				// Tombstone
 				this.base = "object";
-				this.image = new Image("images/object13.png");
 			}
 			else if (this.type.equals("object14")) {
 				// Wood grave marker
 				this.base = "object";
-				this.image = new Image("images/object14.png");
 			}
 		}
 		
@@ -426,6 +405,7 @@ public class Entity {
 	 * @return Image an image representation of the entity.
 	 */
 	public Image getImage() {
+		this.image = new Image("images/" + this.type + ".png");
 		return this.image;
 	}
 	
@@ -465,25 +445,25 @@ public class Entity {
 	 * @return int indicating enemy speed.
 	 */
 	public double getSpeed() {
-		if (this.base.equals("enemy")) {
+		if (this.base.equals("zombie")) {
 			return speed;
 		}
 		return 0;
 	}
 	
-	/**
-	 * Purpose: Setter for speed.
-	 * 
-	 * @param speed An int to set animation speed.
-	 */
-	public void setSpeed(int speed) {
-		this.speed = speed;
-		
-		// If tower, set TowerAnimation's speed
-		if (this.base.equals("tower")) {
-			this.animation.setSpeed(speed);
-		}
-	}
+//	/**
+//	 * Purpose: Setter for speed.
+//	 * 
+//	 * @param speed An int to set animation speed.
+//	 */
+//	public void setSpeed(int speed) {
+//		this.speed = speed;
+//		
+//		// If tower, set TowerAnimation's speed
+//		if (this.base.equals("tower")) {
+//			this.animation.setSpeed(speed);
+//		}
+//	}
 	
 	/**
 	 * Getter for frames.
