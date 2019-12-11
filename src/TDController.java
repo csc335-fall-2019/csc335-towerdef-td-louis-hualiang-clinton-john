@@ -191,7 +191,7 @@ public class TDController {
 		pause = false;
 		pause(pause);
 		// Build a randomized queue
-		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn()+20);
+		List<List<Entity>> enemyQueue = queueUpEnemy(model.getTurn());
 		// Set model's round status
 		model.setRoundStatus(0);
 		this.currentStep = 0;
