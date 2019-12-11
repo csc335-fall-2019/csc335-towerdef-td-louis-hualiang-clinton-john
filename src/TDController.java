@@ -359,9 +359,6 @@ public class TDController {
 		return model.reset();
 	}
 	
-	
-	/************************** Private Fields Block ***************************/
-	
 	/**
 	 * Purpose: Checks if there's enough money to buy a specific tower.
 	 * 
@@ -380,7 +377,7 @@ public class TDController {
 	 * 
 	 * @return boolean indicating if enemeies are still in queue.
 	 */
-	private boolean enemiesInQueue(List<List<Entity>> queue) {
+	public boolean enemiesInQueue(List<List<Entity>> queue) {
 		// Iterate over the Lists in the queue
 		for (List<Entity> lineUp : queue) {
 			// If even one line contains items, then the queue is not empty
@@ -411,7 +408,7 @@ public class TDController {
 	 * 
 	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
 	 */
-	private List<List<Entity>> queueUpEnemy(int turn) {
+	public List<List<Entity>> queueUpEnemy(int turn) {
 		List<List<Entity>> troops = new ArrayList<List<Entity>>();
 		
 		for (int i=0; i<5; i++) {

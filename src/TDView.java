@@ -162,9 +162,13 @@ public class TDView extends Application implements Observer {
 					gridBoard.get(row).get(col).getChildren().add(objView);
 				}
 				
+				
 				// Delete object
 				else {
-					gridBoard.get(row).get(col).getChildren().remove(2);
+					while(gridBoard.get(row).get(col).getChildren().size()>=3) {
+						gridBoard.get(row).get(col).getChildren().remove(2);
+					}
+					
 				}
 			}
 			

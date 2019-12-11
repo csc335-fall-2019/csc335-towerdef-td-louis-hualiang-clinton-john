@@ -104,9 +104,7 @@ public class TDModel extends Observable {
 		
 		// Reached when a valid Entity to store
 		// Place the entity and pass it to view to update
-		if(!entity.getBase().equals("object")) {
-			grid.get(row).get(col).add(entity);
-		}
+		grid.get(row).get(col).add(entity);
 		
 		this.money = this.money - entity.getPrice();
 		setChanged();
@@ -164,8 +162,6 @@ public class TDModel extends Observable {
 		}
 		else {
 			// Remove the entity
-			
-			
 			if (entity.getBase().equals("zombie") && this.grid.get(row).get(col).contains(entity)) {
 				this.enemyCount--;
 				grid.get(row).get(col).remove(entity);
@@ -174,7 +170,6 @@ public class TDModel extends Observable {
 			}else {
 				grid.get(row).get(col).remove(entity);
 			}
-			
 			// Notify observers and return successful
 			setChanged();
 			notifyObservers(new PlacementInfo(entity, row, col, 1));
@@ -206,8 +201,8 @@ public class TDModel extends Observable {
 				for (int position = 0; position < column.size(); position++) {
 					Entity entity = column.get(position);
 					
-					// Check entity base type
-					if (entity.getBase().equals("zombie") && !entity.getEnemyAnimation().isDead()) {
+					// Check entity base type  //!entity.getEnemyAnimation().isDead()
+					if (entity.getBase().equals("zombie") && !entity.isDead()) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -336,6 +331,7 @@ public class TDModel extends Observable {
 		this.turn = 1;
 		// Grab a copy of the grid for iteration
 		List<List<List<Entity>>> gridCopy = grid;
+		
 		// Iterate over the rows
 		for (int row = 0; row < gridCopy.size(); row++) {
 			List<List<Entity>> rows = gridCopy.get(row);
@@ -345,12 +341,14 @@ public class TDModel extends Observable {
 				List<Entity> cols = rows.get(col);
 				
 				// Iterate over the entities and remove them
-				int size = cols.size();
-				for (int i = 0; i < size; i++) {
-					Entity entity = cols.get(0);
+				int i = 0;
+				while (cols.size() > 0 && i<cols.size()) {
+					Entity entity = cols.get(i);
 					if (entity.getBase().equals("zombie")) {
 						entity.getEnemyAnimation().Delete();
 						grid.get(row).get(col).remove(entity);
+						
+						//i--;
 					}else if (entity.getBase().equals("tower")) {
 						Projectile pjtile = entity.getAnimation().getProjectile();
 						if (pjtile != null) {
@@ -360,11 +358,15 @@ public class TDModel extends Observable {
 							}
 						}
 						entity.getAnimation().Delete();
-						removeEntity(entity, row, col, false);
+//						removeEntity(entity, row, col, false);
+						grid.get(row).get(col).remove(entity);
+					}else if (entity.getBase().equals("object")) {
+						i++;
 					}
+					
 				}
 			}
-		} 
+		}
 		
 		// Reached if removal successful
 		return true;
@@ -396,7 +398,9 @@ public class TDModel extends Observable {
 				// Iterate over the entities and remove them
 				for (int i = 0; i < cols.size(); i++) {
 					Entity entity = cols.get(i);
-					this.removeEntity(entity, row, col, false);
+					if (entity.getBase().equals("object")) {
+						removeEntity(entity, row, col, false);
+					}
 				}
 			}
 		}
