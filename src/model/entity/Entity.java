@@ -406,7 +406,7 @@ public class Entity {
 	 */
 	public Image getImage() {
 		this.image = new Image("images/" + this.type + ".png");
-		return this.image;
+		return this.image; 
 	}
 	
 	/**
