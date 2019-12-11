@@ -143,7 +143,10 @@ public class TDView extends Application implements Observer {
 				
 				//deletion
 				else {
-					gridBoard.get(row).get(col).getChildren().remove(2);
+					if(gridBoard.get(row).get(col).getChildren().size() > 2) {
+						gridBoard.get(row).get(col).getChildren().remove(2);
+					}
+					
 				}
 				
 				// refresh the menu showing how much money is left
@@ -162,9 +165,13 @@ public class TDView extends Application implements Observer {
 					gridBoard.get(row).get(col).getChildren().add(objView);
 				}
 				
+				
 				// Delete object
 				else {
-					gridBoard.get(row).get(col).getChildren().remove(2);
+					while(gridBoard.get(row).get(col).getChildren().size()>=3) {
+						gridBoard.get(row).get(col).getChildren().remove(2);
+					}
+					
 				}
 			}
 			
