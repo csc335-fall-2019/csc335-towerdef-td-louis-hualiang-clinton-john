@@ -358,8 +358,8 @@ public class TDModel extends Observable {
 							}
 						}
 						entity.getAnimation().Delete();
-//						removeEntity(entity, row, col, false);
-						grid.get(row).get(col).remove(entity);
+						removeEntity(entity, row, col, false);
+						//grid.get(row).get(col).remove(entity);
 					}else if (entity.getBase().equals("object")) {
 						i++;
 					}
