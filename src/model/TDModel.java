@@ -104,7 +104,10 @@ public class TDModel extends Observable {
 		
 		// Reached when a valid Entity to store
 		// Place the entity and pass it to view to update
-		grid.get(row).get(col).add(entity);
+		if(!entity.getBase().equals("object")) {
+			grid.get(row).get(col).add(entity);
+		}
+		
 		this.money = this.money - entity.getPrice();
 		setChanged();
 		notifyObservers(new PlacementInfo(entity, row, col, 0));
@@ -161,13 +164,15 @@ public class TDModel extends Observable {
 		}
 		else {
 			// Remove the entity
-			grid.get(row).get(col).remove(entity);
 			
-			if (entity.getBase().equals("zombie")) {
+			
+			if (entity.getBase().equals("zombie") && this.grid.get(row).get(col).contains(entity)) {
 				this.enemyCount--;
-				
+				grid.get(row).get(col).remove(entity);
 				// Reward money
 				this.money += 50;
+			}else {
+				grid.get(row).get(col).remove(entity);
 			}
 			
 			// Notify observers and return successful
@@ -202,7 +207,7 @@ public class TDModel extends Observable {
 					Entity entity = column.get(position);
 					
 					// Check entity base type
-					if (entity.getBase().equals("zombie")) {
+					if (entity.getBase().equals("zombie") && !entity.getEnemyAnimation().isDead()) {
 						// entity is an enemy, perform actions
 						boolean roundContinue = enemyAction(row, col, position, gridCopy);
 						
@@ -342,7 +347,7 @@ public class TDModel extends Observable {
 				// Iterate over the entities and remove them
 				int size = cols.size();
 				for (int i = 0; i < size; i++) {
-					Entity entity = cols.get(i);
+					Entity entity = cols.get(0);
 					if (entity.getBase().equals("zombie")) {
 						entity.getEnemyAnimation().Delete();
 						grid.get(row).get(col).remove(entity);
@@ -514,7 +519,7 @@ public class TDModel extends Observable {
 		// Check if tower is defeated
 		if (tower.isDead()) {
 			// Tower is defeated, remove from state grid
-			grid.get(row).get(col).remove(tower);
+			//grid.get(row).get(col).remove(tower);
 			
 			// Resume zombie movement
 			for(int i = 0; i<gridCopy.get(row).get(col).size(); i++ ) {
