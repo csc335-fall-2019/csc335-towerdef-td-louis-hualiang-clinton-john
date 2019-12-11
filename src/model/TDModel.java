@@ -104,7 +104,10 @@ public class TDModel extends Observable {
 		
 		// Reached when a valid Entity to store
 		// Place the entity and pass it to view to update
-		grid.get(row).get(col).add(entity);
+		if(!entity.getBase().equals("object")) {
+			grid.get(row).get(col).add(entity);
+		}
+		
 		this.money = this.money - entity.getPrice();
 		setChanged();
 		notifyObservers(new PlacementInfo(entity, row, col, 0));
@@ -344,7 +347,7 @@ public class TDModel extends Observable {
 				// Iterate over the entities and remove them
 				int size = cols.size();
 				for (int i = 0; i < size; i++) {
-					Entity entity = cols.get(i);
+					Entity entity = cols.get(0);
 					if (entity.getBase().equals("zombie")) {
 						entity.getEnemyAnimation().Delete();
 						grid.get(row).get(col).remove(entity);
