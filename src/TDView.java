@@ -59,15 +59,15 @@ public class TDView extends Application implements Observer {
 	private Thread newRound;
 	private boolean pause = false;
 	private boolean doubleSpeed = false;
-	
-	public static int COLMAX = 9;
-	public static int ROWMAX = 5;
-	public static int gridSize = 150;
 	public Scene scene;
 	public Stage primaryStage;
 	public BorderPane root;
 	public StackPane root1;
 	private Label amount;
+	
+	public static int COLMAX = 9;
+	public static int ROWMAX = 5;
+	public static int gridSize = 150;
 	 
 	/**
 	 * Purpose: Main window view.

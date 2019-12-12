@@ -1,9 +1,9 @@
 import javafx.application.Application;
 
 /******************************************************************************
- * FILE: Connect4.java
+ * FILE: TD.java
  * <pre>
- * ASSIGNMENT: Project 5: Networked Connect 4
+ * ASSIGNMENT: Team Project
  * COURSE: CSc 335, Fall 2019
  * PURPOSE: Launches a game of tower defense.
  * 

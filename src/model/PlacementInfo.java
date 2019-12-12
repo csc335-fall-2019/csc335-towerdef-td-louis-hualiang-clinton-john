@@ -7,7 +7,7 @@ import model.entity.*;
  * Stores informaton of an Entity placement into TDModel.
  * 
  * Public Methods:
- *   PlacementInfo(Entity entity, int row, int col) - Information of the Entity created and where it was placed.
+ *   PlacementInfo(Entity entity, int row, int col, int del) - Information of the Entity created and where it was placed.
  *   Getters and Setters
  * </pre>
  * 
@@ -29,11 +29,13 @@ public class PlacementInfo {
 	 * Creates a new PlacementInfo instance holding information of the Entity 
 	 * recently placed, and the row column positioning of where it was placed.
 	 * Used in order to update a view.
+	 * Additionally used to remove certain Entities from the view.
 	 * </pre>
 	 * 
 	 * @param entity An Entity of the entity placed.
 	 * @param row An int of row placed at.
 	 * @param col An int of the column placed at.
+	 * @param del An int indicating placement or deletion.
 	 */
 	public PlacementInfo(Entity entity, int row, int col, int del) {
 		this.entity = entity;
