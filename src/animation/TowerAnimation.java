@@ -191,7 +191,7 @@ public class TowerAnimation extends Node{
     /**
 	 * Purpose: Getter for list of projectiles.
 	 * 
-	 * @return List&ltProjectile&gt
+	 * @return List&lt;Projectile&gt;
 	 */
     public List<Projectile> getPjList(){
     	return listOfPjtile;

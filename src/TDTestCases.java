@@ -2,17 +2,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
-import javafx.scene.layout.StackPane;
 import model.entity.*;
 import model.*;
 
+/**
+ * Purpose: Test cases which aim to test all non-visual aspects.
+ * 
+ * @author Hualiang Qin
+ * @author Louis Galluzzi
+ * @author Clinton Kral
+ * @author John Stockey
+ */
 class TDTestCases {
-	
 	/**
-	 * test the methods of entity that haven't touch javafx
+	 * Test the methods of entity that have not required javafx
 	 */
 	@Test
 	void testEntity() {
@@ -64,8 +68,7 @@ class TDTestCases {
 	}
 	
 	/**
-	 * test the TDModel's methods that haven't not touch
-	 * javafx
+	 * Test the TDModel's methods that have not required javafx
 	 */
 	@Test
 	void testModel() {
@@ -108,8 +111,7 @@ class TDTestCases {
 	}
 	
 	/**
-	 * test the TDController's methods that haven't not touch
-	 * javafx, 
+	 * Test the TDController's methods that have not required javafx
 	 */
 	@Test
 	void testController() {

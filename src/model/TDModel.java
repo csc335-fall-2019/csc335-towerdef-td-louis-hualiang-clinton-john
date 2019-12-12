@@ -18,7 +18,7 @@ import model.entity.*;
  *   removeEntity(Entity entity, int row, int col, boolean isSelling) - Removes a given Entity from the model at a given row column.
  *   nextStep() - Checks each Entity for their round actions and notifies observers.
  *   updateSpot(int col, int row, Entity moved) - Moves an Entity from one column to the column left of it.
- *   resume(int col, int row, List<List<List<Entity>>> gridCopy) - Iterates over zombie entities and has them resume walking.
+ *   resume(int col, int row, List&lt;List&lt;List&lt;Entity&gt;&gt;&gt; gridCopy) - Iterates over zombie entities and has them resume walking.
  *   pause(int col, int row, boolean isPause) - Iterates over entities and pauses or resume them.
  *   changeSpeed(int col, int row, double t) - Iterates over entities and changes their speed.
  *   clearUp() - Clear the last round of grid by removing only enemy and tower entities.
@@ -276,7 +276,7 @@ public class TDModel extends Observable {
 	 * 
 	 * @param col An int of the column the Entity is on.
 	 * @param row An int of the row the Entity is on.
-	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for iterating over.
+	 * @param gridCopy A List&lt;List&lt;List&lt;Entity&gt;&gt;&gt; of the grid for iterating over.
 	 */
 	public void resume(int col, int row, List<List<List<Entity>>> gridCopy) {
 		for(int i = 0; i<gridCopy.get(row).get(col).size()-1; i++ ) {
@@ -422,7 +422,7 @@ public class TDModel extends Observable {
 	/**
 	 * Purpose: Signifies that the round is over.
 	 * 
-	 * @param entitiy String of the entity winning the round.
+	 * @param entity String of the entity winning the round.
 	 */
 	public void roundOver(String entity) {
 		setChanged();
@@ -443,7 +443,7 @@ public class TDModel extends Observable {
 	 * @param row An int of the row being checked.
 	 * @param col An int of the column being checked.
 	 * @param position An int of the Entity's position.
-	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for moving entries.
+	 * @param gridCopy A List&lt;List&lt;List&lt;Entity&gt;&gt;&gt; of the grid for moving entries.
 	 * 
 	 * @return boolean indicating if round continues (was not lost).
 	 */
@@ -496,7 +496,7 @@ public class TDModel extends Observable {
 	 * @param row An int of the row the enemy is on.
 	 * @param col An int of the column the enemy is on.
 	 * @param position An int of the enemy's position in its queue.
-	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for getting and moving entries.
+	 * @param gridCopy A List&lt;List&lt;List&lt;Entity&gt;&gt;&gt; of the grid for getting and moving entries.
 	 */
 	private void damageTower(int row, int col, int position, List<List<List<Entity>>> gridCopy) {
 		// Grab the attacker and tower for their state
@@ -545,7 +545,7 @@ public class TDModel extends Observable {
 	 * @param position An int of the Entity's position.
 	 * @param range An int of the tower's attack range.
 	 * @param hits An int of the tower's attack penetration.
-	 * @param gridCopy A List&ltList&ltList&ltEntity&gt&gt&gt of the grid for handling entries.
+	 * @param gridCopy A List&lt;List&lt;List&lt;Entity&gt;&gt;&gt; of the grid for handling entries.
 	 */
 	private void towerAction(int row, int col, int position, int range, int hits, List<List<List<Entity>>> gridCopy) {	
 		// Perform checks based on range and hits penetration
@@ -625,7 +625,7 @@ public class TDModel extends Observable {
 	
 	/************************ Getters and Setters Block ************************/
 	
-	/*
+	/**
 	 * Purpose: Getter for money.
 	 * 
 	 * @return int indicating current money amount.
@@ -634,7 +634,7 @@ public class TDModel extends Observable {
 		return this.money;
 	}
 	
-	/*
+	/**
 	 * Purpose: Getter for rows.
 	 * 
 	 * @return int indicating number of rows.
@@ -643,7 +643,7 @@ public class TDModel extends Observable {
 		return rows;
 	}
 	
-	/*
+	/**
 	 * Purpose: Getter for cols.
 	 * 
 	 * @return int indicating number of columns.
@@ -652,7 +652,7 @@ public class TDModel extends Observable {
 		return cols;
 	}
 	
-	/*
+	/**
 	 * Purpose: Getter for turn.
 	 * 
 	 * @return int indicating current turn.
@@ -661,7 +661,7 @@ public class TDModel extends Observable {
 		return turn;
 	}
 	
-	/*
+	/**
 	 * Purpose: Getter for roundStatus.
 	 * 
 	 * @return int indicating a round's status.

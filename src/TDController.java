@@ -26,7 +26,7 @@ import model.entity.*;
  *   randomizeTownCol0(int rows) - Places town objects on column 0 randomly.
  *   randomizeGravesColEnd(int rows, int cols) - Places grave objects at the ending column.
  *   reset() - Resets the model's state.
- *   enemiesInQueue(List<List<Entity>> queue) - Determines if there are still enemeies in the queue.
+ *   enemiesInQueue(List&lt;List&lt;Entity&gt;&gt; queue) - Determines if there are still enemeies in the queue.
  *   queueUpEnemy(int turn) - Builds the enemies to send down each row over a round.
  *   Getters and Setters
  * </pre>
@@ -334,6 +334,7 @@ public class TDController {
 	 * </pre>
 	 * 
 	 * @param rows An int of the number of rows.
+	 * @param cols An int of the number of column.
 	 * 
 	 * @return boolean indicating the successful placement of the objects.
 	 */
@@ -374,7 +375,7 @@ public class TDController {
 	/**
 	 * Purpose: Determines if there are still enemeies in the queue.
 	 * 
-	 * @param queue A List&ltList&ltEntity&gt&gt holding the enemies to queue.
+	 * @param queue A List&lt;List&lt;Entity&gt;&gt; holding the enemies to queue.
 	 * 
 	 * @return boolean indicating if enemeies are still in queue.
 	 */
@@ -405,7 +406,7 @@ public class TDController {
 	 * 
 	 * @param turn An int indicating the different turn (from 1 to infinite).
 	 * 
-	 * @return List&ltList&ltEntity&gt&gt the row and entity round queue.
+	 * @return List&lt;List&lt;Entity&gt;&gt; the row and entity round queue.
 	 */
 	public List<List<Entity>> queueUpEnemy(int turn) {
 		List<List<Entity>> troops = new ArrayList<List<Entity>>();

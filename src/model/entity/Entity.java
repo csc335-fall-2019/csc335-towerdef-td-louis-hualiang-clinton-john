@@ -63,6 +63,8 @@ public class Entity {
 	 * Defines the values for various towers, enemies, and objects.
 	 * Sets their values appropriately.
 	 * </pre>
+	 * 
+	 * @return boolean indicating creation success.
 	 */
 	private boolean buildEntity() {
 		/****************** Tower Creation ******************/
@@ -264,6 +266,8 @@ public class Entity {
 	 * 
 	 * @param root A StackPane of the root to place visuals onto.
 	 * @param row An int of the row to place the Animation onto.
+	 * @param col An int of the column to place the Animation onto.
+	 * @param zom An Entity that is being animated.
 	 * 
 	 * @return EntityAnimation the animation class for the enemy visual.
 	 */
@@ -341,7 +345,7 @@ public class Entity {
 	/**
 	 * Purpose: Changes the speed of the animations.
 	 * 
-	 * @param multiplier
+	 * @param multiplier A double of the speed to set to.
 	 * @param theBase String of the entity base type.
 	 */
 	public void changeSpeed(double multiplier, String theBase) {
