@@ -102,8 +102,6 @@ public class Entity {
 				this.speed = 1;
 				this.frames = 9;
 				this.weaponFrames =1;
-				
-
 			}
 			else if (this.type.equals("tower4")) {
 				this.base = "tower";
@@ -113,7 +111,6 @@ public class Entity {
 				this.price = 500;
 				this.frames = 9;
 				this.weaponFrames = 8;
-
 			}
 			else if (this.type.equals("tower5")) {
 				this.base = "tower";
@@ -123,7 +120,6 @@ public class Entity {
 				this.price = 90;
 				this.speed = 1;
 				this.frames = 7;
-
 			}
 		}
 		
@@ -164,7 +160,6 @@ public class Entity {
 				this.deathFrames = 5;
 				this.walkFrames = 8;
 				this.attackFrames =7;
-				
 			}
 		}
 		
@@ -316,7 +311,6 @@ public class Entity {
 					pjt.getAnimation().pause();
 					pjt.getTranslation().pause();
 				}
-				
 			}
 		}
 	}
