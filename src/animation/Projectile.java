@@ -1,11 +1,4 @@
 package animation;
-
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,9 +11,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import model.TDModel;
 import model.entity.Entity;
 
+/**
+ * Purpose: Projectile for usage with tower Entity types.
+ * 
+ * <pre>
+ * Allows for constructing various projectiles, unique to the various tower types.
+ * Provides the methods for their animations, transitioning, and detecting when they 
+ * hit their target, and how to update said information.
+ * </pre>
+ * 
+ * @author Hualiang Qin
+ * @author Louis Galluzzi
+ * @author Clinton Kral
+ * @author John Stockey
+ */
 public class Projectile {
 	private String action = "weapon4";
     private StackPane root1;
@@ -50,7 +56,20 @@ public class Projectile {
     private static final int WIDTH    = 45;
     private static final int HEIGHT   = 45;
 
-
+    /**
+     * Purpose: Contructor for creating a new projectile.
+     * 
+     * @param stage A StackPane for showing the animation.
+     * @param y An int of the row position.
+     * @param speed A double for the speed of the projectile.
+     * @param mode A String of the mode to animate in.
+     * @param action A String of the animation to build and show.
+     * @param count An int of the number of frames for the animation.
+     * @param attack An int of the attack amount.
+     * @param x An int of the x position.
+     * @param target An Entity of the target.
+     * @param hits An int of the number of hits to make.
+     */
     public Projectile(StackPane stage, int y, double speed, String mode, String action, int count, int attack, int x, Entity target, int hits) {
     	this.root1 = stage;
     	this.y_cor = 80 + (150 * y);
@@ -77,33 +96,26 @@ public class Projectile {
         }
     }
     
-    public void setNew() {
-    	
-    }
-    
+    /**
+     * Purpose: Begins the starting animation.
+     */
     public void start() {
-        
     	if(mode.equals("_attack")) {
     		attack();
-    	}else {
-    		
     	}
-        
-        
-        
     }
     
+    /**
+     * Purpose: Initialized the animation.
+     */
     public void translate() {
-    	
     	this.translation = new Timeline();
-
         this.translation.setCycleCount(Timeline.INDEFINITE);
         
+        // KeyFrame for the Animation
         KeyFrame moveBall = new KeyFrame(Duration.seconds(this.myrate),
                 new EventHandler<ActionEvent>() {
-
                     public void handle(ActionEvent event) {
-                    	
                     	Timeline transition = getTranslation();
                     	int y_cor = getY();
                     	int hits = getHits();
@@ -111,7 +123,7 @@ public class Projectile {
                     	pane.setTranslateY(y_cor);
                     	
                     	//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getPane().getTranslateX());
-                    	if( ((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 10) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+100)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
+                    	if(((pane.getTranslateX() > target.getEnemyAnimation().getPane().getTranslateX() - 10) && (pane.getTranslateX() < target.getEnemyAnimation().getPane().getTranslateX()+100)) || (pane.getTranslateX() == target.getEnemyAnimation().getPane().getTranslateX()) ) {
                     		//System.out.printf("ProjX = %f, EnemyX = %f\n", pane.getTranslateX(), target.getEnemyAnimation().getTranslateX());
                     		if(hits == 0) {
                     			transition.pause();
@@ -121,7 +133,7 @@ public class Projectile {
                         			target.getEnemyAnimation().setDeath();
                         		}
                     		}else {
-                    			System.out.println("slowed");
+                    			//System.out.println("slowed");
                     			transition.pause();
                         		Delete();
                     			target.getEnemyAnimation().slow();
@@ -130,33 +142,31 @@ public class Projectile {
                         			target.getEnemyAnimation().setDeath();
                         		}
                     		}
-                    		
-                    		
                     	}
-  
                     }
-                    
         		});
+        
+        // Start the animation
         this.translation.getKeyFrames().add(moveBall);
         this.translation.play();
-        
     }
   
-    
-
-    
+    /**
+     * Purpose: Remove the animation from the visual.
+     */
     public void Delete() {
     	this.root1.getChildren().remove(this.pane);
-    	
     }
     
+    /**
+     * Purpose: Runs an attack animation.
+     */
     public void attack() {
-    	
     	this.COLUMNS = this.COUNT;
     	Image IMAGE = new Image("images/" + this.action +".png");
     	final ImageView imageView = new ImageView(IMAGE);
         imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-
+        
         this.animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(1000),
@@ -168,60 +178,117 @@ public class Projectile {
         this.animation.setCycleCount(Animation.INDEFINITE);
         this.animation.play();
         
-       
+        // Add the animation to the pane for visual display
         this.pane.add(imageView, 0, 0);
-
-       
+        
         // A Group object has no layout of children easier to use here
         pane.setMouseTransparent(true);
-
     }
-    
+
+	/************************ Getters and Setters Block ************************/
+	
+    /**
+     * Getter for pane.
+     * 
+     * @return GridPane
+     */
     public GridPane getPane() {
-    	
     	return this.pane;
     }
     
+    /**
+     * Setter for mode.
+     * 
+     * @param mode A String
+     */
     public void setMode(String mode) {
     	this.mode = mode;
     }
     
+    /**
+     * Getter for animation.
+     * 
+     * @return Animation
+     */
     public Animation getAnimation() {
     	return this.animation;
     }
     
+    /**
+     * Getter for translation.
+     * 
+     * @return Timeline
+     */
     public Timeline getTranslation() {
     	return this.translation;
     }
     
+    /**
+     * Getter for start.
+     * 
+     * @return int
+     */
     public int getStart() {
     	return this.x;
     }
    
+    /**
+     * Getter for rate.
+     * 
+     * @return double
+     */
    public double getRate() {
 	   return this.myrate;
    }
    
+   /**
+    * Setter for difference.
+    * 
+    * @param dif A double
+    */
    public void setDifference(double dif) {
 	   this.difference = dif;
    }
    
+   /**
+    * Getter for difference.
+    * 
+    * @return double
+    */
    public double getDifference() {
 	   return this.difference;
    }
    
+   /**
+    * Setter for speed.
+    * 
+    * @param speed An int
+    */
    public void setSpeed(int speed) {
 	   this.gameSpeed = speed;
    }
    
+   /**
+    * Getter for y.
+    * 
+    * @return int
+    */
    public int getY() {
 	   return this.y_cor;
    }
    
+   /**
+    * Sets lethal to be true.
+    */
    public void setLethal() {
 	   this.lethal = true;
    }
    
+   /**
+    * Getter for hits.
+    * 
+    * @return int
+    */
    public int getHits() {
 	   return this.hits;
    }

@@ -26,6 +26,8 @@ import model.entity.*;
  *   randomizeTownCol0(int rows) - Places town objects on column 0 randomly.
  *   randomizeGravesColEnd(int rows, int cols) - Places grave objects at the ending column.
  *   reset() - Resets the model's state.
+ *   enemiesInQueue(List<List<Entity>> queue) - Determines if there are still enemeies in the queue.
+ *   queueUpEnemy(int turn) - Builds the enemies to send down each row over a round.
  *   Getters and Setters
  * </pre>
  * 
@@ -198,7 +200,6 @@ public class TDController {
 		// Loop over placing from the queue and progressing round, until round ends
 		boolean roundOver = false;
 		while (!roundOver) {
-			System.out.println("Enemy count: " + model.enemyCount);
 			if (!this.pause) {
 				Platform.runLater(() -> {
 					// Progress through the queue every n steps
@@ -382,8 +383,6 @@ public class TDController {
 		for (List<Entity> lineUp : queue) {
 			// If even one line contains items, then the queue is not empty
 			if (!lineUp.isEmpty()) {
-
-				System.out.println("Still queue");
 				return true;
 			}
 		}

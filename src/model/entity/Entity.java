@@ -1,21 +1,18 @@
 package model.entity;
 import java.util.List;
-import java.util.Observable;
 import animation.*;
-import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import model.TDModel;
 
 /**
- * Purpose: Entity for shared features between Tower and Enemy classes.
+ * Purpose: Entity for shared features between towers, enemies, and objects.
  * 
  * <pre>
- * Stores state and provides methods to 
- * 
- * Public Methods:
- *   TDController(TDModel model) - New controller for updating a model of TD.
- *   Getters and Setters
+ * Allows for constructing various towers, enemies, and objects.
+ * Animations, visuals, and behaviours are defined via methods, minor 
+ * differences result in shared code, but requires specific instancing for 
+ * checks against collision and animations.
  * </pre>
  * 
  * @author Hualiang Qin
@@ -28,7 +25,6 @@ public class Entity {
 	private String base;
 	private boolean isValid;
 	private Image image;
-	// More variables for entity specific elementsprivate int health;
 	private int health;
 	private int attack;
 	private double speed;
@@ -39,19 +35,19 @@ public class Entity {
 	private int deathFrames;
 	private int attackFrames;
 	private int walkFrames;
-	private int rate;
 	private TDModel model;
 	private int weaponFrames;
-	// More variables for entity specific elements
 	
 	/**
 	 * Purpose: New entity type.
 	 * 
 	 * <pre>
 	 * Takes in the name of an entity type and constructs valid names into method-defined state and behaviors.
+	 * Model is stored to pass to animations for updating model on collision event.
 	 * </pre>
 	 * 
 	 * @param type A String of the entity type.
+	 * @param model A TDModel for use in an animation updating on collision.
 	 */
 	public Entity(String type, TDModel model) {
 		this.type = type;
@@ -60,10 +56,13 @@ public class Entity {
 	}
 	
 	
-	/************************** Private Fields Block ***************************/
-	
 	/**
 	 * Purpose: Determines if the entity is an implemented type.
+	 * 
+	 * <pre>
+	 * Defines the values for various towers, enemies, and objects.
+	 * Sets their values appropriately.
+	 * </pre>
 	 */
 	private boolean buildEntity() {
 		/****************** Tower Creation ******************/
@@ -292,16 +291,14 @@ public class Entity {
 	 * @return TowerAnimation the animation class for the tower visual.
 	 */
 	public TowerAnimation buildAnimation(StackPane root, int row, int col) {
-		int y = 60 + (150 * row);
 		String mode = "_attack";
-		int x = col;
 		this.animation = new TowerAnimation(root, row, this.speed, mode, this.type, this.frames, col, this.weaponFrames);
 		this.animation.start();
 		this.animation.getAnimation().setRate(this.speed);
 		return this.animation;
 	}
 	
-	/*
+	/**
 	 * Purpose: Pauses the animations tied to the entity.
 	 * 
 	 * @param theBase String of the entity base type.
@@ -324,7 +321,7 @@ public class Entity {
 		}
 	}
 	
-	/*
+	/**
 	 * Purpose: Resumes the animations tied to the entity.
 	 * 
 	 * @param theBase String of the entity base type.
@@ -347,7 +344,7 @@ public class Entity {
 		}
 	}
 	
-	/*
+	/**
 	 * Purpose: Changes the speed of the animations.
 	 * 
 	 * @param multiplier
@@ -451,20 +448,6 @@ public class Entity {
 		return 0;
 	}
 	
-//	/**
-//	 * Purpose: Setter for speed.
-//	 * 
-//	 * @param speed An int to set animation speed.
-//	 */
-//	public void setSpeed(int speed) {
-//		this.speed = speed;
-//		
-//		// If tower, set TowerAnimation's speed
-//		if (this.base.equals("tower")) {
-//			this.animation.setSpeed(speed);
-//		}
-//	}
-	
 	/**
 	 * Getter for frames.
 	 * 
@@ -493,6 +476,4 @@ public class Entity {
 	public TowerAnimation getAnimation() {
 		return animation;
 	}
-
-	
 }
